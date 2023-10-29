@@ -1,7 +1,7 @@
 package utils.controllers;
 
 import edu.wpi.first.math.controller.PIDController;
-import frc.robot.utils.Utils;
+import utils.Utils;
 
 /*
 This class contains the Dieter controller.

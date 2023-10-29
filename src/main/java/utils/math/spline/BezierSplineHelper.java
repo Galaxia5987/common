@@ -1,9 +1,9 @@
 package utils.math.spline;
 
-import frc.robot.utils.math.Vector2;
+import utils.math.Vector2;
 import org.ejml.simple.SimpleMatrix;
 
-import static frc.robot.utils.math.spline.SplineHelper.binomial;
+import static utils.math.spline.SplineHelper.binomial;
 
 class BezierSplineHelper {
 

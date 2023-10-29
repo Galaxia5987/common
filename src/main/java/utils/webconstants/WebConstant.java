@@ -3,7 +3,6 @@ package utils.webconstants;
 import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.Robot;
 
 import java.util.ArrayList;
 
@@ -14,8 +13,6 @@ public class WebConstant {
 
     // The list of all WebConstants
     private static final ArrayList<WebConstant> INSTANCES = new ArrayList<>();
-    // Whether the robot was in debug mode last loop
-    private static boolean lastDebug = false;
 
     // The name of the constant
     public final String name;
@@ -34,11 +31,7 @@ public class WebConstant {
         this.name = name;
         this.value = defaultValue;
         INSTANCES.add(this);
-        if (Robot.debug) {
-            entry = NetworkTableInstance.getDefault().getEntry("Web Constants/" + name);
-        } else {
-            entry = null;
-        }
+        entry = NetworkTableInstance.getDefault().getEntry("Web Constants/" + name);
     }
 
     /**
@@ -64,24 +57,13 @@ public class WebConstant {
      * Updates the constant.
      */
     private void update() {
-        if (Robot.debug && !lastDebug) {
-            entry = NetworkTableInstance.getDefault().getEntry("Web Constants/" + name);
-        }
-        if (!Robot.debug && lastDebug) {
-            entry.close();
-            entry = null;
-        }
-        if (entry != null) {
-            value = entry.getDouble(value);
-        }
+        value = entry.getDouble(value);
     }
 
     /**
      * Updates all WebConstants.
      */
     public static void updateAll() {
-        lastDebug = Robot.debug;
-        Robot.debug = SmartDashboard.getBoolean("debug", false);
         INSTANCES.forEach(WebConstant::update);
     }
 }

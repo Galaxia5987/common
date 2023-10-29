@@ -1,7 +1,7 @@
 package utils.math.spline;
 
-import frc.robot.utils.math.Rotation2;
-import frc.robot.utils.math.Vector2;
+import utils.math.Rotation2;
+import utils.math.Vector2;
 import org.ejml.simple.SimpleMatrix;
 
 class HermiteSplineHelper {
