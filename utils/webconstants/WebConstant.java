@@ -27,7 +27,8 @@ public class WebConstant {
 
     /**
      * Constructor for WebConstant.
-     * @param name The name of the constant.
+     *
+     * @param name         The name of the constant.
      * @param defaultValue The default value of the constant.
      */
     public WebConstant(String name, double defaultValue) {
@@ -42,7 +43,17 @@ public class WebConstant {
     }
 
     /**
+     * Updates all WebConstants.
+     */
+    public static void updateAll() {
+        lastDebug = Robot.debug;
+        Robot.debug = SmartDashboard.getBoolean("debug", false);
+        INSTANCES.forEach(WebConstant::update);
+    }
+
+    /**
      * Gets the value of the constant.
+     *
      * @return The value of the constant.
      */
     public double get() {
@@ -51,6 +62,7 @@ public class WebConstant {
 
     /**
      * Sets the value of the constant.
+     *
      * @param value The new value of the constant.
      */
     public void set(double value) {
@@ -74,14 +86,5 @@ public class WebConstant {
         if (entry != null) {
             value = entry.getDouble(value);
         }
-    }
-
-    /**
-     * Updates all WebConstants.
-     */
-    public static void updateAll() {
-        lastDebug = Robot.debug;
-        Robot.debug = SmartDashboard.getBoolean("debug", false);
-        INSTANCES.forEach(WebConstant::update);
     }
 }

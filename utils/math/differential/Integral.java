@@ -28,6 +28,7 @@ public class Integral {
 
     /**
      * Gets the integral of the integral.
+     *
      * @return The integral of the integral.
      */
     public Integral integrate() {
@@ -39,6 +40,7 @@ public class Integral {
 
     /**
      * Updates the value to integrate.
+     *
      * @param newValue The new value to integrate.
      */
     public void update(double newValue) {
@@ -58,6 +60,7 @@ public class Integral {
 
     /**
      * Overrides the value of the integral.
+     *
      * @param value The new value of the integral.
      */
     public void override(double value) {
@@ -66,6 +69,7 @@ public class Integral {
 
     /**
      * Gets the value of the integral.
+     *
      * @return The value of the integral.
      */
     public double get() {

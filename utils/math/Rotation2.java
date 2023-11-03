@@ -195,11 +195,9 @@ public final class Rotation2 implements Interpolable<Rotation2>, Serializable {
      */
     @Override
     public boolean equals(Object obj) {
-        if (!(obj instanceof Rotation2)) {
+        if (!(obj instanceof Rotation2 other)) {
             return false;
         }
-
-        Rotation2 other = (Rotation2) obj;
 
         return Utils.epsilonEquals(cos, other.cos) && Utils.epsilonEquals(sin, other.sin);
     }

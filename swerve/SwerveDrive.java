@@ -24,11 +24,11 @@ public class SwerveDrive extends SubsystemBase {
             SwerveConstants.wheelPositions[3]
     );
     private final SwerveDriveOdometry odometry;
-    private SwerveDriveInputsAutoLogged loggerInputs = new SwerveDriveInputsAutoLogged();
-    private SwerveModuleState[] currentModuleStates = new SwerveModuleState[4];
-    private SwerveModuleState[] desiredModuleStates = new SwerveModuleState[4];
     private final Derivative acceleration = new Derivative();
     private final SwerveModulePosition[] modulePositions = new SwerveModulePosition[4];
+    private final SwerveDriveInputsAutoLogged loggerInputs = new SwerveDriveInputsAutoLogged();
+    private final SwerveModuleState[] currentModuleStates = new SwerveModuleState[4];
+    private final SwerveModuleState[] desiredModuleStates = new SwerveModuleState[4];
 
     private SwerveDrive() {
         if (Robot.isReal()) {

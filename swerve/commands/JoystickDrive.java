@@ -12,10 +12,9 @@ public class JoystickDrive extends CommandBase {
     private final SwerveDrive swerveDrive;
     private final Joystick joystick1;
     private final Joystick joystick2;
-
-    private boolean shouldHoldAngle = false;
     private final PIDController omegaController = new PIDController(
             SwerveConstants.OMEGA_kP, SwerveConstants.OMEGA_kI, SwerveConstants.OMEGA_kD);
+    private boolean shouldHoldAngle = false;
 
     public JoystickDrive(SwerveDrive swerveDrive, Joystick joystick1, Joystick joystick2) {
         this.swerveDrive = swerveDrive;
@@ -35,8 +34,7 @@ public class JoystickDrive extends CommandBase {
                     MathUtil.applyDeadband(-joystick2.getX(), 0.1),
                     true
             );
-        }
-        else {
+        } else {
             swerveDrive.drive(
                     MathUtil.applyDeadband(-joystick1.getY(), 0.1),
                     MathUtil.applyDeadband(-joystick1.getX(), 0.1),

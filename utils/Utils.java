@@ -33,7 +33,7 @@ public class Utils {
         return new double[]{pose.getX(), pose.getY(), pose.getRotation().getRadians()};
     }
 
-    public static Pose2d arrayToPose2d(double[] array){
+    public static Pose2d arrayToPose2d(double[] array) {
         return new Pose2d(
                 array[0],
                 array[1],
@@ -58,10 +58,10 @@ public class Utils {
         return array;
     }
 
-    public static SwerveModuleState[] arrayToSwerveModuleStates(double[] states){ //TODO: check
-        SwerveModuleState[] swerveModuleStates = new SwerveModuleState[states.length/2];
-        for (int i = 0; i < states.length; i+=2) {
-            swerveModuleStates[i/2] = new SwerveModuleState(states[i+1], new Rotation2d(states[i]));
+    public static SwerveModuleState[] arrayToSwerveModuleStates(double[] states) { //TODO: check
+        SwerveModuleState[] swerveModuleStates = new SwerveModuleState[states.length / 2];
+        for (int i = 0; i < states.length; i += 2) {
+            swerveModuleStates[i / 2] = new SwerveModuleState(states[i + 1], new Rotation2d(states[i]));
         }
         return swerveModuleStates;
     }

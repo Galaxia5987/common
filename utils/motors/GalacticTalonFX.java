@@ -37,9 +37,9 @@ public class GalacticTalonFX extends TalonFX {
     }
 
     public GalacticTalonFX setAllMotionControl(double p, double i, double d, double f,
-                                    double cruiseVelocity, double acceleration,
-                                    int sCurveStrength, double allowableError,
-                                    double maxIntegralAccumulator, double closedLoopPeakOutput) {
+                                               double cruiseVelocity, double acceleration,
+                                               int sCurveStrength, double allowableError,
+                                               double maxIntegralAccumulator, double closedLoopPeakOutput) {
         this.setPIDF(p, i, d, f);
         this.setMotionMagic(cruiseVelocity, acceleration);
         this.configMotionSCurveStrength(sCurveStrength, CONFIG_TIMEOUT);

@@ -104,7 +104,7 @@ public class TestUtils {
     public void testPose2dConversions() {
         double x = 1, y = 1, rot = 1;
         Pose2d poseObject = new Pose2d(1, 1, new Rotation2d(1));
-        double[] poseArray = new double[] {x, y, rot};
+        double[] poseArray = new double[]{x, y, rot};
 
         Assert.assertArrayEquals(
                 poseArray,
@@ -120,7 +120,7 @@ public class TestUtils {
     @Test
     public void testChassisSpeedsConversions() {
         double x = 1, y = 1, omega = 1;
-        double[] chassisSpeedsArray = new double[] {x, y, omega};
+        double[] chassisSpeedsArray = new double[]{x, y, omega};
         ChassisSpeeds chassisSpeedsObject = new ChassisSpeeds(x, y, omega);
 
         Assert.assertArrayEquals(
@@ -137,8 +137,8 @@ public class TestUtils {
     @Test
     public void testSwerveModuleConversions() {
         double vel1 = 1, angle1 = 1, vel2 = 2, angle2 = 0.5;
-        double[] swerveModuleStatesArray = new double[] {angle1, vel1, angle2, vel2};
-        SwerveModuleState[] swerveModuleStates = new SwerveModuleState[] {
+        double[] swerveModuleStatesArray = new double[]{angle1, vel1, angle2, vel2};
+        SwerveModuleState[] swerveModuleStates = new SwerveModuleState[]{
                 new SwerveModuleState(vel1, new Rotation2d(angle1)),
                 new SwerveModuleState(vel2, new Rotation2d(angle2))
         };

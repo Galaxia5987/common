@@ -22,6 +22,7 @@ public class BooleanTrigger {
 
     /**
      * Updates the trigger.
+     *
      * @param newValue The new value to check.
      */
     public void update(boolean newValue) {
@@ -34,6 +35,7 @@ public class BooleanTrigger {
 
     /**
      * Gets whether the trigger has been triggered.
+     *
      * @return Whether the trigger has been triggered.
      */
     public boolean triggered() {
@@ -42,6 +44,7 @@ public class BooleanTrigger {
 
     /**
      * Gets whether the trigger has been released.
+     *
      * @return Whether the trigger has been released.
      */
     public boolean released() {

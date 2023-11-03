@@ -22,18 +22,14 @@ public class ModuleIOReal implements ModuleIO {
     private final UnitModel ticksPerRad = new UnitModel(SwerveConstants.TICKS_PER_RADIAN);
     private final UnitModel ticksPerMeter = new UnitModel(SwerveConstants.TICKS_PER_METER);
     private final int number;
-
+    private final Integral driveSupplyChargeUsedCoulomb = new Integral();
+    private final Integral driveStatorChargeUsedCoulomb = new Integral();
+    private final Integral angleSupplyChargeUsedCoulomb = new Integral();
+    private final Integral angleStatorChargeUsedCoulomb = new Integral();
     private double angleSetpoint;
     private double currentAngle;
     private double angleMotorPosition;
     private double driveMotorVelocitySetpoint;
-
-
-    private final Integral driveSupplyChargeUsedCoulomb = new Integral();
-    private final Integral driveStatorChargeUsedCoulomb = new Integral();
-
-    private final Integral angleSupplyChargeUsedCoulomb = new Integral();
-    private final Integral angleStatorChargeUsedCoulomb = new Integral();
 
     public ModuleIOReal(int driveMotorID, int angleMotorID, int encoderID,
                         double[] motionMagicConfigs, int number) {

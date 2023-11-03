@@ -24,6 +24,7 @@ public class Derivative {
 
     /**
      * Gets the derivative of the derivative.
+     *
      * @return The derivative of the derivative.
      */
     public Derivative differentiate() {
@@ -35,6 +36,7 @@ public class Derivative {
 
     /**
      * Updates the value to differentiate.
+     *
      * @param newValue The new value to differentiate.
      */
     public void update(double newValue) {
@@ -54,6 +56,7 @@ public class Derivative {
 
     /**
      * Gets the derivative of the value.
+     *
      * @return The derivative of the value.
      */
     public double get() {
