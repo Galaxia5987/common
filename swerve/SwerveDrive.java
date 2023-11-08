@@ -28,7 +28,6 @@ public class SwerveDrive extends SubsystemBase {
     private final SwerveModulePosition[] modulePositions = new SwerveModulePosition[4];
     private final SwerveDriveInputsAutoLogged loggerInputs = new SwerveDriveInputsAutoLogged();
     private final SwerveModuleState[] currentModuleStates = new SwerveModuleState[4];
-    private final SwerveModuleState[] desiredModuleStates = new SwerveModuleState[4];
 
     private SwerveDrive() {
         if (Robot.isReal()) {
@@ -162,6 +161,10 @@ public class SwerveDrive extends SubsystemBase {
         modules[1].setModuleState(new SwerveModuleState(0, Rotation2d.fromDegrees(135)));
         modules[2].setModuleState(new SwerveModuleState(0, Rotation2d.fromDegrees(315)));
         modules[3].setModuleState(new SwerveModuleState(0, Rotation2d.fromDegrees(225)));
+    }
+
+    public SwerveModulePosition[] getModulePositions() {
+        return modulePositions;
     }
 
     /**
