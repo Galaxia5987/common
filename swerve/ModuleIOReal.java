@@ -42,13 +42,13 @@ public class ModuleIOReal implements ModuleIO {
         this.motionMagicConfigs = motionMagicConfigs;
         this.number = number;
 
-        driveMotor.configFactoryDefault(Constants.TALON_TIMEOUT);
-        angleMotor.configFactoryDefault(Constants.TALON_TIMEOUT);
+        driveMotor.configFactoryDefault(Constants.CONFIG_TIMEOUT);
+        angleMotor.configFactoryDefault(Constants.CONFIG_TIMEOUT);
 
-        driveMotor.config_kP(0, SwerveConstants.DRIVE_kP, Constants.TALON_TIMEOUT);
-        driveMotor.config_kI(0, SwerveConstants.DRIVE_kI, Constants.TALON_TIMEOUT);
-        driveMotor.config_kD(0, SwerveConstants.DRIVE_kD, Constants.TALON_TIMEOUT);
-        driveMotor.config_kF(0, SwerveConstants.DRIVE_KF, Constants.TALON_TIMEOUT);
+        driveMotor.config_kP(0, SwerveConstants.DRIVE_kP, Constants.CONFIG_TIMEOUT);
+        driveMotor.config_kI(0, SwerveConstants.DRIVE_kI, Constants.CONFIG_TIMEOUT);
+        driveMotor.config_kD(0, SwerveConstants.DRIVE_kD, Constants.CONFIG_TIMEOUT);
+        driveMotor.config_kF(0, SwerveConstants.DRIVE_KF, Constants.CONFIG_TIMEOUT);
         driveMotor.enableVoltageCompensation(true);
         driveMotor.configVoltageCompSaturation(SwerveConstants.VOLT_COMP_SATURATION);
         driveMotor.setNeutralMode(NeutralMode.Brake);
@@ -64,16 +64,16 @@ public class ModuleIOReal implements ModuleIO {
         angleMotor.configStatorCurrentLimit(SwerveConstants.STATOR_CURRENT_LIMIT);
         angleMotor.setInverted(SwerveConstants.CLOCKWISE);
 
-        angleMotor.config_kP(0, motionMagicConfigs[0], Constants.TALON_TIMEOUT);
-        angleMotor.config_kI(0, motionMagicConfigs[1], Constants.TALON_TIMEOUT);
-        angleMotor.config_kD(0, motionMagicConfigs[2], Constants.TALON_TIMEOUT);
-        angleMotor.config_kF(0, motionMagicConfigs[3], Constants.TALON_TIMEOUT);
-        angleMotor.configMotionSCurveStrength((int) motionMagicConfigs[4], Constants.TALON_TIMEOUT);
-        angleMotor.configMotionCruiseVelocity(motionMagicConfigs[5], Constants.TALON_TIMEOUT);
-        angleMotor.configMotionAcceleration(motionMagicConfigs[6], Constants.TALON_TIMEOUT);
-        angleMotor.configAllowableClosedloopError(0, motionMagicConfigs[7], Constants.TALON_TIMEOUT);
-        angleMotor.configMaxIntegralAccumulator(0, motionMagicConfigs[8], Constants.TALON_TIMEOUT);
-        angleMotor.configClosedLoopPeakOutput(0, motionMagicConfigs[9], Constants.TALON_TIMEOUT);
+        angleMotor.config_kP(0, motionMagicConfigs[0], Constants.CONFIG_TIMEOUT);
+        angleMotor.config_kI(0, motionMagicConfigs[1], Constants.CONFIG_TIMEOUT);
+        angleMotor.config_kD(0, motionMagicConfigs[2], Constants.CONFIG_TIMEOUT);
+        angleMotor.config_kF(0, motionMagicConfigs[3], Constants.CONFIG_TIMEOUT);
+        angleMotor.configMotionSCurveStrength((int) motionMagicConfigs[4], Constants.CONFIG_TIMEOUT);
+        angleMotor.configMotionCruiseVelocity(motionMagicConfigs[5], Constants.CONFIG_TIMEOUT);
+        angleMotor.configMotionAcceleration(motionMagicConfigs[6], Constants.CONFIG_TIMEOUT);
+        angleMotor.configAllowableClosedloopError(0, motionMagicConfigs[7], Constants.CONFIG_TIMEOUT);
+        angleMotor.configMaxIntegralAccumulator(0, motionMagicConfigs[8], Constants.CONFIG_TIMEOUT);
+        angleMotor.configClosedLoopPeakOutput(0, motionMagicConfigs[9], Constants.CONFIG_TIMEOUT);
     }
 
     @Override

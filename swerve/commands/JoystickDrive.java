@@ -1,10 +1,8 @@
 package frc.robot.common.swerve.commands;
 
 import edu.wpi.first.math.MathUtil;
-import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.common.swerve.SwerveConstants;
 import frc.robot.common.swerve.SwerveDrive;
 
 public class JoystickDrive extends CommandBase {
