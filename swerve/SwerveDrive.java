@@ -216,9 +216,9 @@ public class SwerveDrive extends SubsystemBase {
         updateModulePositions();
         odometry.update(new Rotation2d(getYaw()), modulePositions);
 
-        loggerInputs.botPose[0] = getBotPose().getX();
-        loggerInputs.botPose[1] = getBotPose().getY();
-        loggerInputs.botPose[2] = getBotPose().getRotation().getRadians();
+        loggerInputs.botPose[0] = odometry.getPoseMeters().getX();
+        loggerInputs.botPose[1] = odometry.getPoseMeters().getY();
+        loggerInputs.botPose[2] = odometry.getPoseMeters().getRotation().getRadians();
 
         for (int i = 0; i < modules.length; i++) {
             currentModuleStates[i] = modules[i].getModuleState();
