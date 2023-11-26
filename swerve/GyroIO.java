@@ -6,7 +6,7 @@ public interface GyroIO {
     double getYaw();
 
     default double getRawYaw() {
-        return ;
+        return 0;
     }
 
     default double getPitch() {
