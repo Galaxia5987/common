@@ -142,4 +142,9 @@ publishing {
             groupId = 'com.github.Galaxia5987'
         }
     }
+    publications {
+        maven(MavenPublication) {
+            from components.java
+        }
+    }
 }
