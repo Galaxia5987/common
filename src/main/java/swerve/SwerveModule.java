@@ -1,11 +1,11 @@
-package frc.robot.common.main.java.src.swerve;
+package swerve;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.common.main.java.src.utils.math.differential.BooleanTrigger;
+import utils.math.differential.BooleanTrigger;
 import org.littletonrobotics.junction.Logger;
 
 public class SwerveModule extends SubsystemBase {

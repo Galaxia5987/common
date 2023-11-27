@@ -1,4 +1,4 @@
-package frc.robot.common.main.java.src.swerve;
+package swerve;
 
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import org.littletonrobotics.junction.AutoLog;

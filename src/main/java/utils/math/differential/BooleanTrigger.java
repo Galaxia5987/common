@@ -1,4 +1,4 @@
-package frc.robot.common.main.java.src.utils.math.differential;
+package utils.math.differential;
 
 /*
 This class contains a boolean trigger.

@@ -1,10 +1,10 @@
-package frc.robot.common.main.java.src.utils;
+package tests;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
-import frc.robot.common.main.java.src.utils.Utils;
+import utils.Utils;
 import org.junit.Assert;
 import org.junit.Test;
 

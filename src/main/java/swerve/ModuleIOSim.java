@@ -1,11 +1,11 @@
-package frc.robot.common.main.java.src.swerve;
+package swerve;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.wpilibj.simulation.FlywheelSim;
-import frc.robot.common.main.java.src.utils.math.AngleUtil;
-import frc.robot.common.main.java.src.utils.math.differential.Integral;
+import utils.math.AngleUtil;
+import utils.math.differential.Integral;
 
 public class ModuleIOSim implements ModuleIO {
     private final FlywheelSim driveMotor;

@@ -1,6 +1,6 @@
-package frc.robot.common.main.java.src.swerve;
+package swerve;
 
-import frc.robot.common.main.java.src.utils.math.differential.Integral;
+import utils.math.differential.Integral;
 
 public class GyroIOSim implements GyroIO {
     private final Integral yaw = new Integral();

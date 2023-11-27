@@ -1,6 +1,6 @@
-package frc.robot.common.main.java.src.utils;
+package tests;
 
-import frc.robot.common.main.java.src.utils.math.differential.BooleanTrigger;
+import utils.math.differential.BooleanTrigger;
 import org.junit.Assert;
 import org.junit.Test;
 

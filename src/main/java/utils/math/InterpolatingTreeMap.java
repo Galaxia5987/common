@@ -1,4 +1,4 @@
-package frc.robot.common.main.java.src.utils.math;
+package utils.math;
 
 import java.util.Map;
 import java.util.TreeMap;

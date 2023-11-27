@@ -1,4 +1,4 @@
-package frc.robot.common.main.java.src.swerve;
+package swerve;
 
 import edu.wpi.first.math.filter.LinearFilter;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -6,9 +6,8 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.*;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Ports;
-import frc.robot.Robot;
-import frc.robot.common.main.java.src.utils.Utils;
-import frc.robot.common.main.java.src.utils.math.differential.Derivative;
+import utils.Utils;
+import utils.math.differential.Derivative;
 import org.littletonrobotics.junction.Logger;
 
 
@@ -29,8 +28,8 @@ public class SwerveDrive extends SubsystemBase {
     private final SwerveDriveInputsAutoLogged loggerInputs = new SwerveDriveInputsAutoLogged();
     private final SwerveModuleState[] currentModuleStates = new SwerveModuleState[4];
 
-    private SwerveDrive() {
-        if (Robot.isReal()) {
+    private SwerveDrive(boolean isReal) {
+        if (isReal) {
             for (int i = 0; i < modules.length; i++) {
                 ModuleIO io = new ModuleIOReal(
                         Ports.SwerveDrive.DRIVE_IDS[i],
@@ -59,9 +58,9 @@ public class SwerveDrive extends SubsystemBase {
         );
     }
 
-    public static SwerveDrive getInstance() {
+    public static SwerveDrive getInstance(boolean isReal) {
         if (INSTANCE == null) {
-            INSTANCE = new SwerveDrive();
+            INSTANCE = new SwerveDrive(isReal);
         }
         return INSTANCE;
     }

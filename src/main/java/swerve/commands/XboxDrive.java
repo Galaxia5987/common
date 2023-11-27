@@ -1,4 +1,4 @@
-package frc.robot.common.main.java.src.swerve.commands;
+package swerve.commands;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.XboxController;

@@ -1,4 +1,4 @@
-package frc.robot.common.main.java.src.utils.math;
+package utils.math;
 
 /**
  * Interpolable is an interface used by an Interpolating Tree as the Value type. Given two end points and an

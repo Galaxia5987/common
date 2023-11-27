@@ -5,7 +5,7 @@
 // license that can be found in the LICENSE file at
 // the root directory of this project.
 
-package frc.robot.common.main.java.src.utils.webconstants;
+package utils.webconstants;
 
 import org.littletonrobotics.junction.networktables.LoggedDashboardNumber;
 

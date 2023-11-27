@@ -7,9 +7,9 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import frc.robot.Constants;
-import frc.robot.common.main.java.src.utils.math.AngleUtil;
-import frc.robot.common.main.java.src.utils.math.differential.Integral;
-import frc.robot.common.main.java.src.utils.units.UnitModel;
+import utils.math.AngleUtil;
+import utils.math.differential.Integral;
+import utils.units.UnitModel;
 
 public class ModuleIOReal implements ModuleIO {
 

@@ -1,4 +1,4 @@
-package frc.robot.common.main.java.src.swerve;
+package swerve;
 
 import org.littletonrobotics.junction.AutoLog;
 

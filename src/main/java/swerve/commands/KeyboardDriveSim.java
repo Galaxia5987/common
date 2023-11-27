@@ -1,4 +1,4 @@
-package frc.robot.common.main.java.src.swerve.commands;
+package swerve.commands;
 
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj2.command.CommandBase;
@@ -6,7 +6,7 @@ import swerve.SwerveDrive;
 
 public class KeyboardDriveSim extends CommandBase {
 
-    private final SwerveDrive drive = SwerveDrive.getInstance();
+    private final SwerveDrive drive = SwerveDrive.getInstance(false);
 
     private final GenericHID controller = new GenericHID(0);
 

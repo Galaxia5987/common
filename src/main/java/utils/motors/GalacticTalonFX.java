@@ -1,4 +1,4 @@
-package frc.robot.common.main.java.src.utils.motors;
+package utils.motors;
 
 import com.ctre.phoenix.motorcontrol.StatorCurrentLimitConfiguration;
 import com.ctre.phoenix.motorcontrol.can.TalonFX;

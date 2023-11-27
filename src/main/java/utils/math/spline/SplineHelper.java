@@ -1,4 +1,4 @@
-package frc.robot.common.main.java.src.utils.math.spline;
+package utils.math.spline;
 
 import org.ejml.simple.SimpleMatrix;
 

@@ -1,4 +1,4 @@
-package frc.robot.common.main.java.src.utils.math;
+package utils.math;
 
 /**
  * A Double that can be interpolated using the InterpolatingTreeMap.

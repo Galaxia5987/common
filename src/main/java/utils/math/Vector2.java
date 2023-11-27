@@ -1,4 +1,4 @@
-package frc.robot.common.main.java.src.utils.math;
+package utils.math;
 
 import edu.wpi.first.math.MathUtil;
 import utils.Utils;
