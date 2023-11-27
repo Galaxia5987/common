@@ -1,6 +1,6 @@
 package frc.robot.common.main.java.src.utils.math;
 
-import frc.robot.common.main.java.src.utils.Utils;
+import utils.Utils;
 
 import java.io.Serializable;
 import java.text.DecimalFormat;

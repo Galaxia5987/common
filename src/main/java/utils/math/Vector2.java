@@ -1,7 +1,7 @@
 package frc.robot.common.main.java.src.utils.math;
 
 import edu.wpi.first.math.MathUtil;
-import frc.robot.common.main.java.src.utils.Utils;
+import utils.Utils;
 
 import java.io.Serializable;
 import java.text.DecimalFormat;

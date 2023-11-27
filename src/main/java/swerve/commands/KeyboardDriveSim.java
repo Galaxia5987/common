@@ -2,7 +2,7 @@ package frc.robot.common.main.java.src.swerve.commands;
 
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.common.main.java.src.swerve.SwerveDrive;
+import swerve.SwerveDrive;
 
 public class KeyboardDriveSim extends CommandBase {
 

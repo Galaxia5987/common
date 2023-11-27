@@ -1,4 +1,4 @@
-package frc.robot.common.main.java.src.swerve;
+package swerve;
 
 public interface GyroIO {
     void updateInputs(SwerveDriveInputs inputs);

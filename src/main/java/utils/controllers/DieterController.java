@@ -1,7 +1,7 @@
 package frc.robot.common.main.java.src.utils.controllers;
 
 import edu.wpi.first.math.controller.PIDController;
-import frc.robot.common.main.java.src.utils.Utils;
+import utils.Utils;
 
 /*
 This class contains the Dieter controller.
