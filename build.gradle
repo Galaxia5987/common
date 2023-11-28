@@ -139,7 +139,7 @@ gversion {
 publishing {
     publications {
         mavenJava(MavenPublication) {
-            groupId = 'com.github.Galaxia5987'
+            groupId = 'com.github.galaxia5987'
         }
     }
     publications {
