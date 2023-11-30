@@ -4,41 +4,41 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import utils.Utils;
-import org.junit.Assert;
-import org.junit.Test;
 
 public class TestUtils {
 
     @Test
     public void testDeadband() {
-        Assert.assertEquals(
+        Assertions.assertEquals(
                 0,
                 Utils.deadband(0.5, 0.5),
                 Utils.EPSILON
         );
-        Assert.assertEquals(
+        Assertions.assertEquals(
                 0,
                 Utils.deadband(0.25, 0.5),
                 Utils.EPSILON
         );
-        Assert.assertEquals(
+        Assertions.assertEquals(
                 0.5,
                 Utils.deadband(0.75, 0.5),
                 Utils.EPSILON
         );
 
-        Assert.assertEquals(
+        Assertions.assertEquals(
                 0,
                 Utils.deadband(-0.5, 0.5),
                 Utils.EPSILON
         );
-        Assert.assertEquals(
+        Assertions.assertEquals(
                 0,
                 Utils.deadband(-0.25, 0.5),
                 Utils.EPSILON
         );
-        Assert.assertEquals(
+        Assertions.assertEquals(
                 -0.5,
                 Utils.deadband(-0.75, 0.5),
                 Utils.EPSILON
@@ -47,55 +47,55 @@ public class TestUtils {
 
     @Test
     public void testEpsilonEqualsDefaultEpsilon() {
-        Assert.assertTrue(
+        Assertions.assertTrue(
                 Utils.epsilonEquals(1, 1)
         );
-        Assert.assertTrue(
+        Assertions.assertTrue(
                 Utils.epsilonEquals(-1, -1)
         );
-        Assert.assertTrue(
+        Assertions.assertTrue(
                 Utils.epsilonEquals(0, 0)
         );
 
-        Assert.assertTrue(
+        Assertions.assertTrue(
                 Utils.epsilonEquals(1 + Utils.EPSILON / 2, 1)
         );
-        Assert.assertTrue(
+        Assertions.assertTrue(
                 Utils.epsilonEquals(1, 1 + Utils.EPSILON / 2)
         );
-        Assert.assertTrue(
+        Assertions.assertTrue(
                 Utils.epsilonEquals(1, 1 - Utils.EPSILON / 2)
         );
-        Assert.assertTrue(
+        Assertions.assertTrue(
                 Utils.epsilonEquals(1 - Utils.EPSILON / 2, 1)
         );
 
-        Assert.assertTrue(
+        Assertions.assertTrue(
                 Utils.epsilonEquals(-1 + Utils.EPSILON / 2, -1)
         );
-        Assert.assertTrue(
+        Assertions.assertTrue(
                 Utils.epsilonEquals(-1, -1 + Utils.EPSILON / 2)
         );
-        Assert.assertTrue(
+        Assertions.assertTrue(
                 Utils.epsilonEquals(-1, -1 - Utils.EPSILON / 2)
         );
-        Assert.assertTrue(
+        Assertions.assertTrue(
                 Utils.epsilonEquals(-1 - Utils.EPSILON / 2, -1)
         );
     }
 
     @Test
     public void testEpsilonEqualsCustomEpsilon() {
-        Assert.assertTrue(
+        Assertions.assertTrue(
                 Utils.epsilonEquals(1, 1.5, 0.5)
         );
-        Assert.assertTrue(
+        Assertions.assertTrue(
                 Utils.epsilonEquals(-1, -1.5, 0.5)
         );
-        Assert.assertTrue(
+        Assertions.assertTrue(
                 Utils.epsilonEquals(1.5, 1, 0.5)
         );
-        Assert.assertTrue(
+        Assertions.assertTrue(
                 Utils.epsilonEquals(-1.5, -1, 0.5)
         );
     }
@@ -106,12 +106,12 @@ public class TestUtils {
         Pose2d poseObject = new Pose2d(1, 1, new Rotation2d(1));
         double[] poseArray = new double[]{x, y, rot};
 
-        Assert.assertArrayEquals(
+        Assertions.assertArrayEquals(
                 poseArray,
                 Utils.pose2dToArray(poseObject),
                 Utils.EPSILON
         );
-        Assert.assertEquals(
+        Assertions.assertEquals(
                 poseObject.toString(),
                 Utils.arrayToPose2d(poseArray).toString()
         );
@@ -123,12 +123,12 @@ public class TestUtils {
         double[] chassisSpeedsArray = new double[]{x, y, omega};
         ChassisSpeeds chassisSpeedsObject = new ChassisSpeeds(x, y, omega);
 
-        Assert.assertArrayEquals(
+        Assertions.assertArrayEquals(
                 chassisSpeedsArray,
                 Utils.chassisSpeedsToArray(chassisSpeedsObject),
                 Utils.EPSILON
         );
-        Assert.assertEquals(
+        Assertions.assertEquals(
                 Utils.arrayToChassisSpeeds(chassisSpeedsArray).toString(),
                 chassisSpeedsObject.toString()
         );
@@ -146,19 +146,19 @@ public class TestUtils {
         SwerveModuleState[] convertedSwerveModuleStates =
                 Utils.arrayToSwerveModuleStates(swerveModuleStatesArray);
 
-        Assert.assertEquals(
+        Assertions.assertEquals(
                 swerveModuleStates.length,
                 convertedSwerveModuleStates.length
         );
         for (int i = 0; i < convertedSwerveModuleStates.length; i++) {
-            Assert.assertEquals(
+            Assertions.assertEquals(
                     "Module " + (i + 1),
                     swerveModuleStates[i].toString(),
                     convertedSwerveModuleStates[i].toString()
             );
         }
 
-        Assert.assertArrayEquals(
+        Assertions.assertArrayEquals(
                 swerveModuleStatesArray,
                 Utils.swerveModuleStatesToArray(swerveModuleStates),
                 Utils.EPSILON
@@ -171,13 +171,13 @@ public class TestUtils {
         ChassisSpeeds speeds = new ChassisSpeeds(x, y, omega);
         ChassisSpeeds negativeSpeeds = new ChassisSpeeds(-x, -y, -omega);
 
-        Assert.assertTrue(
+        Assertions.assertTrue(
                 Utils.speedsEpsilonEquals(speeds)
         );
-        Assert.assertTrue(
+        Assertions.assertTrue(
                 Utils.speedsEpsilonEquals(negativeSpeeds)
         );
-        Assert.assertTrue(
+        Assertions.assertTrue(
                 Utils.speedsEpsilonEquals(new ChassisSpeeds())
         );
     }

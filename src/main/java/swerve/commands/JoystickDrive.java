@@ -2,10 +2,10 @@ package swerve.commands;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.Command;
 import swerve.SwerveDrive;
 
-public class JoystickDrive extends CommandBase {
+public class JoystickDrive extends Command {
     private final SwerveDrive swerveDrive;
     private final Joystick joystick1;
     private final Joystick joystick2;

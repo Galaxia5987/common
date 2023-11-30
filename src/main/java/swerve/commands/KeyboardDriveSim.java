@@ -1,10 +1,10 @@
 package swerve.commands;
 
 import edu.wpi.first.wpilibj.GenericHID;
-import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.Command;
 import swerve.SwerveDrive;
 
-public class KeyboardDriveSim extends CommandBase {
+public class KeyboardDriveSim extends Command {
 
     private final SwerveDrive drive = SwerveDrive.getInstance(false);
 

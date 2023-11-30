@@ -2,11 +2,11 @@ package swerve.commands;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.XboxController;
-import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.Command;
 import swerve.SwerveConstants;
 import swerve.SwerveDrive;
 
-public class XboxDrive extends CommandBase {
+public class XboxDrive extends Command {
     private final SwerveDrive swerveDrive;
     private final XboxController xboxController;
 
