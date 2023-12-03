@@ -117,6 +117,7 @@ public class ModuleIOReal implements ModuleIO {
     public void setAngle(double angle) {
         angleSetpoint = AngleUtil.normalize(angle);
         Rotation2d error = new Rotation2d(angle).minus(new Rotation2d(currentAngle));
+//        var motorRequest = new
         angleMotor.set(TalonFXControlMode.MotionMagic, angleMotorPosition + ticksPerRad.toTicks(error.getRadians()));
     }
 
