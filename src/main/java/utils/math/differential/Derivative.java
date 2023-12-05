@@ -56,7 +56,7 @@ public class Derivative {
         slope = (value - lastValue) / (timestamp - lastTimestamp);
 
         if (derivative != null) {
-            derivative.update(slope);
+            derivative.update(slope, timestamp);
         }
 
         lastTimestamp = timestamp;

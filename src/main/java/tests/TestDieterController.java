@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 import utils.Utils;
 import utils.controllers.DieterController;
 
-public class DieterControllerTest {
+public class TestDieterController {
 
     @Test
     public void testDieterController() {
