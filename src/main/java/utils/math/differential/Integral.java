@@ -54,13 +54,11 @@ public class Integral {
      * @param timestamp The current timestamp. [s]
      */
     public void update(double newValue, double timestamp) {
-        double lastValue = value;
+        sum += (value + newValue) * (timestamp - lastTimestamp) / 2;
         value = newValue;
 
-        sum += (value + lastValue) * (timestamp - lastTimestamp) / 2;
-
         if (integral != null) {
-            integral.update(sum);
+            integral.update(sum, timestamp);
         }
 
         lastTimestamp = timestamp;
