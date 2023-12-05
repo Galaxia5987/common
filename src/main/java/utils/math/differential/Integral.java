@@ -44,8 +44,16 @@ public class Integral {
      * @param newValue The new value to integrate.
      */
     public void update(double newValue) {
-        double timestamp = Timer.getFPGATimestamp();
+        update(newValue, Timer.getFPGATimestamp());
+    }
 
+    /**
+     * Updates the value to integrate.
+     *
+     * @param newValue The new value to integrate.
+     * @param timestamp The current timestamp. [s]
+     */
+    public void update(double newValue, double timestamp) {
         double lastValue = value;
         value = newValue;
 
