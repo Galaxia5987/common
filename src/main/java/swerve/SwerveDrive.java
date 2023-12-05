@@ -127,6 +127,10 @@ public class SwerveDrive extends SubsystemBase {
         return loggerInputs.linearVelocity;
     }
 
+    public ChassisSpeeds getCurrentSpeeds(){
+        return Utils.arrayToChassisSpeeds(loggerInputs.currentSpeeds);
+    }
+
     public void resetPose(Pose2d pose) {
         odometry.resetPosition(new Rotation2d(getYaw()), modulePositions, pose);
     }
