@@ -21,12 +21,12 @@ public class SwerveConstants {
     public static final double DriveMotorMomentOfInertia = 0.025;
     public static final double AngleMotorMomentOfInertia = 0.004;
 
-    // kP, kI, kD, kF, kS, sCurveStrength, cruiseVelocity, acceleration, allowableError,
+    // kP, kI, kD, kF, sCurveStrength, cruiseVelocity, acceleration, allowableError,
     // maxIntegralAccum, peakOutput
-    public static final double[] FRONT_LEFT_MOTION_MAGIC_CONFIGS = {1, 0, 0, 0.2, 0, 1, 21288, 25000, 10, 5, 1};
-    public static final double[] FRONT_RIGHT_MOTION_MAGIC_CONFIGS = {1, 0, 0, 0.2, 0, 1, 21288, 25000, 10, 5, 1};
-    public static final double[] REAR_LEFT_MOTION_MAGIC_CONFIGS = {1, 0, 0, 0.2, 0, 1, 21288, 25000, 10, 5, 1};
-    public static final double[] REAR_RIGHT_MOTION_MAGIC_CONFIGS = {1, 0, 0, 0.2, 0, 1, 21288, 25000, 10, 5, 1};
+    public static final double[] FRONT_LEFT_MOTION_MAGIC_CONFIGS = {1, 0, 0, 0.2, 1, 21288, 25000, 10, 5, 1};
+    public static final double[] FRONT_RIGHT_MOTION_MAGIC_CONFIGS = {1, 0, 0, 0.2, 1, 21288, 25000, 10, 5, 1};
+    public static final double[] REAR_LEFT_MOTION_MAGIC_CONFIGS = {1, 0, 0, 0.2, 1, 21288, 25000, 10, 5, 1};
+    public static final double[] REAR_RIGHT_MOTION_MAGIC_CONFIGS = {1, 0, 0, 0.2, 1, 21288, 25000, 10, 5, 1};
 
     public static final double[][] motionMagicConfigs = {
             FRONT_LEFT_MOTION_MAGIC_CONFIGS,
