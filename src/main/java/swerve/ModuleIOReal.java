@@ -1,20 +1,31 @@
 package swerve;
 
-import com.ctre.phoenix.motorcontrol.NeutralMode;
-import com.ctre.phoenix.motorcontrol.TalonFXControlMode;
-import com.ctre.phoenix.motorcontrol.can.TalonFX;
+import com.ctre.phoenix6.configs.TalonFXConfiguration;
+import com.ctre.phoenix6.configs.TalonFXConfigurator;
+import com.ctre.phoenix6.controls.MotionMagicDutyCycle;
+import com.ctre.phoenix6.controls.MotionMagicVoltage;
+import com.ctre.phoenix6.controls.VelocityDutyCycle;
+import com.ctre.phoenix6.hardware.TalonFX;
+import com.ctre.phoenix6.signals.NeutralModeValue;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import frc.robot.Constants;
+import frc.robot.Ports;
 import utils.math.AngleUtil;
 import utils.math.differential.Integral;
 import utils.units.UnitModel;
 
-public class ModuleIOReal implements ModuleIO {
+public class
+ModuleIOReal implements ModuleIO { //TODO: keep updating to phoenix6 and FIX UNITS!!
 
     private final TalonFX driveMotor;
+    private final TalonFXConfiguration driveMotorConfig = new TalonFXConfiguration();
+    private final TalonFXConfigurator driveMotorConfigurator;
+
     private final TalonFX angleMotor;
+    private final TalonFXConfiguration angleMotorConfig = new TalonFXConfiguration();
+    private final TalonFXConfigurator angleMotorConfigurator;
 
     private final DutyCycleEncoder encoder;
 
@@ -42,63 +53,66 @@ public class ModuleIOReal implements ModuleIO {
         this.motionMagicConfigs = motionMagicConfigs;
         this.number = number;
 
-        driveMotor.configFactoryDefault(Constants.CONFIG_TIMEOUT);
-        angleMotor.configFactoryDefault(Constants.CONFIG_TIMEOUT);
+        driveMotorConfigurator = driveMotor.getConfigurator();
+        angleMotorConfigurator = angleMotor.getConfigurator();
 
-        driveMotor.config_kP(0, SwerveConstants.DRIVE_kP, Constants.CONFIG_TIMEOUT);
-        driveMotor.config_kI(0, SwerveConstants.DRIVE_kI, Constants.CONFIG_TIMEOUT);
-        driveMotor.config_kD(0, SwerveConstants.DRIVE_kD, Constants.CONFIG_TIMEOUT);
-        driveMotor.config_kF(0, SwerveConstants.DRIVE_KF, Constants.CONFIG_TIMEOUT);
-        driveMotor.enableVoltageCompensation(true);
-        driveMotor.configVoltageCompSaturation(SwerveConstants.VOLT_COMP_SATURATION);
-        driveMotor.setNeutralMode(NeutralMode.Brake);
-        driveMotor.configSupplyCurrentLimit(SwerveConstants.SUPPLY_CURRENT_LIMIT);
-        driveMotor.configStatorCurrentLimit(SwerveConstants.STATOR_CURRENT_LIMIT);
-        driveMotor.setInverted(SwerveConstants.CLOCKWISE);
+        driveMotorConfigurator.apply(new TalonFXConfiguration()); //factory default
+        angleMotorConfigurator.apply(new TalonFXConfiguration());
 
-        angleMotor.enableVoltageCompensation(true);
-        angleMotor.configVoltageCompSaturation(SwerveConstants.VOLT_COMP_SATURATION);
-        angleMotor.configNeutralDeadband(SwerveConstants.NEUTRAL_DEADBAND);
-        angleMotor.setNeutralMode(NeutralMode.Brake);
-        angleMotor.configSupplyCurrentLimit(SwerveConstants.SUPPLY_CURRENT_LIMIT);
-        angleMotor.configStatorCurrentLimit(SwerveConstants.STATOR_CURRENT_LIMIT);
-        angleMotor.setInverted(SwerveConstants.CLOCKWISE);
+        driveMotorConfig.Slot0.kP = SwerveConstants.DRIVE_kP;
+        driveMotorConfig.Slot0.kI = SwerveConstants.DRIVE_kI;
+        driveMotorConfig.Slot0.kD = SwerveConstants.DRIVE_kD;
+        driveMotorConfig.Slot0.kV = SwerveConstants.DRIVE_KF;
+        driveMotorConfig.Voltage.PeakForwardVoltage = SwerveConstants.VOLT_COMP_SATURATION;
+        driveMotorConfig.Voltage.PeakReverseVoltage = -SwerveConstants.VOLT_COMP_SATURATION;
+        driveMotor.setNeutralMode(NeutralModeValue.Brake);
+        driveMotorConfig.CurrentLimits.SupplyCurrentLimit = SwerveConstants.SUPPLY_CURRENT_LIMIT.currentLimit;
+        driveMotorConfig.CurrentLimits.StatorCurrentLimit = SwerveConstants.STATOR_CURRENT_LIMIT.currentLimit;
+        driveMotor.setInverted(true);
+        driveMotorConfigurator.apply(driveMotorConfig);
 
-        angleMotor.config_kP(0, motionMagicConfigs[0], Constants.CONFIG_TIMEOUT);
-        angleMotor.config_kI(0, motionMagicConfigs[1], Constants.CONFIG_TIMEOUT);
-        angleMotor.config_kD(0, motionMagicConfigs[2], Constants.CONFIG_TIMEOUT);
-        angleMotor.config_kF(0, motionMagicConfigs[3], Constants.CONFIG_TIMEOUT);
-        angleMotor.configMotionSCurveStrength((int) motionMagicConfigs[4], Constants.CONFIG_TIMEOUT);
-        angleMotor.configMotionCruiseVelocity(motionMagicConfigs[5], Constants.CONFIG_TIMEOUT);
-        angleMotor.configMotionAcceleration(motionMagicConfigs[6], Constants.CONFIG_TIMEOUT);
-        angleMotor.configAllowableClosedloopError(0, motionMagicConfigs[7], Constants.CONFIG_TIMEOUT);
-        angleMotor.configMaxIntegralAccumulator(0, motionMagicConfigs[8], Constants.CONFIG_TIMEOUT);
-        angleMotor.configClosedLoopPeakOutput(0, motionMagicConfigs[9], Constants.CONFIG_TIMEOUT);
+        angleMotorConfig.Voltage.PeakForwardVoltage = SwerveConstants.VOLT_COMP_SATURATION;
+        angleMotorConfig.Voltage.PeakReverseVoltage = -SwerveConstants.VOLT_COMP_SATURATION;
+        angleMotor.setNeutralMode(NeutralModeValue.Brake);
+        angleMotorConfig.CurrentLimits.SupplyCurrentLimit = SwerveConstants.SUPPLY_CURRENT_LIMIT.currentLimit;
+        angleMotorConfig.CurrentLimits.StatorCurrentLimit = SwerveConstants.STATOR_CURRENT_LIMIT.currentLimit;
+        angleMotor.setInverted(true);
+        angleMotorConfig.MotorOutput.DutyCycleNeutralDeadband = SwerveConstants.NEUTRAL_DEADBAND;
+
+        angleMotorConfig.Slot0.kP = motionMagicConfigs[0];
+        angleMotorConfig.Slot0.kI = motionMagicConfigs[1];
+        angleMotorConfig.Slot0.kD = motionMagicConfigs[2];
+        angleMotorConfig.Slot0.kV = motionMagicConfigs[3];
+        angleMotorConfig.Slot0.kS = motionMagicConfigs[4];
+        angleMotorConfig.MotionMagic.MotionMagicJerk = motionMagicConfigs[5];
+        angleMotorConfig.MotionMagic.MotionMagicCruiseVelocity = motionMagicConfigs[6];
+        angleMotorConfig.MotionMagic.MotionMagicAcceleration = motionMagicConfigs[7];
+        angleMotorConfigurator.apply(driveMotorConfig);
     }
 
     @Override
     public void updateInputs(SwerveModuleInputs inputs) {
         inputs.absolutePosition = encoder.getAbsolutePosition();
 
-        inputs.driveMotorSupplyCurrent = driveMotor.getSupplyCurrent();
-        inputs.driveMotorStatorCurrent = driveMotor.getStatorCurrent();
+        inputs.driveMotorSupplyCurrent = driveMotor.getSupplyCurrent().getValue();
+        inputs.driveMotorStatorCurrent = driveMotor.getStatorCurrent().getValue();
         driveSupplyChargeUsedCoulomb.update(inputs.driveMotorSupplyCurrent);
         inputs.driveMotorSupplyCurrentOverTime = driveSupplyChargeUsedCoulomb.get();
         driveStatorChargeUsedCoulomb.update(inputs.driveMotorStatorCurrent);
         inputs.driveMotorStatorCurrentOverTime = driveStatorChargeUsedCoulomb.get();
-        inputs.driveMotorPosition = driveMotor.getSelectedSensorPosition();
+        inputs.driveMotorPosition = driveMotor.getRotorPosition().getValue();
         inputs.driveMotorVelocity = getVelocity();
         inputs.driveMotorVelocitySetpoint = driveMotorVelocitySetpoint;
 
-        inputs.angleMotorSupplyCurrent = angleMotor.getSupplyCurrent();
-        inputs.angleMotorStatorCurrent = angleMotor.getStatorCurrent();
+        inputs.angleMotorSupplyCurrent = angleMotor.getSupplyCurrent().getValue();
+        inputs.angleMotorStatorCurrent = angleMotor.getStatorCurrent().getValue();
         angleSupplyChargeUsedCoulomb.update(inputs.angleMotorSupplyCurrent);
         inputs.angleMotorSupplyCurrentOverTime = angleSupplyChargeUsedCoulomb.get();
         angleStatorChargeUsedCoulomb.update(inputs.angleMotorStatorCurrent);
         inputs.angleMotorStatorCurrentOverTime = angleStatorChargeUsedCoulomb.get();
-        inputs.angleMotorPosition = angleMotor.getSelectedSensorPosition();
+        inputs.angleMotorPosition = angleMotor.getRotorPosition().getValue();
         angleMotorPosition = inputs.angleMotorPosition;
-        inputs.angleMotorVelocity = ticksPerMeter.toVelocity(angleMotor.getSelectedSensorVelocity());
+        inputs.angleMotorVelocity = ticksPerMeter.toVelocity(angleMotor.getVelocity().getValue());
 
         inputs.angle = getAngle();
         currentAngle = inputs.angle;
@@ -110,20 +124,20 @@ public class ModuleIOReal implements ModuleIO {
 
     @Override
     public double getAngle() {
-        return AngleUtil.normalize(ticksPerRad.toUnits(angleMotor.getSelectedSensorPosition()));
+        return AngleUtil.normalize(ticksPerRad.toUnits(angleMotor.getRotorPosition().getValue()));
     }
 
     @Override
     public void setAngle(double angle) {
         angleSetpoint = AngleUtil.normalize(angle);
         Rotation2d error = new Rotation2d(angle).minus(new Rotation2d(currentAngle));
-//        var motorRequest = new
-        angleMotor.set(TalonFXControlMode.MotionMagic, angleMotorPosition + ticksPerRad.toTicks(error.getRadians()));
+        var motorRequest = new MotionMagicVoltage(angleMotorPosition + ticksPerRad.toTicks(error.getRadians()));
+        angleMotor.setControl(motorRequest);
     }
 
     @Override
     public double getVelocity() {
-        return ticksPerMeter.toVelocity(driveMotor.getSelectedSensorVelocity());
+        return ticksPerMeter.toVelocity(driveMotor.getRotorVelocity().getValue());
     }
 
     @Override
@@ -131,7 +145,8 @@ public class ModuleIOReal implements ModuleIO {
         var angleError = new Rotation2d(angleSetpoint).minus(new Rotation2d(currentAngle));
         velocity *= angleError.getCos();
         driveMotorVelocitySetpoint = velocity;
-        driveMotor.set(TalonFXControlMode.Velocity, ticksPerMeter.toTicks100ms(velocity));
+        var motorRequest = new VelocityDutyCycle(ticksPerMeter.toTicks100ms(velocity));
+        driveMotor.setControl(motorRequest);
     }
 
     @Override
