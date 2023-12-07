@@ -1,15 +1,18 @@
 package utils.motors;
 
 import com.ctre.phoenix6.StatusCode;
+import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.*;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.system.plant.DCMotor;
+import edu.wpi.first.math.trajectory.TrapezoidProfile;
+import edu.wpi.first.wpilibj.motorcontrol.Talon;
 import edu.wpi.first.wpilibj.simulation.DCMotorSim;
 import utils.math.differential.Derivative;
 import utils.units.Units;
 
-public class TalonFXSim {
+public class TalonFXSim implements TalonFXMotor {
 
     private final DCMotorSim motorSim;
 
@@ -32,6 +35,27 @@ public class TalonFXSim {
         acceleration.update(getRotorVelocity(), timestampSeconds);
 
         lastTimestampSeconds = timestampSeconds;
+    }
+
+    @Override
+    public StatusCode configure(TalonFXConfiguration config) {
+        controller.setPID(
+                config.Slot0.kP,
+                config.Slot0.kI,
+                config.Slot0.kD
+        );
+
+        profiledController.setPID(
+                config.Slot0.kP,
+                config.Slot0.kI,
+                config.Slot0.kD
+        );
+        profiledController.setConstraints(new TrapezoidProfile.Constraints(
+                config.MotionMagic.MotionMagicCruiseVelocity,
+                config.MotionMagic.MotionMagicAcceleration
+        ));
+
+        return StatusCode.OK;
     }
 
     public TalonFXSim setController(PIDController controller) {
