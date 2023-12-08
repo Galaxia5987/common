@@ -25,12 +25,12 @@ public class ModuleIOSim implements ModuleIO {
         driveMotor = new FlywheelSim(
                 DCMotor.getFalcon500(1),
                 1 / SwerveConstants.DRIVE_REDUCTION,
-                SwerveConstants.DriveMotorMomentOfInertia);
+                SwerveConstants.DRIVE_MOTOR_MOMENT_OF_INERTIA);
 
         angleMotor = new FlywheelSim(
                 DCMotor.getFalcon500(1),
                 1 / SwerveConstants.ANGLE_REDUCTION,
-                SwerveConstants.AngleMotorMomentOfInertia);
+                SwerveConstants.ANGLE_MOTOR_MOMENT_OF_INERTIA);
 
         angleFeedback = new PIDController(3.5, 0, 0, 0.02);
         velocityFeedback = new PIDController(0.5, 0, 0.00, 0.02);
