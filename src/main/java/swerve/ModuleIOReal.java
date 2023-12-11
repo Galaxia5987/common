@@ -37,9 +37,6 @@ public class ModuleIOReal implements ModuleIO {
 
         this.encoder = new DutyCycleEncoder(encoderID);
 
-        TalonFXConfigurator driveMotorConfigurator = driveMotor.getConfigurator();
-        TalonFXConfigurator angleMotorConfigurator = angleMotor.getConfigurator();
-
         TalonFXConfiguration driveMotorConfig = new TalonFXConfiguration();
         driveMotorConfig.Slot0.kP = SwerveConstants.DRIVE_kP;
         driveMotorConfig.Slot0.kI = SwerveConstants.DRIVE_kI;
@@ -51,7 +48,7 @@ public class ModuleIOReal implements ModuleIO {
         driveMotorConfig.CurrentLimits.StatorCurrentLimit = SwerveConstants.STATOR_CURRENT_LIMIT.currentLimit;
         driveMotorConfig.Feedback.SensorToMechanismRatio = 1 / SwerveConstants.DRIVE_REDUCTION;
         driveMotorConfig.Feedback.RotorToSensorRatio = 1;
-        driveMotorConfigurator.apply(driveMotorConfig);
+        driveMotor.getConfigurator().apply(driveMotorConfig);
 
         driveMotor.setNeutralMode(NeutralModeValue.Brake);
         driveMotor.setInverted(true);
@@ -72,7 +69,7 @@ public class ModuleIOReal implements ModuleIO {
         angleMotorConfig.MotionMagic.MotionMagicJerk = motionMagicConfigs[5];
         angleMotorConfig.MotionMagic.MotionMagicCruiseVelocity = motionMagicConfigs[6];
         angleMotorConfig.MotionMagic.MotionMagicAcceleration = motionMagicConfigs[7];
-        angleMotorConfigurator.apply(angleMotorConfig);
+        angleMotor.getConfigurator().apply(angleMotorConfig);
 
         angleMotor.setNeutralMode(NeutralModeValue.Brake);
         angleMotor.setInverted(true);
