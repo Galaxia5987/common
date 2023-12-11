@@ -4,6 +4,10 @@ import com.ctre.phoenix6.StatusCode;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.*;
 
+/*
+This interface is a wrapper for the real TalonFX motor, and the simulated one.
+It acts as an IO, so that hopefully subsystems won't need to have and IO.
+ */
 public interface TalonFXMotor {
 
     void update(double timestampSeconds);

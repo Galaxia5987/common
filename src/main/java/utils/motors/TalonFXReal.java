@@ -9,12 +9,6 @@ public class TalonFXReal implements TalonFXMotor {
 
     private final TalonFX motor;
 
-    private double rotorVelocity;
-    private double rotorPosition;
-    private double rotorAcceleration;
-    private double appliedCurrent;
-    private double appliedVoltage;
-
     public TalonFXReal(int id, String canbus) {
         motor = new TalonFX(id, canbus);
     }
@@ -25,11 +19,6 @@ public class TalonFXReal implements TalonFXMotor {
 
     @Override
     public void update(double timestampSeconds) {
-        rotorVelocity = motor.getRotorVelocity().getValue();
-        rotorPosition = motor.getRotorPosition().getValue();
-        rotorAcceleration = motor.getAcceleration().getValue();
-        appliedCurrent = motor.getStatorCurrent().getValue();
-        appliedVoltage = motor.getMotorVoltage().getValue();
     }
 
     @Override
@@ -94,26 +83,26 @@ public class TalonFXReal implements TalonFXMotor {
 
     @Override
     public double getRotorVelocity() {
-        return rotorVelocity;
+        return motor.getRotorVelocity().getValue();
     }
 
     @Override
     public double getRotorPosition() {
-        return rotorPosition;
+        return motor.getRotorPosition().getValue();
     }
 
     @Override
     public double getAcceleration() {
-        return rotorAcceleration;
+        return motor.getAcceleration().getValue();
     }
 
     @Override
     public double getAppliedCurrent() {
-        return appliedCurrent;
+        return motor.getStatorCurrent().getValue();
     }
 
     @Override
     public double getAppliedVoltage() {
-        return appliedVoltage;
+        return motor.getMotorVoltage().getValue();
     }
 }
