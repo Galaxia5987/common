@@ -50,6 +50,7 @@ public class ModuleIOReal implements ModuleIO {
         driveMotorConfig.Voltage.PeakReverseVoltage = -SwerveConstants.VOLT_COMP_SATURATION;
         driveMotorConfig.CurrentLimits.SupplyCurrentLimit = SwerveConstants.SUPPLY_CURRENT_LIMIT.currentLimit;
         driveMotorConfig.CurrentLimits.StatorCurrentLimit = SwerveConstants.STATOR_CURRENT_LIMIT.currentLimit;
+        driveMotorConfig.ClosedLoopGeneral.ContinuousWrap = true;
         driveMotorConfig.Feedback.SensorToMechanismRatio = 1 / SwerveConstants.DRIVE_REDUCTION;
         driveMotorConfig.Feedback.RotorToSensorRatio = 1;
         driveMotor.getConfigurator().apply(driveMotorConfig);
@@ -62,6 +63,7 @@ public class ModuleIOReal implements ModuleIO {
         angleMotorConfig.Voltage.PeakReverseVoltage = -SwerveConstants.VOLT_COMP_SATURATION;
         angleMotorConfig.CurrentLimits.SupplyCurrentLimit = SwerveConstants.SUPPLY_CURRENT_LIMIT.currentLimit;
         angleMotorConfig.CurrentLimits.StatorCurrentLimit = SwerveConstants.STATOR_CURRENT_LIMIT.currentLimit;
+        angleMotorConfig.ClosedLoopGeneral.ContinuousWrap = true;
         angleMotorConfig.Feedback.SensorToMechanismRatio = 1 / SwerveConstants.ANGLE_REDUCTION;
         angleMotorConfig.Feedback.RotorToSensorRatio = 1;
         angleMotorConfig.MotorOutput.DutyCycleNeutralDeadband = SwerveConstants.NEUTRAL_DEADBAND;
