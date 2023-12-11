@@ -1,5 +1,6 @@
 package swerve;
 
+import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.configs.TalonFXConfigurator;
 import com.ctre.phoenix6.controls.DutyCycleOut;
@@ -38,10 +39,13 @@ public class ModuleIOReal implements ModuleIO {
         this.encoder = new DutyCycleEncoder(encoderID);
 
         TalonFXConfiguration driveMotorConfig = new TalonFXConfiguration();
-        driveMotorConfig.Slot0.kP = SwerveConstants.DRIVE_kP;
-        driveMotorConfig.Slot0.kI = SwerveConstants.DRIVE_kI;
-        driveMotorConfig.Slot0.kD = SwerveConstants.DRIVE_kD;
-        driveMotorConfig.Slot0.kV = SwerveConstants.DRIVE_KF;
+        Slot0Configs PIDGains = new Slot0Configs()
+                .withKP(SwerveConstants.DRIVE_kP)
+                .withKI(SwerveConstants.DRIVE_kI)
+                .withKD(SwerveConstants.DRIVE_kD)
+                .withKV(SwerveConstants.DRIVE_KF);
+
+        driveMotorConfig.Slot0 = PIDGains;
         driveMotorConfig.Voltage.PeakForwardVoltage = SwerveConstants.VOLT_COMP_SATURATION;
         driveMotorConfig.Voltage.PeakReverseVoltage = -SwerveConstants.VOLT_COMP_SATURATION;
         driveMotorConfig.CurrentLimits.SupplyCurrentLimit = SwerveConstants.SUPPLY_CURRENT_LIMIT.currentLimit;
