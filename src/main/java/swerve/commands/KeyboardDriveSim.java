@@ -6,7 +6,7 @@ import swerve.SwerveDrive;
 
 public class KeyboardDriveSim extends Command {
 
-    private final SwerveDrive drive = SwerveDrive.getInstance(false);
+    private final SwerveDrive drive = SwerveDrive.getInstance();
 
     private final GenericHID controller = new GenericHID(0);
 

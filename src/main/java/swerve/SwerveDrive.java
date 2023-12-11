@@ -5,7 +5,6 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.*;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Ports;
 import utils.Utils;
 import utils.math.differential.Derivative;
 import org.littletonrobotics.junction.Logger;
@@ -28,13 +27,16 @@ public class SwerveDrive extends SubsystemBase {
     private final SwerveDriveInputsAutoLogged loggerInputs = new SwerveDriveInputsAutoLogged();
     private final SwerveModuleState[] currentModuleStates = new SwerveModuleState[4];
 
-    private SwerveDrive(boolean isReal) {
+    private SwerveDrive(boolean isReal,
+                        int[] driveIds,
+                        int[] angleIds,
+                        int[] encoderIds) {
         if (isReal) {
             for (int i = 0; i < modules.length; i++) {
                 ModuleIO io = new ModuleIOReal(
-                        Ports.SwerveDrive.DRIVE_IDS[i],
-                        Ports.SwerveDrive.ANGLE_IDS[i],
-                        Ports.SwerveDrive.ENCODER_IDS[i],
+                        driveIds[i],
+                        angleIds[i],
+                        encoderIds[i],
                         SwerveConstants.motionMagicConfigs[i],
                         i + 1);
 
@@ -58,11 +60,17 @@ public class SwerveDrive extends SubsystemBase {
         );
     }
 
-    public static SwerveDrive getInstance(boolean isReal) {
-        if (INSTANCE == null) {
-            INSTANCE = new SwerveDrive(isReal);
-        }
+    public static SwerveDrive getInstance() {
         return INSTANCE;
+    }
+    
+    public static void setInstance(boolean isReal,
+                                   int[] driveIds,
+                                   int[] angleIds,
+                                   int[] encoderIds) {
+        if (INSTANCE != null) {
+            INSTANCE = new SwerveDrive(isReal, driveIds, angleIds, encoderIds);
+        }
     }
 
     /**
