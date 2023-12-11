@@ -154,10 +154,7 @@ publishing {
     publications {
         mavenJava(MavenPublication) {
             groupId = 'com.github.Galaxia5987'
-        }
-    }
-    publications {
-        maven(MavenPublication) {
+            artifactId = 'common'
             from components.java
         }
     }
