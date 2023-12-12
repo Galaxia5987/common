@@ -177,10 +177,10 @@ public class ModuleIOReal implements ModuleIO {
     }
 
     @Override
-    public void checkModule() {
-        var driveMotorRequest = new DutyCycleOut(0.8);
-        var angleMotorRequest = new DutyCycleOut(0.2);
-        driveMotor.setControl(driveMotorRequest);
-        angleMotor.setControl(angleMotorRequest);
+    public Command checkModule() {
+        return new RunCommand(() -> {
+            driveMotor.set(0.8);
+            angleMotor.set(0.2);
+        });
     }
 }

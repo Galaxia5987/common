@@ -1,6 +1,7 @@
 package swerve;
 
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
+import edu.wpi.first.wpilibj2.command.Command;
 import org.littletonrobotics.junction.AutoLog;
 
 public interface ModuleIO {
@@ -32,7 +33,8 @@ public interface ModuleIO {
         return false;
     }
 
-    default void checkModule() {
+    default Command checkModule() {
+        return null;
     }
 
     @AutoLog
