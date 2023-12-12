@@ -120,8 +120,18 @@ public class TalonFXSim implements TalonFXMotor {
         return this.setControl(new MotionMagicDutyCycle(request.Position));
     }
 
+    @Override
+    public double getVelocity(double rotorToMechanismRatio) {
+        return getRotorVelocity()*rotorToMechanismRatio;
+    }
+
     public double getRotorVelocity() {
         return Units.rpmToRps(motorSim.getAngularVelocityRPM());
+    }
+
+    @Override
+    public double getPosition(double rotorToMechanismRatio) {
+        return getRotorPosition()*rotorToMechanismRatio;
     }
 
     public double getRotorPosition() {

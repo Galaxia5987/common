@@ -32,7 +32,11 @@ public interface TalonFXMotor {
 
     StatusCode setControl(MotionMagicTorqueCurrentFOC request);
 
+    double getVelocity(double rotorToMechanismRatio);
+
     double getRotorVelocity();
+
+    double getPosition(double rotorToMechanismRatio);
 
     double getRotorPosition();
 

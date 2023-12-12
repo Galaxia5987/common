@@ -93,8 +93,18 @@ public class TalonFXReal implements TalonFXMotor {
     }
 
     @Override
+    public double getVelocity(double rotorToMechanismRatio) {
+        return getRotorVelocity()*rotorToMechanismRatio;
+    }
+
+    @Override
     public double getRotorVelocity() {
         return rotorVelocity;
+    }
+
+    @Override
+    public double getPosition(double rotorToMechanismRatio) {
+        return getRotorPosition()*rotorToMechanismRatio;
     }
 
     @Override
