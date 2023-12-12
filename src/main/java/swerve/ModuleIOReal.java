@@ -2,8 +2,7 @@ package swerve;
 
 import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
-import com.ctre.phoenix6.configs.TalonFXConfigurator;
-import com.ctre.phoenix6.controls.DutyCycleOut;
+import com.ctre.phoenix6.controls.ControlRequest;
 import com.ctre.phoenix6.controls.MotionMagicVoltage;
 import com.ctre.phoenix6.controls.NeutralOut;
 import com.ctre.phoenix6.controls.VelocityDutyCycle;
@@ -11,22 +10,25 @@ import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.RunCommand;
 import utils.math.AngleUtil;
 import utils.math.differential.Integral;
-import utils.units.Units;
 
 public class ModuleIOReal implements ModuleIO {
 
     private final TalonFX driveMotor;
     private final TalonFX angleMotor;
-
     private final DutyCycleEncoder encoder;
-
+    
     private final Integral driveSupplyChargeUsedCoulomb = new Integral();
     private final Integral driveStatorChargeUsedCoulomb = new Integral();
     private final Integral angleSupplyChargeUsedCoulomb = new Integral();
     private final Integral angleStatorChargeUsedCoulomb = new Integral();
+    private ControlRequest driveControl;
+    private ControlRequest angleControl;
     private double angleSetpoint;
     private double currentAngle;
     private double driveMotorVelocitySetpoint;
@@ -110,6 +112,9 @@ public class ModuleIOReal implements ModuleIO {
         inputs.angleSetpoint = angleSetpoint;
 
         inputs.moduleDistance = getModulePosition().distanceMeters;
+
+        driveMotor.setControl(driveControl);
+        angleMotor.setControl(angleControl);
     }
 
     @Override
@@ -121,8 +126,7 @@ public class ModuleIOReal implements ModuleIO {
     public void setAngle(double angle) {
         angleSetpoint = AngleUtil.normalize(angle);
         Rotation2d error = new Rotation2d(angle).minus(new Rotation2d(currentAngle));
-        var motorRequest = new MotionMagicVoltage(angleMotor.getPosition().getValue() + error.getRotations());
-        angleMotor.setControl(motorRequest);
+        angleControl = new MotionMagicVoltage(angleMotor.getPosition().getValue() + error.getRotations());
     }
 
     @Override
@@ -136,13 +140,12 @@ public class ModuleIOReal implements ModuleIO {
         velocity *= angleError.getCos();
 
         driveMotorVelocitySetpoint = velocity;
-        var motorRequest = new VelocityDutyCycle(
-                Units.metersPerSecondToRps(
+        driveControl = new VelocityDutyCycle(
+                utils.units.Units.metersPerSecondToRps(
                         velocity,
                         SwerveConstants.WHEEL_DIAMETER / 2
                 )
         );
-        driveMotor.setControl(motorRequest);
     }
 
     @Override
@@ -164,9 +167,8 @@ public class ModuleIOReal implements ModuleIO {
 
     @Override
     public void neutralOutput() {
-        var motorRequest = new NeutralOut();
-        driveMotor.setControl(motorRequest);
-        angleMotor.setControl(motorRequest);
+        driveControl = new NeutralOut();
+        angleControl = new NeutralOut();
     }
 
     @Override
