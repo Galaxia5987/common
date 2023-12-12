@@ -19,13 +19,10 @@ public class ModuleIOReal implements ModuleIO {
     private final TalonFX driveMotor;
     private final TalonFX angleMotor;
     private final DutyCycleEncoder encoder;
-
     private final Integral driveSupplyChargeUsedCoulomb = new Integral();
     private final Integral driveStatorChargeUsedCoulomb = new Integral();
     private final Integral angleSupplyChargeUsedCoulomb = new Integral();
     private final Integral angleStatorChargeUsedCoulomb = new Integral();
-    private ControlRequest driveControl;
-    private ControlRequest angleControl;
     private double angleSetpoint;
     private double currentAngle;
     private double driveMotorVelocitySetpoint;
@@ -112,9 +109,6 @@ public class ModuleIOReal implements ModuleIO {
         inputs.angleSetpoint = angleSetpoint;
 
         inputs.moduleDistance = getModulePosition().distanceMeters;
-
-        driveMotor.setControl(driveControl);
-        angleMotor.setControl(angleControl);
     }
 
     @Override
@@ -126,7 +120,9 @@ public class ModuleIOReal implements ModuleIO {
     public void setAngle(double angle) {
         angleSetpoint = AngleUtil.normalize(angle);
         Rotation2d error = new Rotation2d(angle).minus(new Rotation2d(currentAngle));
-        angleControl = new MotionMagicVoltage(angleMotor.getPosition().getValue() + error.getRotations());
+        angleMotor.setControl(
+                new MotionMagicVoltage(angleMotor.getPosition().getValue() + error.getRotations())
+                        .withEnableFOC(true));
     }
 
     @Override
@@ -140,12 +136,11 @@ public class ModuleIOReal implements ModuleIO {
         velocity *= angleError.getCos();
 
         driveMotorVelocitySetpoint = velocity;
-        driveControl = new VelocityDutyCycle(
-                utils.units.Units.metersPerSecondToRps(
+        driveMotor.setControl(
+                new VelocityVoltage(utils.units.Units.metersPerSecondToRps(
                         velocity,
-                        SwerveConstants.WHEEL_DIAMETER / 2
-                )
-        );
+                SwerveConstants.WHEEL_DIAMETER / 2
+        )).withEnableFOC(true));
     }
 
     @Override
@@ -167,8 +162,8 @@ public class ModuleIOReal implements ModuleIO {
 
     @Override
     public void neutralOutput() {
-        driveControl = new NeutralOut();
-        angleControl = new NeutralOut();
+        driveMotor.setControl(new NeutralOut());
+        angleMotor.setControl(new NeutralOut());
     }
 
     @Override
