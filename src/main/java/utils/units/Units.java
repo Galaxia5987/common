@@ -26,10 +26,6 @@ public class Units {
         return rpmToRadsPerSec(rpsToRpm(rps));
     }
 
-    public static double rotationsToRad(double rotations) {
-        return rotations / (Math.PI * 2);
-    }
-
     public static double inchesToMeters(double inches) {
         return inches * 0.0254;
     }
