@@ -41,13 +41,13 @@ public class ModuleIOReal implements ModuleIO {
         this.encoder = new DutyCycleEncoder(encoderID);
 
         TalonFXConfiguration driveMotorConfig = new TalonFXConfiguration();
-        Slot0Configs PIDGains = new Slot0Configs()
+        Slot0Configs drivePIDGains = new Slot0Configs()
                 .withKP(SwerveConstants.DRIVE_kP)
                 .withKI(SwerveConstants.DRIVE_kI)
                 .withKD(SwerveConstants.DRIVE_kD)
                 .withKV(SwerveConstants.DRIVE_KF);
 
-        driveMotorConfig.Slot0 = PIDGains;
+        driveMotorConfig.Slot0 = drivePIDGains;
         driveMotorConfig.Voltage.PeakForwardVoltage = SwerveConstants.VOLT_COMP_SATURATION;
         driveMotorConfig.Voltage.PeakReverseVoltage = -SwerveConstants.VOLT_COMP_SATURATION;
         driveMotorConfig.CurrentLimits.SupplyCurrentLimit = SwerveConstants.SUPPLY_CURRENT_LIMIT.currentLimit;
@@ -61,6 +61,17 @@ public class ModuleIOReal implements ModuleIO {
         driveMotor.setInverted(true);
 
         TalonFXConfiguration angleMotorConfig = new TalonFXConfiguration();
+        Slot0Configs anglePIDGains = new Slot0Configs()
+                .withKP(motionMagicConfigs[0])
+                .withKI(motionMagicConfigs[1])
+                .withKD(motionMagicConfigs[2])
+                .withKV(motionMagicConfigs[3])
+                .withKS(motionMagicConfigs[4]);
+
+        angleMotorConfig.Slot0 = anglePIDGains;
+        angleMotorConfig.MotionMagic.MotionMagicJerk = motionMagicConfigs[5];
+        angleMotorConfig.MotionMagic.MotionMagicCruiseVelocity = motionMagicConfigs[6];
+        angleMotorConfig.MotionMagic.MotionMagicAcceleration = motionMagicConfigs[7];
         angleMotorConfig.Voltage.PeakForwardVoltage = SwerveConstants.VOLT_COMP_SATURATION;
         angleMotorConfig.Voltage.PeakReverseVoltage = -SwerveConstants.VOLT_COMP_SATURATION;
         angleMotorConfig.CurrentLimits.SupplyCurrentLimit = SwerveConstants.SUPPLY_CURRENT_LIMIT.currentLimit;
@@ -69,14 +80,6 @@ public class ModuleIOReal implements ModuleIO {
         angleMotorConfig.Feedback.SensorToMechanismRatio = 1 / SwerveConstants.ANGLE_REDUCTION;
         angleMotorConfig.Feedback.RotorToSensorRatio = 1;
         angleMotorConfig.MotorOutput.DutyCycleNeutralDeadband = SwerveConstants.NEUTRAL_DEADBAND;
-        angleMotorConfig.Slot0.kP = motionMagicConfigs[0];
-        angleMotorConfig.Slot0.kI = motionMagicConfigs[1];
-        angleMotorConfig.Slot0.kD = motionMagicConfigs[2];
-        angleMotorConfig.Slot0.kV = motionMagicConfigs[3];
-        angleMotorConfig.Slot0.kS = motionMagicConfigs[4];
-        angleMotorConfig.MotionMagic.MotionMagicJerk = motionMagicConfigs[5];
-        angleMotorConfig.MotionMagic.MotionMagicCruiseVelocity = motionMagicConfigs[6];
-        angleMotorConfig.MotionMagic.MotionMagicAcceleration = motionMagicConfigs[7];
         angleMotor.getConfigurator().apply(angleMotorConfig);
 
         angleMotor.setNeutralMode(NeutralModeValue.Brake);
