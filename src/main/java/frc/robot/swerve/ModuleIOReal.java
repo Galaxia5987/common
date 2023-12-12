@@ -1,11 +1,8 @@
-package swerve;
+package frc.robot.swerve;
 
 import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
-import com.ctre.phoenix6.controls.ControlRequest;
-import com.ctre.phoenix6.controls.MotionMagicVoltage;
-import com.ctre.phoenix6.controls.NeutralOut;
-import com.ctre.phoenix6.controls.VelocityDutyCycle;
+import com.ctre.phoenix6.controls.*;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -22,7 +19,7 @@ public class ModuleIOReal implements ModuleIO {
     private final TalonFX driveMotor;
     private final TalonFX angleMotor;
     private final DutyCycleEncoder encoder;
-    
+
     private final Integral driveSupplyChargeUsedCoulomb = new Integral();
     private final Integral driveStatorChargeUsedCoulomb = new Integral();
     private final Integral angleSupplyChargeUsedCoulomb = new Integral();

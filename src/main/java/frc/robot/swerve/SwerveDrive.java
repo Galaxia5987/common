@@ -1,4 +1,4 @@
-package swerve;
+package frc.robot.swerve;
 
 import edu.wpi.first.math.filter.LinearFilter;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -6,6 +6,7 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.*;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Ports;
+import org.littletonrobotics.junction.CustomStructs;
 import utils.Utils;
 import utils.math.differential.Derivative;
 import org.littletonrobotics.junction.Logger;
@@ -228,7 +229,7 @@ public class SwerveDrive extends SubsystemBase {
             loggerInputs.absolutePositions[i] = modules[i].getPosition();
         }
 
-        Logger.getInstance().recordOutput("SwerveDrive/currentModuleSates", currentModuleStates);
+        Logger.recordOutput("SwerveDrive/currentModuleSates", currentModuleStates);
 
         for (int i = 0; i < 3; i++) {
             loggerInputs.currentSpeeds[i] =
@@ -263,6 +264,6 @@ public class SwerveDrive extends SubsystemBase {
             modules[i].setModuleState(Utils.arrayToSwerveModuleStates(loggerInputs.desiredModuleStates)[i]);
         }
 
-        Logger.getInstance().processInputs("SwerveDrive", loggerInputs);
+        Logger.processInputs("SwerveDrive", loggerInputs);
     }
 }
