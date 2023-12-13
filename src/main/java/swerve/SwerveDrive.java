@@ -68,7 +68,7 @@ public class SwerveDrive extends SubsystemBase {
                                    int[] driveIds,
                                    int[] angleIds,
                                    int[] encoderIds) {
-        if (INSTANCE != null) {
+        if (INSTANCE == null) {
             INSTANCE = new SwerveDrive(isReal, driveIds, angleIds, encoderIds);
         }
     }
