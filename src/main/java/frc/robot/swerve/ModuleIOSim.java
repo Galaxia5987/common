@@ -83,6 +83,9 @@ public class ModuleIOSim implements ModuleIO {
 
     @Override
     public void setVelocity(double velocity) {
+        var angleError = new Rotation2d(angleSetpoint).minus(new Rotation2d(currentAngle.get()));
+        velocity *= angleError.getCos();
+
         velocitySetpoint = velocity;
         currentVelocity = driveMotor.getVelocity(1/SwerveConstants.DRIVE_REDUCTION);
         driveMotorAppliedVoltage = velocityFeedback.calculate(currentVelocity, velocity);
