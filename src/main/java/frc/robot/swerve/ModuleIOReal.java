@@ -137,7 +137,7 @@ public class ModuleIOReal implements ModuleIO {
 
         driveMotorVelocitySetpoint = velocity;
         driveMotor.setControl(
-                new VelocityVoltage(utils.units.Units.metersPerSecondToRps(
+                new VelocityVoltage(utils.units.Units.metersToRotations(
                         velocity,
                 SwerveConstants.WHEEL_DIAMETER / 2
         )).withEnableFOC(true));
