@@ -3,6 +3,7 @@ package frc.robot.swerve;
 import com.ctre.phoenix6.controls.VoltageOut;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.Timer;
 import utils.math.AngleUtil;
 import utils.math.differential.Integral;
@@ -69,9 +70,9 @@ public class ModuleIOSim implements ModuleIO {
     }
 
     @Override
-    public void setAngle(double angle) {
-        angleSetpoint = angle;
-        angleMotorAppliedVoltage = angleFeedback.calculate(MathUtil.angleModulus(currentAngle.get()), angle);
+    public void setAngle(Rotation2d angle) {
+        angleSetpoint = angle.getRadians();
+        angleMotorAppliedVoltage = angleFeedback.calculate(MathUtil.angleModulus(currentAngle.get()), angleSetpoint);
         angleControl.withOutput(angleMotorAppliedVoltage);
     }
 

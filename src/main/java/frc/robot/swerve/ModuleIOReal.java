@@ -117,9 +117,9 @@ public class ModuleIOReal implements ModuleIO {
     }
 
     @Override
-    public void setAngle(double angle) {
-        angleSetpoint = AngleUtil.normalize(angle);
-        Rotation2d error = new Rotation2d(angle).minus(new Rotation2d(currentAngle));
+    public void setAngle(Rotation2d angle) {
+        angleSetpoint = AngleUtil.normalize(angle.getRadians());
+        Rotation2d error = angle.minus(new Rotation2d(currentAngle));
         angleMotor.setControl(
                 new MotionMagicVoltage(angleMotor.getPosition().getValue() + error.getRotations())
                         .withEnableFOC(true));

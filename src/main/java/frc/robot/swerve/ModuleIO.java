@@ -1,5 +1,6 @@
 package frc.robot.swerve;
 
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.wpilibj2.command.Command;
 import org.littletonrobotics.junction.AutoLog;
@@ -11,7 +12,7 @@ public interface ModuleIO {
         return 0;
     }
 
-    void setAngle(double angle);
+    void setAngle(Rotation2d angle);
 
     default double getVelocity() {
         return 0;
