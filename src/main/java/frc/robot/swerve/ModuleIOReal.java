@@ -19,6 +19,7 @@ public class ModuleIOReal implements ModuleIO {
     private final TalonFX driveMotor;
     private final TalonFX angleMotor;
     private final DutyCycleEncoder encoder;
+
     private final Integral driveSupplyChargeUsedCoulomb = new Integral();
     private final Integral driveStatorChargeUsedCoulomb = new Integral();
     private final Integral angleSupplyChargeUsedCoulomb = new Integral();
@@ -28,19 +29,14 @@ public class ModuleIOReal implements ModuleIO {
     private double driveMotorVelocitySetpoint;
 
     public ModuleIOReal(int driveMotorID, int angleMotorID, int encoderID,
-                        double[] motionMagicConfigs, int number) {
+                        Slot0Configs drivePIDGains, Slot0Configs anglePIDGains,
+                        MotionMagicConfigs motionMagicConfigs, int number) {
         this.driveMotor = new TalonFX(driveMotorID);
         this.angleMotor = new TalonFX(angleMotorID);
 
         this.encoder = new DutyCycleEncoder(encoderID);
 
         TalonFXConfiguration driveMotorConfig = new TalonFXConfiguration();
-        Slot0Configs drivePIDGains = new Slot0Configs()
-                .withKP(SwerveConstants.DRIVE_kP)
-                .withKI(SwerveConstants.DRIVE_kI)
-                .withKD(SwerveConstants.DRIVE_kD)
-                .withKV(SwerveConstants.DRIVE_KF);
-
         driveMotorConfig.Slot0 = drivePIDGains;
         driveMotorConfig.Voltage.PeakForwardVoltage = SwerveConstants.VOLT_COMP_SATURATION;
         driveMotorConfig.Voltage.PeakReverseVoltage = -SwerveConstants.VOLT_COMP_SATURATION;
@@ -55,17 +51,8 @@ public class ModuleIOReal implements ModuleIO {
         driveMotor.setInverted(true);
 
         TalonFXConfiguration angleMotorConfig = new TalonFXConfiguration();
-        Slot0Configs anglePIDGains = new Slot0Configs()
-                .withKP(motionMagicConfigs[0])
-                .withKI(motionMagicConfigs[1])
-                .withKD(motionMagicConfigs[2])
-                .withKV(motionMagicConfigs[3])
-                .withKS(motionMagicConfigs[4]);
-
         angleMotorConfig.Slot0 = anglePIDGains;
-        angleMotorConfig.MotionMagic.MotionMagicJerk = motionMagicConfigs[5];
-        angleMotorConfig.MotionMagic.MotionMagicCruiseVelocity = motionMagicConfigs[6];
-        angleMotorConfig.MotionMagic.MotionMagicAcceleration = motionMagicConfigs[7];
+        angleMotorConfig.MotionMagic = motionMagicConfigs;
         angleMotorConfig.Voltage.PeakForwardVoltage = SwerveConstants.VOLT_COMP_SATURATION;
         angleMotorConfig.Voltage.PeakReverseVoltage = -SwerveConstants.VOLT_COMP_SATURATION;
         angleMotorConfig.CurrentLimits.SupplyCurrentLimit = SwerveConstants.SUPPLY_CURRENT_LIMIT.currentLimit;

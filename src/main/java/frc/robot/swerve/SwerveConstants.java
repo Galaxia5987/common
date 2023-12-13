@@ -3,6 +3,8 @@ package frc.robot.swerve;
 import com.ctre.phoenix.motorcontrol.StatorCurrentLimitConfiguration;
 import com.ctre.phoenix.motorcontrol.SupplyCurrentLimitConfiguration;
 import com.ctre.phoenix.motorcontrol.TalonFXInvertType;
+import com.ctre.phoenix6.configs.MotionMagicConfigs;
+import com.ctre.phoenix6.configs.Slot0Configs;
 import edu.wpi.first.math.geometry.Translation2d;
 
 public class SwerveConstants {
@@ -21,27 +23,78 @@ public class SwerveConstants {
     public static final double DRIVE_MOTOR_MOMENT_OF_INERTIA = 0.025;
     public static final double ANGLE_MOTOR_MOMENT_OF_INERTIA = 0.004;
 
-    // kP, kI, kD, kF, kS, sCurveStrength, cruiseVelocity, acceleration, allowableError,
-    // maxIntegralAccum, peakOutput
-    public static final double[] FRONT_LEFT_MOTION_MAGIC_CONFIGS = {1, 0, 0, 0.2, 0, 1, 21288, 25000, 10, 5, 1};
-    public static final double[] FRONT_RIGHT_MOTION_MAGIC_CONFIGS = {1, 0, 0, 0.2, 0, 1, 21288, 25000, 10, 5, 1};
-    public static final double[] REAR_LEFT_MOTION_MAGIC_CONFIGS = {1, 0, 0, 0.2, 0, 1, 21288, 25000, 10, 5, 1};
-    public static final double[] REAR_RIGHT_MOTION_MAGIC_CONFIGS = {1, 0, 0, 0.2, 0, 1, 21288, 25000, 10, 5, 1};
+    public static final Slot0Configs DRIVE_PID_GAINS =
+            new Slot0Configs()
+                    .withKP(0.005)
+                    .withKI(0.0)
+                    .withKD(0.148)
+                    .withKV(0.05)
+                    .withKS(0);
 
-    public static final double[][] motionMagicConfigs = {
+    public static final Slot0Configs FRONT_LEFT_ANGLE_PID_GAINS =
+            new Slot0Configs()
+                    .withKP(1)
+                    .withKI(0)
+                    .withKD(0)
+                    .withKV(0.2)
+                    .withKS(0);
+    public static final Slot0Configs FRONT_RIGHT_ANGLE_PID_GAINS =
+            new Slot0Configs()
+                    .withKP(1)
+                    .withKI(0)
+                    .withKD(0)
+                    .withKV(0.2)
+                    .withKS(0);
+    public static final Slot0Configs REAR_LEFT_ANGLE_PID_GAINS =
+            new Slot0Configs()
+                    .withKP(1)
+                    .withKI(0)
+                    .withKD(0)
+                    .withKV(0.2)
+                    .withKS(0);
+    public static final Slot0Configs REAR_RIGHT_ANGLE_PID_GAINS =
+            new Slot0Configs()
+                    .withKP(1)
+                    .withKI(0)
+                    .withKD(0)
+                    .withKV(0.2)
+                    .withKS(0);
+
+    public static final MotionMagicConfigs FRONT_LEFT_MOTION_MAGIC_CONFIGS =
+            new MotionMagicConfigs()
+                    .withMotionMagicAcceleration(25000)
+                    .withMotionMagicCruiseVelocity(21288)
+                    .withMotionMagicJerk(1);
+    public static final MotionMagicConfigs FRONT_RIGHT_MOTION_MAGIC_CONFIGS =
+            new MotionMagicConfigs()
+                    .withMotionMagicAcceleration(25000)
+                    .withMotionMagicCruiseVelocity(21288)
+                    .withMotionMagicJerk(1);
+    public static final MotionMagicConfigs REAR_LEFT_MOTION_MAGIC_CONFIGS =
+            new MotionMagicConfigs()
+                    .withMotionMagicAcceleration(25000)
+                    .withMotionMagicCruiseVelocity(21288)
+                    .withMotionMagicJerk(1);
+    public static final MotionMagicConfigs REAR_RIGHT_MOTION_MAGIC_CONFIGS =
+            new MotionMagicConfigs()
+                    .withMotionMagicAcceleration(25000)
+                    .withMotionMagicCruiseVelocity(21288)
+                    .withMotionMagicJerk(1);
+
+
+    public static final Slot0Configs[] SLOT_0_ANGLE_CONFIGS = {
+            FRONT_LEFT_ANGLE_PID_GAINS,
+            FRONT_RIGHT_ANGLE_PID_GAINS,
+            REAR_LEFT_ANGLE_PID_GAINS,
+            REAR_RIGHT_ANGLE_PID_GAINS
+    };
+
+    public static final MotionMagicConfigs[] MOTION_MAGIC_CONFIGS = {
             FRONT_LEFT_MOTION_MAGIC_CONFIGS,
             FRONT_RIGHT_MOTION_MAGIC_CONFIGS,
             REAR_LEFT_MOTION_MAGIC_CONFIGS,
-            REAR_RIGHT_MOTION_MAGIC_CONFIGS};
-
-    public static final double DRIVE_kP = 0.005;
-    public static final double DRIVE_kI = 0.0;
-    public static final double DRIVE_kD = 0.148;
-    public static final double DRIVE_KF = 0.05;
-
-    public static final double OMEGA_kP = 0.5;
-    public static final double OMEGA_kI = 0.0;
-    public static final double OMEGA_kD = 0.0;
+            REAR_RIGHT_MOTION_MAGIC_CONFIGS
+    };
 
     public static final double MAX_X_Y_VELOCITY = 6380.0 / 60.0 * //[m/s]
             DRIVE_REDUCTION *

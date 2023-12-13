@@ -36,7 +36,9 @@ public class SwerveDrive extends SubsystemBase {
                         Ports.SwerveDrive.DRIVE_IDS[i],
                         Ports.SwerveDrive.ANGLE_IDS[i],
                         Ports.SwerveDrive.ENCODER_IDS[i],
-                        SwerveConstants.motionMagicConfigs[i],
+                        SwerveConstants.DRIVE_PID_GAINS,
+                        SwerveConstants.SLOT_0_ANGLE_CONFIGS[i],
+                        SwerveConstants.MOTION_MAGIC_CONFIGS[i],
                         i + 1);
 
                 modules[i] = new SwerveModule(io, i + 1);
