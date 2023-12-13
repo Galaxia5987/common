@@ -114,9 +114,9 @@ public class SwerveModule extends SubsystemBase {
 
         io.updateInputs(loggerInputs);
 
-        Logger.getInstance().recordOutput("SwerveDrive/currentModuleState" + number, currentModuleState);
+        Logger.recordOutput("SwerveDrive/currentModuleState" + number, currentModuleState);
 
-        Logger.getInstance().processInputs("module_" + number, loggerInputs);
+        Logger.processInputs("module_" + number, loggerInputs);
 
         encoderTrigger.update(io.encoderConnected());
 
