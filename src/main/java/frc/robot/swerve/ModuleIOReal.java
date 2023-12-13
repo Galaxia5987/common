@@ -144,7 +144,7 @@ public class ModuleIOReal implements ModuleIO {
     @Override
     public void updateOffset(double offset) {
         angleMotor.setPosition(
-                ((encoder.getAbsolutePosition() - offset) * 2048) / SwerveConstants.ANGLE_REDUCTION);
+                ((encoder.getAbsolutePosition() - offset) * SwerveConstants.FALCON_TICKS) / SwerveConstants.ANGLE_REDUCTION);
     }
 
     @Override

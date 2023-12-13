@@ -11,6 +11,7 @@ public class SwerveConstants {
     public static final double[] OFFSETS =
             {0.5686593642164841, 0.26232458155811456, 0.00854002521350063, 0.5429330635733266};
 
+    public static final int FALCON_TICKS = 2048;
     public static final double VOLT_COMP_SATURATION = 12;
     public static final SupplyCurrentLimitConfiguration SUPPLY_CURRENT_LIMIT = new SupplyCurrentLimitConfiguration(true, 50, 0, 0);
     public static final StatorCurrentLimitConfiguration STATOR_CURRENT_LIMIT = new StatorCurrentLimitConfiguration(true, 50, 0, 0);
@@ -110,8 +111,8 @@ public class SwerveConstants {
     public static final double XBOX_DEADBAND = 0.15;
 
 
-    public static final double TICKS_PER_RADIAN = 2048 / ANGLE_REDUCTION / (Math.PI * 2);
-    public static final double TICKS_PER_METER = (2048 / DRIVE_REDUCTION) / (Math.PI * WHEEL_DIAMETER);
+    public static final double TICKS_PER_RADIAN = FALCON_TICKS / ANGLE_REDUCTION / (Math.PI * 2);
+    public static final double TICKS_PER_METER = (FALCON_TICKS / DRIVE_REDUCTION) / (Math.PI * WHEEL_DIAMETER);
 
     public static final Translation2d[] wheelPositions = {
             new Translation2d(ROBOT_LENGTH / 2, ROBOT_WIDTH / 2),   //FL
