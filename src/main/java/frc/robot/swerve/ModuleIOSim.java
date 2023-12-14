@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj.Timer;
 import utils.math.AngleUtil;
 import utils.math.differential.Integral;
 import utils.motors.TalonFXSim;
+import utils.units.Units;
 
 public class ModuleIOSim implements ModuleIO {
     private final TalonFXSim driveMotor;
@@ -87,7 +88,7 @@ public class ModuleIOSim implements ModuleIO {
         velocity *= angleError.getCos();
 
         velocitySetpoint = velocity;
-        currentVelocity = driveMotor.getVelocity(1/SwerveConstants.DRIVE_REDUCTION);
+        currentVelocity = Units.rpsToMetersPerSecond(driveMotor.getVelocity(1/SwerveConstants.DRIVE_REDUCTION), SwerveConstants.WHEEL_DIAMETER/2);
         driveMotorAppliedVoltage = velocityFeedback.calculate(currentVelocity, velocity);
         driveControl.withOutput(driveMotorAppliedVoltage);
     }
