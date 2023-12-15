@@ -11,7 +11,7 @@ import edu.wpi.first.wpilibj.simulation.DCMotorSim;
 import lib.math.differential.Derivative;
 import lib.units.Units;
 
-public class TalonFXSim implements TalonFXMotor {
+public class TalonFXSim {
 
     private final DCMotorSim motorSim;
 
@@ -36,23 +36,26 @@ public class TalonFXSim implements TalonFXMotor {
         lastTimestampSeconds = timestampSeconds;
     }
 
-    @Override
     public StatusCode configure(TalonFXConfiguration config) {
-        controller.setPID(
-                config.Slot0.kP,
-                config.Slot0.kI,
-                config.Slot0.kD
-        );
+        if (controller != null) {
+            controller.setPID(
+                    config.Slot0.kP,
+                    config.Slot0.kI,
+                    config.Slot0.kD
+            );
+        }
 
-        profiledController.setPID(
-                config.Slot0.kP,
-                config.Slot0.kI,
-                config.Slot0.kD
-        );
-        profiledController.setConstraints(new TrapezoidProfile.Constraints(
-                config.MotionMagic.MotionMagicCruiseVelocity,
-                config.MotionMagic.MotionMagicAcceleration
-        ));
+        if (profiledController != null) {
+            profiledController.setPID(
+                    config.Slot0.kP,
+                    config.Slot0.kI,
+                    config.Slot0.kD
+            );
+            profiledController.setConstraints(new TrapezoidProfile.Constraints(
+                    config.MotionMagic.MotionMagicCruiseVelocity,
+                    config.MotionMagic.MotionMagicAcceleration
+            ));
+        }
 
         return StatusCode.OK;
     }
@@ -80,43 +83,37 @@ public class TalonFXSim implements TalonFXMotor {
     public StatusCode setControl(PositionDutyCycle request) {
         voltageRequest = controller.calculate(
                 motorSim.getAngularPositionRotations(), request.Position);
-        return this.setControl(new VoltageOut(voltageRequest));
+        return this.setControl(new VoltageOut(voltageRequest + 12 * request.FeedForward));
     }
 
     public StatusCode setControl(PositionVoltage request) {
-        return this.setControl(new PositionDutyCycle(request.Position));
-    }
-
-    public StatusCode setControl(PositionTorqueCurrentFOC request) {
-        return this.setControl(new PositionDutyCycle(request.Position));
+        voltageRequest = controller.calculate(
+                motorSim.getAngularPositionRotations(), request.Position);
+        return this.setControl(new VoltageOut(voltageRequest + request.FeedForward));
     }
 
     public StatusCode setControl(VelocityDutyCycle request) {
         voltageRequest = controller.calculate(
                 Units.rpmToRps(motorSim.getAngularVelocityRPM()), request.Velocity);
-        return this.setControl(new VoltageOut(voltageRequest));
+        return this.setControl(new VoltageOut(voltageRequest + 12 * request.FeedForward));
     }
 
     public StatusCode setControl(VelocityVoltage request) {
-        return this.setControl(new VelocityDutyCycle(request.Velocity));
-    }
-
-    public StatusCode setControl(VelocityTorqueCurrentFOC request) {
-        return this.setControl(new VelocityDutyCycle(request.Velocity));
+        voltageRequest = controller.calculate(
+                Units.rpmToRps(motorSim.getAngularVelocityRPM()), request.Velocity);
+        return this.setControl(new VoltageOut(voltageRequest + request.FeedForward));
     }
 
     public StatusCode setControl(MotionMagicDutyCycle request) {
         voltageRequest = profiledController.calculate(
                 motorSim.getAngularPositionRotations(), request.Position);
-        return this.setControl(new VelocityDutyCycle(voltageRequest));
+        return this.setControl(new VoltageOut(voltageRequest + 12 * request.FeedForward));
     }
 
     public StatusCode setControl(MotionMagicVoltage request) {
-        return this.setControl(new MotionMagicDutyCycle(request.Position));
-    }
-
-    public StatusCode setControl(MotionMagicTorqueCurrentFOC request) {
-        return this.setControl(new MotionMagicDutyCycle(request.Position));
+        voltageRequest = profiledController.calculate(
+                motorSim.getAngularPositionRotations(), request.Position);
+        return this.setControl(new VoltageOut(voltageRequest + request.FeedForward));
     }
 
     public double getRotorVelocity() {
