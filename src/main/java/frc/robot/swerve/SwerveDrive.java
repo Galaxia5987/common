@@ -265,7 +265,6 @@ public class SwerveDrive extends SubsystemBase {
         loggerInputs.pitch = gyro.getPitch();
         gyro.updateInputs(loggerInputs);
 
-//        desiredModuleStates = Utils.arrayToSwerveModuleStates(loggerInputs.desiredModuleStates);
         SwerveDriveKinematics.desaturateWheelSpeeds(Utils.arrayToSwerveModuleStates(loggerInputs.desiredModuleStates), SwerveConstants.MAX_X_Y_VELOCITY); //TODO: may not work
         for (int i = 0; i < modules.length; i++) {
             modules[i].setModuleState(Utils.arrayToSwerveModuleStates(loggerInputs.desiredModuleStates)[i]);
