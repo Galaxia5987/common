@@ -149,3 +149,13 @@ gversion {
     timeZone     = "America/New_York"
     indent       = "  "
 }
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            groupId = 'com.github.Galaxia5987'
+            artifactId = 'common'
+            from components.java
+        }
+    }
+}
