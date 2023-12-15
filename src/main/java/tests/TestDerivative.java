@@ -1,9 +1,9 @@
 package tests;
 
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 import lib.Utils;
 import lib.math.differential.Derivative;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 public class TestDerivative {
 

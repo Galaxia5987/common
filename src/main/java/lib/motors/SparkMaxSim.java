@@ -2,7 +2,6 @@ package lib.motors;
 
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.REVLibError;
-import com.revrobotics.jni.CANSparkMaxJNI;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.system.plant.DCMotor;
@@ -12,11 +11,8 @@ import lib.math.differential.Derivative;
 public class SparkMaxSim {
 
     private final DCMotorSim motorSim;
-
     private PIDController controller = null;
     private ProfiledPIDController profiledController = null;
-
-    private final Derivative acceleration = new Derivative();
     private double lastTimestampSeconds = 0;
 
     private double voltageRequest;
@@ -29,7 +25,6 @@ public class SparkMaxSim {
 
     public void update(double timestampSeconds) {
         motorSim.update(timestampSeconds - lastTimestampSeconds);
-        acceleration.update(getVelocity(), timestampSeconds);
 
         lastTimestampSeconds = timestampSeconds;
     }

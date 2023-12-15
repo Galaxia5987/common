@@ -63,7 +63,7 @@ public class SwerveDrive extends SubsystemBase {
     public static SwerveDrive getInstance() {
         return INSTANCE;
     }
-    
+
     public static void setInstance(boolean isReal,
                                    int[] driveIds,
                                    int[] angleIds,
@@ -135,7 +135,7 @@ public class SwerveDrive extends SubsystemBase {
         return loggerInputs.linearVelocity;
     }
 
-    public ChassisSpeeds getCurrentSpeeds(){
+    public ChassisSpeeds getCurrentSpeeds() {
         return Utils.arrayToChassisSpeeds(loggerInputs.currentSpeeds);
     }
 
@@ -236,7 +236,7 @@ public class SwerveDrive extends SubsystemBase {
             loggerInputs.absolutePositions[i] = modules[i].getPosition();
         }
 
-        Logger.getInstance().recordOutput("SwerveDrive/currentModuleSates", currentModuleStates);
+        Logger.recordOutput("SwerveDrive/currentModuleSates", currentModuleStates);
 
         for (int i = 0; i < 3; i++) {
             loggerInputs.currentSpeeds[i] =

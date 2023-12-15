@@ -50,7 +50,7 @@ public class Integral {
     /**
      * Updates the value to integrate.
      *
-     * @param newValue The new value to integrate.
+     * @param newValue  The new value to integrate.
      * @param timestamp The current timestamp. [s]
      */
     public void update(double newValue, double timestamp) {

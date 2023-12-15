@@ -1,9 +1,9 @@
 package tests;
 
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 import lib.Utils;
 import lib.controllers.DieterController;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 public class TestDieterController {
 

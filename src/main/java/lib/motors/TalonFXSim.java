@@ -1,12 +1,10 @@
 package lib.motors;
 
 import com.ctre.phoenix6.StatusCode;
-import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.*;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.system.plant.DCMotor;
-import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.wpilibj.simulation.DCMotorSim;
 import lib.math.differential.Derivative;
 import lib.units.Units;
@@ -14,11 +12,9 @@ import lib.units.Units;
 public class TalonFXSim {
 
     private final DCMotorSim motorSim;
-
+    private final Derivative acceleration = new Derivative();
     private PIDController controller = null;
     private ProfiledPIDController profiledController = null;
-
-    private final Derivative acceleration = new Derivative();
     private double lastTimestampSeconds = 0;
 
     private double voltageRequest;

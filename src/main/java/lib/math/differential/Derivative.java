@@ -46,7 +46,7 @@ public class Derivative {
     /**
      * Updates the value to differentiate.
      *
-     * @param newValue The new value to differentiate.
+     * @param newValue  The new value to differentiate.
      * @param timestamp The current timestamp. [s]
      */
     public void update(double newValue, double timestamp) {

@@ -4,9 +4,9 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import lib.Utils;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import lib.Utils;
 
 public class TestUtils {
 

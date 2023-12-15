@@ -1,9 +1,9 @@
 package tests;
 
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 import lib.Utils;
 import lib.math.differential.Integral;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 public class TestIntegral {
 
