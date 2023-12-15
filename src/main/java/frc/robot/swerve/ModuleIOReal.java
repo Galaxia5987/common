@@ -6,9 +6,9 @@ import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
-import utils.math.AngleUtil;
-import utils.math.differential.Integral;
-import utils.units.UnitModel;
+import lib.math.AngleUtil;
+import lib.math.differential.Integral;
+import lib.units.UnitModel;
 
 public class ModuleIOReal implements ModuleIO {
 

@@ -2,10 +2,10 @@ package common.examples;
 
 import com.ctre.phoenix6.controls.PositionDutyCycle;
 import edu.wpi.first.math.geometry.Rotation2d;
-import utils.motors.TalonFXMotor;
-import utils.motors.TalonFXReal;
-import utils.motors.TalonFXSim;
-import utils.units.Phoenix6UnitModel;
+import lib.motors.TalonFXMotor;
+import lib.motors.TalonFXReal;
+import lib.motors.TalonFXSim;
+import lib.units.Phoenix6UnitModel;
 
 public class TalonFXSubsystemExample {
 

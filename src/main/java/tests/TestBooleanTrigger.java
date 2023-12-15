@@ -2,7 +2,7 @@ package tests;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Assertions;
-import utils.math.differential.BooleanTrigger;
+import lib.math.differential.BooleanTrigger;
 
 public class TestBooleanTrigger {
 

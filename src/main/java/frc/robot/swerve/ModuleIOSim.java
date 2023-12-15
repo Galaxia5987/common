@@ -4,8 +4,8 @@ import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.wpilibj.simulation.FlywheelSim;
-import utils.math.AngleUtil;
-import utils.math.differential.Integral;
+import lib.math.AngleUtil;
+import lib.math.differential.Integral;
 
 public class ModuleIOSim implements ModuleIO {
     private final FlywheelSim driveMotor;
