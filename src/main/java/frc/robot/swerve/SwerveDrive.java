@@ -1,4 +1,4 @@
-package swerve;
+package frc.robot.swerve;
 
 import edu.wpi.first.math.filter.LinearFilter;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -68,7 +68,7 @@ public class SwerveDrive extends SubsystemBase {
                                    int[] driveIds,
                                    int[] angleIds,
                                    int[] encoderIds) {
-        if (INSTANCE != null) {
+        if (INSTANCE == null) {
             INSTANCE = new SwerveDrive(isReal, driveIds, angleIds, encoderIds);
         }
     }
@@ -208,7 +208,7 @@ public class SwerveDrive extends SubsystemBase {
     }
 
     /**
-     * Sets the desired percentage of x, y and omega speeds for the swerve
+     * Sets the desired percentage of x, y and omega speeds for the frc.robot.swerve
      *
      * @param xOutput     percentage of the x speed
      * @param yOutput     percentage of the y speed
@@ -271,6 +271,6 @@ public class SwerveDrive extends SubsystemBase {
             modules[i].setModuleState(Utils.arrayToSwerveModuleStates(loggerInputs.desiredModuleStates)[i]);
         }
 
-        Logger.getInstance().processInputs("SwerveDrive", loggerInputs);
+        Logger.processInputs("SwerveDrive", loggerInputs);
     }
 }

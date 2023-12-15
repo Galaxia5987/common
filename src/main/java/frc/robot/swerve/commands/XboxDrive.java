@@ -1,10 +1,10 @@
-package swerve.commands;
+package frc.robot.swerve.commands;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
-import swerve.SwerveConstants;
-import swerve.SwerveDrive;
+import frc.robot.swerve.SwerveConstants;
+import frc.robot.swerve.SwerveDrive;
 
 public class XboxDrive extends Command {
     private final SwerveDrive swerveDrive;

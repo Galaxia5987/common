@@ -1,4 +1,4 @@
-package swerve;
+package frc.robot.swerve;
 
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.TalonFXControlMode;

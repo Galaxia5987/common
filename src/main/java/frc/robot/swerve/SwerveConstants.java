@@ -1,4 +1,4 @@
-package swerve;
+package frc.robot.swerve;
 
 import com.ctre.phoenix.motorcontrol.StatorCurrentLimitConfiguration;
 import com.ctre.phoenix.motorcontrol.SupplyCurrentLimitConfiguration;

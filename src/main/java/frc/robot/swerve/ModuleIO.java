@@ -1,4 +1,4 @@
-package swerve;
+package frc.robot.swerve;
 
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import org.littletonrobotics.junction.AutoLog;

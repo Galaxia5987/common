@@ -1,4 +1,4 @@
-package swerve;
+package frc.robot.swerve;
 
 import org.littletonrobotics.junction.AutoLog;
 

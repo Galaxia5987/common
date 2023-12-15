@@ -1,8 +1,8 @@
-package swerve.commands;
+package frc.robot.swerve.commands;
 
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj2.command.Command;
-import swerve.SwerveDrive;
+import frc.robot.swerve.SwerveDrive;
 
 public class KeyboardDriveSim extends Command {
 
