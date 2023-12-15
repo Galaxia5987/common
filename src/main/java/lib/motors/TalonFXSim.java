@@ -31,33 +31,9 @@ public class TalonFXSim {
 
     public void update(double timestampSeconds) {
         motorSim.update(timestampSeconds - lastTimestampSeconds);
-        acceleration.update(getRotorVelocity(), timestampSeconds);
+        acceleration.update(getVelocity(), timestampSeconds);
 
         lastTimestampSeconds = timestampSeconds;
-    }
-
-    public StatusCode configure(TalonFXConfiguration config) {
-        if (controller != null) {
-            controller.setPID(
-                    config.Slot0.kP,
-                    config.Slot0.kI,
-                    config.Slot0.kD
-            );
-        }
-
-        if (profiledController != null) {
-            profiledController.setPID(
-                    config.Slot0.kP,
-                    config.Slot0.kI,
-                    config.Slot0.kD
-            );
-            profiledController.setConstraints(new TrapezoidProfile.Constraints(
-                    config.MotionMagic.MotionMagicCruiseVelocity,
-                    config.MotionMagic.MotionMagicAcceleration
-            ));
-        }
-
-        return StatusCode.OK;
     }
 
     public TalonFXSim setController(PIDController controller) {
@@ -116,11 +92,11 @@ public class TalonFXSim {
         return this.setControl(new VoltageOut(voltageRequest + request.FeedForward));
     }
 
-    public double getRotorVelocity() {
+    public double getVelocity() {
         return Units.rpmToRps(motorSim.getAngularVelocityRPM());
     }
 
-    public double getRotorPosition() {
+    public double getPosition() {
         return motorSim.getAngularPositionRotations();
     }
 
