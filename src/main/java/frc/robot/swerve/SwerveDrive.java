@@ -118,7 +118,7 @@ public class SwerveDrive extends SubsystemBase {
      * @param desiredModuleStates The desired module states to set the modules to.
      */
     public void setModuleStates(SwerveModuleState[] desiredModuleStates) {
-        loggerInputs.desiredModuleStates = Utils.swerveModuleStatesToArray(desiredModuleStates);
+        loggerInputs.desiredModuleStates = desiredModuleStates;
     }
 
     public void updateModulePositions() {
@@ -270,9 +270,9 @@ public class SwerveDrive extends SubsystemBase {
         gyro.updateInputs(loggerInputs);
 
 //        desiredModuleStates = Utils.arrayToSwerveModuleStates(loggerInputs.desiredModuleStates);
-        SwerveDriveKinematics.desaturateWheelSpeeds(Utils.arrayToSwerveModuleStates(loggerInputs.desiredModuleStates), SwerveConstants.MAX_X_Y_VELOCITY); //TODO: may not work
+        SwerveDriveKinematics.desaturateWheelSpeeds(loggerInputs.desiredModuleStates, SwerveConstants.MAX_X_Y_VELOCITY); //TODO: may not work
         for (int i = 0; i < modules.length; i++) {
-            modules[i].setModuleState(Utils.arrayToSwerveModuleStates(loggerInputs.desiredModuleStates)[i]);
+            modules[i].setModuleState(loggerInputs.desiredModuleStates[i]);
         }
 
         Logger.processInputs("SwerveDrive", loggerInputs);

@@ -8,7 +8,7 @@ public class SwerveDriveInputs implements LoggableInputs {
     public double supplyCurrent;
     public double statorCurrent;
 
-    public double[] desiredModuleStates = new double[8];
+    public SwerveModuleState[] desiredModuleStates = new SwerveModuleState[4];
 
     // x, y, omega
     public double[] currentSpeeds = {0, 0, 0};
