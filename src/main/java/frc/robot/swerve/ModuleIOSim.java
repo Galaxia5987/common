@@ -47,7 +47,7 @@ public class ModuleIOSim implements ModuleIO {
         driveMotor.update(Timer.getFPGATimestamp());
         angleMotor.update(Timer.getFPGATimestamp());
 
-        currentAngle.update(angleMotor.getRotorVelocity());
+        currentAngle.update(Units.rpsToRadsPerSec(angleMotor.getRotorVelocity()));
 
         inputs.driveMotorAppliedVoltage = driveMotorAppliedVoltage;
         inputs.driveMotorVelocity = driveMotor.getRotorVelocity();
