@@ -42,7 +42,7 @@ public class SwerveModule extends SubsystemBase {
      * @param moduleState A module state to set the module to.
      */
     public void setModuleState(SwerveModuleState moduleState) {
-        moduleState = SwerveModuleState.optimize(moduleState, new Rotation2d(loggerInputs.angle));
+        moduleState = SwerveModuleState.optimize(moduleState, loggerInputs.angle);
         io.setVelocity(moduleState.speedMetersPerSecond);
         io.setAngle(moduleState.angle);
     }
@@ -54,7 +54,7 @@ public class SwerveModule extends SubsystemBase {
      */
     public SwerveModulePosition getModulePosition() {
         return new SwerveModulePosition(
-                loggerInputs.moduleDistance, new Rotation2d(loggerInputs.angle)
+                loggerInputs.moduleDistance, loggerInputs.angle
         );
     }
 
@@ -109,7 +109,7 @@ public class SwerveModule extends SubsystemBase {
     @Override
     public void periodic() {
         currentModuleState = new SwerveModuleState(
-                io.getVelocity(), new Rotation2d(io.getAngle())
+                io.getVelocity(), io.getAngle()
         );
 
         io.updateInputs(loggerInputs);

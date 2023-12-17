@@ -1,7 +1,9 @@
 package frc.robot.swerve;
 
+import edu.wpi.first.math.geometry.Rotation2d;
 import org.littletonrobotics.junction.LogTable;
 import org.littletonrobotics.junction.inputs.LoggableInputs;
+import utils.math.Rotation2;
 
 public class SwerveModuleInputs implements LoggableInputs {
     public double driveMotorVelocity = 0;
@@ -13,8 +15,8 @@ public class SwerveModuleInputs implements LoggableInputs {
     public double driveMotorPosition = 0;
     public double driveMotorAppliedVoltage = 0;
 
-    public double angle = 0;
-    public double angleSetpoint = 0;
+    public Rotation2d angle = new Rotation2d();
+    public Rotation2d angleSetpoint = new Rotation2d();
     public double absolutePosition = 0;
     public double angleMotorVelocity = 0;
     public double angleMotorSupplyCurrent = 0;

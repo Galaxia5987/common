@@ -25,8 +25,8 @@ public class ModuleIOReal implements ModuleIO {
     private final Integral driveStatorChargeUsedCoulomb = new Integral();
     private final Integral angleSupplyChargeUsedCoulomb = new Integral();
     private final Integral angleStatorChargeUsedCoulomb = new Integral();
-    private double angleSetpoint;
-    private double currentAngle;
+    private Rotation2d angleSetpoint;
+    private Rotation2d currentAngle;
     private double driveMotorVelocitySetpoint;
 
     public ModuleIOReal(int driveMotorID, int angleMotorID, int encoderID,
@@ -100,14 +100,14 @@ public class ModuleIOReal implements ModuleIO {
     }
 
     @Override
-    public double getAngle() {
-        return AngleUtil.normalize(Units.rotationsToRadians(angleMotor.getPosition().getValue()));
+    public Rotation2d getAngle() {
+        return new Rotation2d(AngleUtil.normalize(Units.rotationsToRadians(angleMotor.getPosition().getValue())));
     }
 
     @Override
     public void setAngle(Rotation2d angle) {
-        angleSetpoint = AngleUtil.normalize(angle.getRadians());
-        Rotation2d error = angle.minus(new Rotation2d(currentAngle));
+        angleSetpoint = angle;
+        Rotation2d error = angle.minus(currentAngle);
         angleMotor.setControl(
                 new MotionMagicVoltage(angleMotor.getPosition().getValue() + error.getRotations())
                         .withEnableFOC(true));
@@ -120,7 +120,7 @@ public class ModuleIOReal implements ModuleIO {
 
     @Override
     public void setVelocity(double velocity) {
-        var angleError = new Rotation2d(angleSetpoint).minus(new Rotation2d(currentAngle));
+        var angleError = angleSetpoint.minus(currentAngle);
         velocity *= angleError.getCos();
 
         driveMotorVelocitySetpoint = velocity;
@@ -138,7 +138,7 @@ public class ModuleIOReal implements ModuleIO {
                         driveMotor.getPosition().getValue(),
                         SwerveConstants.WHEEL_DIAMETER / 2
                 ),
-                new Rotation2d(getAngle())
+                getAngle()
         );
     }
 

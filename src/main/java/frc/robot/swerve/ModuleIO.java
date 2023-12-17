@@ -8,8 +8,8 @@ import org.littletonrobotics.junction.AutoLog;
 public interface ModuleIO {
     void updateInputs(SwerveModuleInputs inputs);
 
-    default double getAngle() {
-        return 0;
+    default Rotation2d getAngle() {
+        return new Rotation2d();
     }
 
     void setAngle(Rotation2d angle);

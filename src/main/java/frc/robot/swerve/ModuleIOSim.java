@@ -25,7 +25,7 @@ public class ModuleIOSim implements ModuleIO {
     private double driveMotorAppliedVoltage = 0;
     private double angleMotorAppliedVoltage = 0;
     private double velocitySetpoint = 0;
-    private double angleSetpoint = 0;
+    private Rotation2d angleSetpoint = new Rotation2d();
 
     public ModuleIOSim() {
         driveMotor = new TalonFXSim(
@@ -56,7 +56,7 @@ public class ModuleIOSim implements ModuleIO {
         inputs.angleMotorAppliedVoltage = angleMotorAppliedVoltage;
         inputs.angleMotorVelocity = angleMotor.getRotorVelocity();
         inputs.angleSetpoint = angleSetpoint;
-        inputs.angle = AngleUtil.normalize(currentAngle.get());
+        inputs.angle = new Rotation2d(AngleUtil.normalize(currentAngle.get()));
 
         moduleDistance.update(inputs.driveMotorVelocity);
         inputs.moduleDistance = moduleDistance.get();
@@ -66,14 +66,14 @@ public class ModuleIOSim implements ModuleIO {
     }
 
     @Override
-    public double getAngle() {
-        return currentAngle.get();
+    public Rotation2d getAngle() {
+        return new Rotation2d(currentAngle.get());
     }
 
     @Override
     public void setAngle(Rotation2d angle) {
-        angleSetpoint = angle.getRadians();
-        angleMotorAppliedVoltage = angleFeedback.calculate(MathUtil.angleModulus(currentAngle.get()), angleSetpoint);
+        angleSetpoint = angle;
+        angleMotorAppliedVoltage = angleFeedback.calculate(MathUtil.angleModulus(currentAngle.get()), angleSetpoint.getRadians());
         angleControl.withOutput(angleMotorAppliedVoltage);
     }
 
@@ -84,7 +84,7 @@ public class ModuleIOSim implements ModuleIO {
 
     @Override
     public void setVelocity(double velocity) {
-        var angleError = new Rotation2d(angleSetpoint).minus(new Rotation2d(currentAngle.get()));
+        var angleError = angleSetpoint.minus(new Rotation2d(currentAngle.get()));
         velocity *= angleError.getCos();
 
         velocitySetpoint = velocity;
