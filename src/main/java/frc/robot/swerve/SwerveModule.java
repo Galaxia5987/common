@@ -10,7 +10,7 @@ import org.littletonrobotics.junction.Logger;
 
 public class SwerveModule extends SubsystemBase {
 
-    private final SwerveModuleInputsAutoLogged loggerInputs = new SwerveModuleInputsAutoLogged();
+    private final SwerveModuleInputs loggerInputs = new SwerveModuleInputs();
 
     private final ModuleIO io;
 
