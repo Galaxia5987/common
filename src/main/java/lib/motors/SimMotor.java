@@ -39,24 +39,4 @@ public class SimMotor {
 
         lastTimestampSeconds = timestampSeconds;
     }
-
-    public double getBusVoltage() {
-        return voltageRequest;
-    }
-
-    public double getAppliedOutput() {
-        return voltageRequest / 12.0;
-    }
-
-    public double getVelocity() {
-        return motorSim.getAngularVelocityRPM();
-    }
-
-    public double getPosition() {
-        return motorSim.getAngularPositionRotations();
-    }
-
-    public double getOutputCurrent() {
-        return motorSim.getCurrentDrawAmps();
-    }
 }
