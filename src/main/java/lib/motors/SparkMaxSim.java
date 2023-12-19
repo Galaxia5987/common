@@ -1,61 +1,19 @@
 package lib.motors;
 
 import com.revrobotics.CANSparkMax;
-import com.revrobotics.REVLibError;
-import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.math.controller.ProfiledPIDController;
+import edu.wpi.first.math.numbers.N1;
+import edu.wpi.first.math.numbers.N2;
+import edu.wpi.first.math.system.LinearSystem;
 import edu.wpi.first.math.system.plant.DCMotor;
-import edu.wpi.first.wpilibj.simulation.DCMotorSim;
 
-public class SparkMaxSim {
-
-    private final DCMotorSim motorSim;
-    private PIDController controller = null;
-    private ProfiledPIDController profiledController = null;
-    private double lastTimestampSeconds = 0;
-
-    private double voltageRequest;
+public class SparkMaxSim extends SimMotor {
 
     public SparkMaxSim(int numMotors, double gearing, double jKgMetersSquared) {
-        DCMotor motor = DCMotor.getFalcon500(numMotors);
-
-        motorSim = new DCMotorSim(motor, gearing, jKgMetersSquared);
+        super(DCMotor.getNEO(numMotors), jKgMetersSquared, gearing);
     }
 
-    public void update(double timestampSeconds) {
-        motorSim.update(timestampSeconds - lastTimestampSeconds);
-
-        lastTimestampSeconds = timestampSeconds;
-    }
-
-    public SparkMaxSim setController(PIDController controller) {
-        this.controller = controller;
-        return this;
-    }
-
-    public SparkMaxSim setProfiledController(ProfiledPIDController profiledController) {
-        this.profiledController = profiledController;
-        return this;
-    }
-
-    public double getBusVoltage() {
-        return voltageRequest;
-    }
-
-    public double getAppliedOutput() {
-        return voltageRequest / 12.0;
-    }
-
-    public double getVelocity() {
-        return motorSim.getAngularVelocityRPM();
-    }
-
-    public double getPosition() {
-        return motorSim.getAngularPositionRotations();
-    }
-
-    public double getOutputCurrent() {
-        return motorSim.getCurrentDrawAmps();
+    public SparkMaxSim(LinearSystem<N2, N1, N2> model, int numMotors, double gearing) {
+        super(model, DCMotor.getNEO(numMotors), gearing);
     }
 
     public void set(double speed) {
@@ -67,11 +25,11 @@ public class SparkMaxSim {
         motorSim.setInputVoltage(voltageRequest);
     }
 
-    public REVLibError setReference(double value, CANSparkMax.ControlType ctrl) {
-        return setReference(value, ctrl, 0);
+    public void setReference(double value, CANSparkMax.ControlType ctrl) {
+        setReference(value, ctrl, 0);
     }
 
-    public REVLibError setReference(double value, CANSparkMax.ControlType ctrl, double arbFeedforward) {
+    public void setReference(double value, CANSparkMax.ControlType ctrl, double arbFeedforward) {
         switch (ctrl) {
             case kDutyCycle:
                 set(value);
@@ -95,6 +53,5 @@ public class SparkMaxSim {
                 System.out.println("Can't use current control for spark max in sim!");
                 break;
         }
-        return REVLibError.kOk;
     }
 }
