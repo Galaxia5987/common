@@ -8,7 +8,12 @@ public class SwerveDriveInputs implements LoggableInputs {
     public double supplyCurrent;
     public double statorCurrent;
 
-    public SwerveModuleState[] desiredModuleStates = new SwerveModuleState[4];
+    public SwerveModuleState[] currentModuleStates = new SwerveModuleState[4];
+    public SwerveModuleState[] desiredModuleStates = {
+            new SwerveModuleState(),
+            new SwerveModuleState(),
+            new SwerveModuleState(),
+            new SwerveModuleState()};
 
     // x, y, omega
     public double[] currentSpeeds = {0, 0, 0};
@@ -31,6 +36,7 @@ public class SwerveDriveInputs implements LoggableInputs {
         table.put("supplyCurrent", supplyCurrent);
         table.put("statorCurrent", statorCurrent);
 
+        table.put("currentModuleStates", currentModuleStates);
         table.put("desiredModuleStates", desiredModuleStates);
 
         table.put("currentSpeeds", currentSpeeds);
@@ -54,6 +60,7 @@ public class SwerveDriveInputs implements LoggableInputs {
         table.get("supplyCurrent", supplyCurrent);
         table.get("statorCurrent", statorCurrent);
 
+        table.get("currentModuleStates", currentModuleStates);
         table.get("desiredModuleStates", desiredModuleStates);
 
         table.get("currentSpeeds", currentSpeeds);

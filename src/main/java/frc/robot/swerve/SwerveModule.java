@@ -17,7 +17,6 @@ public class SwerveModule extends SubsystemBase {
     private final int number;
     private final BooleanTrigger encoderTrigger = new BooleanTrigger();
     private final Timer timer = new Timer();
-    private SwerveModuleState currentModuleState = new SwerveModuleState();
 
     public SwerveModule(ModuleIO io, int number) {
         this.io = io;
@@ -108,13 +107,7 @@ public class SwerveModule extends SubsystemBase {
 
     @Override
     public void periodic() {
-        currentModuleState = new SwerveModuleState(
-                io.getVelocity(), io.getAngle()
-        );
-
         io.updateInputs(loggerInputs);
-
-        Logger.recordOutput("SwerveDrive/currentModuleState" + number, currentModuleState);
 
         Logger.processInputs("module_" + number, loggerInputs);
 

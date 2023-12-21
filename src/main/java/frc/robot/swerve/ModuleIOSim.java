@@ -61,7 +61,7 @@ public class ModuleIOSim implements ModuleIO {
 
         moduleDistance.update(inputs.driveMotorVelocity);
         inputs.moduleDistance = moduleDistance.get();
-
+        inputs.moduleState = getModuleState();
         driveMotor.setControl(driveControl);
         angleMotor.setControl(angleControl);
     }

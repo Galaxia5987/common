@@ -98,6 +98,7 @@ public class ModuleIOReal implements ModuleIO {
         inputs.angleSetpoint = angleSetpoint;
 
         inputs.moduleDistance = getModulePosition().distanceMeters;
+        inputs.moduleState = getModuleState();
     }
 
     @Override

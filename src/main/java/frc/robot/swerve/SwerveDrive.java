@@ -5,8 +5,6 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.*;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Ports;
-import org.littletonrobotics.junction.CustomStructs;
 import utils.Utils;
 import utils.math.differential.Derivative;
 import org.littletonrobotics.junction.Logger;
@@ -26,8 +24,7 @@ public class SwerveDrive extends SubsystemBase {
     private final SwerveDriveOdometry odometry;
     private final Derivative acceleration = new Derivative();
     private final SwerveModulePosition[] modulePositions = new SwerveModulePosition[4];
-    private final SwerveDriveInputsAutoLogged loggerInputs = new SwerveDriveInputsAutoLogged();
-    private final SwerveModuleState[] currentModuleStates = new SwerveModuleState[4];
+    private final SwerveDriveInputs loggerInputs = new SwerveDriveInputs();
 
     private SwerveDrive(boolean isReal,
                         int[] driveIds,
@@ -236,20 +233,18 @@ public class SwerveDrive extends SubsystemBase {
         loggerInputs.botPose[2] = odometry.getPoseMeters().getRotation().getRadians();
 
         for (int i = 0; i < modules.length; i++) {
-            currentModuleStates[i] = modules[i].getModuleState();
             loggerInputs.absolutePositions[i] = modules[i].getPosition();
+            loggerInputs.currentModuleStates[i] = modules[i].getModuleState();
         }
-
-        Logger.recordOutput("SwerveDrive/currentModuleSates", currentModuleStates);
 
         for (int i = 0; i < 3; i++) {
             loggerInputs.currentSpeeds[i] =
                     Utils.chassisSpeedsToArray(
                             kinematics.toChassisSpeeds(
-                                    currentModuleStates[0],
-                                    currentModuleStates[1],
-                                    currentModuleStates[2],
-                                    currentModuleStates[3]
+                                    loggerInputs.currentModuleStates[0],
+                                    loggerInputs.currentModuleStates[1],
+                                    loggerInputs.currentModuleStates[2],
+                                    loggerInputs.currentModuleStates[3]
                             ))[i];
         }
 

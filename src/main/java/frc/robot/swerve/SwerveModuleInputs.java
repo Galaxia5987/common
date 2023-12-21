@@ -1,6 +1,7 @@
 package frc.robot.swerve;
 
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.kinematics.SwerveModuleState;
 import org.littletonrobotics.junction.LogTable;
 import org.littletonrobotics.junction.inputs.LoggableInputs;
 import utils.math.Rotation2;
@@ -27,6 +28,7 @@ public class SwerveModuleInputs implements LoggableInputs {
     public double angleMotorAppliedVoltage = 0;
 
     public double moduleDistance = 0;
+    public SwerveModuleState moduleState = new SwerveModuleState();
 
     @Override
     public void toLog(LogTable table) {
@@ -51,6 +53,7 @@ public class SwerveModuleInputs implements LoggableInputs {
         table.put("angleMotorAppliedVoltage", angleMotorAppliedVoltage);
 
         table.put("moduleDistance", moduleDistance);
+        table.put("moduleState", moduleState);
     }
 
     @Override
@@ -76,5 +79,6 @@ public class SwerveModuleInputs implements LoggableInputs {
         table.get("angleMotorAppliedVoltage", angleMotorAppliedVoltage);
 
         table.get("moduleDistance", moduleDistance);
+        table.get("moduleState", moduleState);
     }
 }
