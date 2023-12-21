@@ -8,6 +8,7 @@ import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
+import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -129,6 +130,15 @@ public class ModuleIOReal implements ModuleIO {
                         velocity,
                 SwerveConstants.WHEEL_DIAMETER / 2
         )).withEnableFOC(true));
+    }
+
+    @Override
+    public SwerveModuleState getModuleState() {
+        return new SwerveModuleState(
+                utils.units.Units.rpsToMetersPerSecond(
+                        getVelocity(), SwerveConstants.WHEEL_DIAMETER/2)
+                , getAngle()
+        );
     }
 
     @Override

@@ -2,6 +2,7 @@ package frc.robot.swerve;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
+import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj2.command.Command;
 import org.littletonrobotics.junction.AutoLog;
 
@@ -20,7 +21,9 @@ public interface ModuleIO {
 
     void setVelocity(double velocity);
 
-    default SwerveModulePosition getModulePosition() {
+    SwerveModuleState getModuleState();
+
+    default SwerveModulePosition getModulePosition(){
         return null;
     }
 

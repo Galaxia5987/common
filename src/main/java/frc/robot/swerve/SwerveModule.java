@@ -33,7 +33,7 @@ public class SwerveModule extends SubsystemBase {
      * @return The state of a module.
      */
     public SwerveModuleState getModuleState() {
-        return currentModuleState;
+        return io.getModuleState();
     }
 
     /**
