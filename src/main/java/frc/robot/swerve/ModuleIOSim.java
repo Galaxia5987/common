@@ -41,6 +41,8 @@ public class ModuleIOSim implements ModuleIO {
 
         angleFeedback = new PIDController(3.5, 0, 0, 0.02);
         velocityFeedback = new PIDController(0.5, 0, 0.00, 0.02);
+        driveMotor.setController(velocityFeedback);
+        angleMotor.setController(angleFeedback);
     }
 
     @Override
