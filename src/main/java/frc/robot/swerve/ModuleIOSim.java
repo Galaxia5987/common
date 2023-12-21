@@ -50,11 +50,14 @@ public class ModuleIOSim implements ModuleIO {
 
         currentAngle.update(Units.rpsToRadsPerSec(angleMotor.getRotorVelocity()));
 
-        inputs.driveMotorAppliedVoltage = driveMotorAppliedVoltage;
-        inputs.driveMotorVelocity = driveMotor.getRotorVelocity();
+        inputs.driveMotorAppliedVoltage = driveMotor.getAppliedVoltage();
+        inputs.driveMotorVelocity = Units.rpsToMetersPerSecond(
+                driveMotor.getRotorVelocity(),
+                SwerveConstants.WHEEL_DIAMETER/2);
+        currentVelocity = inputs.driveMotorVelocity;
         inputs.driveMotorVelocitySetpoint = velocitySetpoint;
 
-        inputs.angleMotorAppliedVoltage = angleMotorAppliedVoltage;
+        inputs.angleMotorAppliedVoltage = angleMotor.getAppliedVoltage();
         inputs.angleMotorVelocity = angleMotor.getRotorVelocity();
         inputs.angleSetpoint = angleSetpoint;
         inputs.angle = new Rotation2d(AngleUtil.normalize(currentAngle.get()));
