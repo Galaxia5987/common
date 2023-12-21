@@ -1,5 +1,7 @@
 package frc.robot.swerve;
 
+import com.ctre.phoenix6.controls.PositionVoltage;
+import com.ctre.phoenix6.controls.VelocityVoltage;
 import com.ctre.phoenix6.controls.VoltageOut;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
@@ -15,16 +17,14 @@ public class ModuleIOSim implements ModuleIO {
     private final TalonFXSim driveMotor;
     private final TalonFXSim angleMotor;
 
-    private VoltageOut driveControl = new VoltageOut(0);
-    private VoltageOut angleControl = new VoltageOut(0);
+    private VelocityVoltage driveControl = new VelocityVoltage(0);
+    private PositionVoltage angleControl = new PositionVoltage(0);
 
     private final PIDController angleFeedback;
     private final PIDController velocityFeedback;
     private final Integral currentAngle = new Integral();
     private final Integral moduleDistance = new Integral();
     private double currentVelocity = 0;
-    private double driveMotorAppliedVoltage = 0;
-    private double angleMotorAppliedVoltage = 0;
     private double velocitySetpoint = 0;
     private Rotation2d angleSetpoint = new Rotation2d();
 
@@ -62,8 +62,6 @@ public class ModuleIOSim implements ModuleIO {
         moduleDistance.update(inputs.driveMotorVelocity);
         inputs.moduleDistance = moduleDistance.get();
         inputs.moduleState = getModuleState();
-        driveMotor.setControl(driveControl);
-        angleMotor.setControl(angleControl);
     }
 
     @Override
@@ -74,8 +72,7 @@ public class ModuleIOSim implements ModuleIO {
     @Override
     public void setAngle(Rotation2d angle) {
         angleSetpoint = angle;
-        angleMotorAppliedVoltage = angleFeedback.calculate(MathUtil.angleModulus(currentAngle.get()), angleSetpoint.getRadians());
-        angleControl.withOutput(angleMotorAppliedVoltage);
+        angleControl.withPosition(angle.getRadians());
     }
 
     @Override
@@ -89,9 +86,10 @@ public class ModuleIOSim implements ModuleIO {
         velocity *= angleError.getCos();
 
         velocitySetpoint = velocity;
-        currentVelocity = Units.rpsToMetersPerSecond(driveMotor.getVelocity(1/SwerveConstants.DRIVE_REDUCTION), SwerveConstants.WHEEL_DIAMETER/2);
-        driveMotorAppliedVoltage = velocityFeedback.calculate(currentVelocity, velocity);
-        driveControl.withOutput(driveMotorAppliedVoltage);
+        driveControl.withVelocity(Units.metersToRotations(velocity, SwerveConstants.WHEEL_DIAMETER/2));
+        driveMotor.setControl(driveControl);
+    }
+
     @Override
     public SwerveModuleState getModuleState() {
         return new SwerveModuleState(
