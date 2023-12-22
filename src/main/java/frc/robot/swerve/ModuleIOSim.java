@@ -22,10 +22,10 @@ public class ModuleIOSim implements ModuleIO {
 
     private final PIDController angleFeedback;
     private final PIDController velocityFeedback;
-    private final Integral currentAngle = new Integral();
     private final Integral moduleDistance = new Integral();
     private double currentVelocity = 0;
     private double velocitySetpoint = 0;
+    private Rotation2d currentAngle = new Rotation2d();
     private Rotation2d angleSetpoint = new Rotation2d();
 
     public ModuleIOSim() {
@@ -39,8 +39,9 @@ public class ModuleIOSim implements ModuleIO {
                 1 / SwerveConstants.ANGLE_REDUCTION,
                 SwerveConstants.ANGLE_MOTOR_MOMENT_OF_INERTIA);
 
-        angleFeedback = new PIDController(3.5, 0, 0, 0.02);
-        velocityFeedback = new PIDController(0.5, 0, 0.00, 0.02);
+        angleFeedback = new PIDController(8, 0, 0, 0.02);
+        velocityFeedback = new PIDController(3.5, 0, 0.00, 0.02);
+
         driveMotor.setController(velocityFeedback);
         angleMotor.setController(angleFeedback);
     }
@@ -49,8 +50,6 @@ public class ModuleIOSim implements ModuleIO {
     public void updateInputs(SwerveModuleInputs inputs) {
         driveMotor.update(Timer.getFPGATimestamp());
         angleMotor.update(Timer.getFPGATimestamp());
-
-        currentAngle.update(Units.rpsToRadsPerSec(angleMotor.getRotorVelocity()));
 
         inputs.driveMotorAppliedVoltage = driveMotor.getAppliedVoltage();
         inputs.driveMotorVelocity = Units.rpsToMetersPerSecond(
@@ -62,7 +61,8 @@ public class ModuleIOSim implements ModuleIO {
         inputs.angleMotorAppliedVoltage = angleMotor.getAppliedVoltage();
         inputs.angleMotorVelocity = angleMotor.getRotorVelocity();
         inputs.angleSetpoint = angleSetpoint;
-        inputs.angle = new Rotation2d(AngleUtil.normalize(currentAngle.get()));
+        inputs.angle = Rotation2d.fromRotations(angleMotor.getRotorPosition());
+        currentAngle = inputs.angle;
 
         moduleDistance.update(inputs.driveMotorVelocity);
         inputs.moduleDistance = moduleDistance.get();
@@ -71,13 +71,13 @@ public class ModuleIOSim implements ModuleIO {
 
     @Override
     public Rotation2d getAngle() {
-        return new Rotation2d(currentAngle.get());
+        return currentAngle;
     }
 
     @Override
     public void setAngle(Rotation2d angle) {
         angleSetpoint = angle;
-        angleControl.withPosition(angle.getRadians());
+        angleMotor.setControl(angleControl.withPosition(angle.getRotations()));
     }
 
     @Override
@@ -87,7 +87,7 @@ public class ModuleIOSim implements ModuleIO {
 
     @Override
     public void setVelocity(double velocity) {
-        var angleError = angleSetpoint.minus(new Rotation2d(currentAngle.get()));
+        var angleError = angleSetpoint.minus(currentAngle);
         velocity *= angleError.getCos();
 
         velocitySetpoint = velocity;
