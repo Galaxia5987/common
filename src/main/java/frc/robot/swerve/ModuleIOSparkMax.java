@@ -2,83 +2,80 @@ package frc.robot.swerve;
 
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel;
-import edu.wpi.first.math.controller.PIDController;
+import com.revrobotics.RelativeEncoder;
+import com.revrobotics.SparkMaxPIDController;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import lib.math.AngleUtil;
 import lib.math.differential.Integral;
-import lib.units.UnitModel;
+import lib.units.Units;
 
 public class ModuleIOSparkMax implements ModuleIO {
 
     private final CANSparkMax driveMotor;
+    private final SparkMaxPIDController drivePIDController;
+    private final RelativeEncoder driveEncoder;
     private final CANSparkMax angleMotor;
+    private final SparkMaxPIDController anglePIDController;
+    private final RelativeEncoder angleEncoder;
 
     private final DutyCycleEncoder encoder;
 
-    private final double[] motionMagicConfigs;
-    private final UnitModel ticksPerRad = new UnitModel(SwerveConstants.TICKS_PER_RADIAN);
-    private final UnitModel ticksPerMeter = new UnitModel(SwerveConstants.TICKS_PER_METER);
-    private final int number;
-
+    private final Integral driveSupplyChargeUsedCoulomb = new Integral();
+    private final Integral driveStatorChargeUsedCoulomb = new Integral();
+    private final Integral angleSupplyChargeUsedCoulomb = new Integral();
+    private final Integral angleStatorChargeUsedCoulomb = new Integral();
     private double angleSetpoint;
     private double currentAngle;
     private double angleMotorPosition;
-    private double driveMotorVelocitySetpoint;
-
-    private final PIDController drivePIDController;
-    private final PIDController anglePIDCOntroller;
-
-    private final Integral driveSupplyChargeUsedCoulomb = new Integral();
-    private final Integral driveStatorChargeUsedCoulomb = new Integral();
-
-    private final Integral angleSupplyChargeUsedCoulomb = new Integral();
-    private final Integral angleStatorChargeUsedCoulomb = new Integral();
+    private double moduleDistance;
 
     public ModuleIOSparkMax(int driveMotorID, int angleMotorID, int encoderID,
                             boolean driveInverted, boolean angleInverted,
-                            double[] motionMagicConfigs, int number) {
+                            double[] motionMagicConfigs) {
 
         this.driveMotor = new CANSparkMax(driveMotorID, CANSparkMaxLowLevel.MotorType.kBrushless);
         this.angleMotor = new CANSparkMax(angleMotorID, CANSparkMaxLowLevel.MotorType.kBrushless);
 
         this.encoder = new DutyCycleEncoder(encoderID);
 
-        this.motionMagicConfigs = motionMagicConfigs;
-        this.number = number;
-
         driveMotor.restoreFactoryDefaults();
-        angleMotor.restoreFactoryDefaults();
+        drivePIDController = driveMotor.getPIDController();
+        driveEncoder = driveMotor.getEncoder();
 
-        driveMotor.getPIDController().setP(SwerveConstants.DRIVE_kP);
-        driveMotor.getPIDController().setI(SwerveConstants.DRIVE_kI);
-        driveMotor.getPIDController().setD(SwerveConstants.DRIVE_kD);
-        driveMotor.getPIDController().setFF(SwerveConstants.DRIVE_KF);
+        drivePIDController.setP(SwerveConstants.DRIVE_kP);
+        drivePIDController.setI(SwerveConstants.DRIVE_kI);
+        drivePIDController.setD(SwerveConstants.DRIVE_kD);
+        drivePIDController.setFF(SwerveConstants.DRIVE_KF);
         driveMotor.enableVoltageCompensation(SwerveConstants.VOLT_COMP_SATURATION);
         driveMotor.setIdleMode(CANSparkMax.IdleMode.kBrake);
         driveMotor.setSmartCurrentLimit(SwerveConstants.CURRENT_LIMIT);
         driveMotor.setInverted(driveInverted);
+        driveEncoder.setPositionConversionFactor(SwerveConstants.DRIVE_REDUCTION);
+        driveEncoder.setVelocityConversionFactor(SwerveConstants.DRIVE_REDUCTION);
         driveMotor.burnFlash();
+
+        angleMotor.restoreFactoryDefaults();
+        anglePIDController = angleMotor.getPIDController();
+        angleEncoder = angleMotor.getEncoder();
 
         angleMotor.enableVoltageCompensation(SwerveConstants.VOLT_COMP_SATURATION);
         angleMotor.setIdleMode(CANSparkMax.IdleMode.kBrake);
         angleMotor.setSmartCurrentLimit(SwerveConstants.ALT_CURRENT_LIMIT);
         angleMotor.setInverted(angleInverted);
-
-        angleMotor.getPIDController().setP(motionMagicConfigs[0]);
-        angleMotor.getPIDController().setI(motionMagicConfigs[1]);
-        angleMotor.getPIDController().setD(motionMagicConfigs[2]);
-        angleMotor.getPIDController().setFF(motionMagicConfigs[3]);
-        angleMotor.getPIDController().setSmartMotionMaxVelocity(motionMagicConfigs[5], 0);
-        angleMotor.getPIDController().setSmartMotionMaxAccel(motionMagicConfigs[6], 0);
-        angleMotor.getPIDController().setSmartMotionAllowedClosedLoopError(motionMagicConfigs[7], 0);
-        angleMotor.getPIDController().setIMaxAccum(motionMagicConfigs[8], 0);
-        angleMotor.getPIDController().setOutputRange(-motionMagicConfigs[9], motionMagicConfigs[9]);
+        anglePIDController.setP(motionMagicConfigs[0]);
+        anglePIDController.setI(motionMagicConfigs[1]);
+        anglePIDController.setD(motionMagicConfigs[2]);
+        anglePIDController.setFF(motionMagicConfigs[3]);
+        anglePIDController.setSmartMotionMaxVelocity(motionMagicConfigs[5], 0);
+        anglePIDController.setSmartMotionMaxAccel(motionMagicConfigs[6], 0);
+        anglePIDController.setSmartMotionAllowedClosedLoopError(motionMagicConfigs[7], 0);
+        anglePIDController.setIMaxAccum(motionMagicConfigs[8], 0);
+        anglePIDController.setOutputRange(-motionMagicConfigs[9], motionMagicConfigs[9]);
+        angleEncoder.setPositionConversionFactor(SwerveConstants.ANGLE_REDUCTION);
+        angleEncoder.setVelocityConversionFactor(SwerveConstants.ANGLE_REDUCTION);
         angleMotor.burnFlash();
-
-        drivePIDController = new PIDController(SwerveConstants.DRIVE_kP, SwerveConstants.DRIVE_kI, SwerveConstants.DRIVE_kD);
-        anglePIDCOntroller = new PIDController(motionMagicConfigs[0], motionMagicConfigs[1], motionMagicConfigs[2]);
     }
 
     @Override
@@ -90,66 +87,66 @@ public class ModuleIOSparkMax implements ModuleIO {
         inputs.driveMotorSupplyCurrentOverTime = driveSupplyChargeUsedCoulomb.get();
         driveStatorChargeUsedCoulomb.update(inputs.driveMotorStatorCurrent);
         inputs.driveMotorStatorCurrentOverTime = driveStatorChargeUsedCoulomb.get();
-        inputs.driveMotorPosition = driveMotor.getEncoder().getPosition() * 42;
+        inputs.driveMotorPosition = driveEncoder.getPosition();
         inputs.driveMotorVelocity = getVelocity();
-        inputs.driveMotorVelocitySetpoint = driveMotorVelocitySetpoint;
 
         inputs.angleMotorSupplyCurrent = angleMotor.getOutputCurrent();
         angleSupplyChargeUsedCoulomb.update(inputs.angleMotorSupplyCurrent);
         inputs.angleMotorSupplyCurrentOverTime = angleSupplyChargeUsedCoulomb.get();
         angleStatorChargeUsedCoulomb.update(inputs.angleMotorStatorCurrent);
         inputs.angleMotorStatorCurrentOverTime = angleStatorChargeUsedCoulomb.get();
-        inputs.angleMotorPosition = angleMotor.getEncoder().getPosition() * 42;
+        inputs.angleMotorPosition = angleEncoder.getPosition();
         angleMotorPosition = inputs.angleMotorPosition;
-        inputs.angleMotorVelocity = ticksPerMeter.toVelocity((angleMotor.getEncoder().getVelocity() / 60) * 42);
+        inputs.angleMotorVelocity = Units.rpmToRps(angleEncoder.getVelocity());
 
-        inputs.angle = getAngle();
+        inputs.angle = AngleUtil.normalize(angleEncoder.getPosition() * 2 * Math.PI);
         currentAngle = inputs.angle;
 
         inputs.angleSetpoint = angleSetpoint;
 
-        inputs.moduleDistance = getModulePosition().distanceMeters;
+        inputs.moduleDistance = inputs.driveMotorPosition * SwerveConstants.WHEEL_CIRCUMFERENCE;
+        moduleDistance = inputs.moduleDistance;
     }
 
     @Override
     public double getAngle() {
-        return AngleUtil.normalize(ticksPerRad.toUnits(angleMotor.getEncoder().getPosition()));
+        return currentAngle;
     }
 
     @Override
     public void setAngle(double angle) {
         angleSetpoint = AngleUtil.normalize(angle);
         Rotation2d error = new Rotation2d(angle).minus(new Rotation2d(currentAngle));
-        double output = anglePIDCOntroller.calculate(angleMotorPosition, angleMotorPosition + ticksPerRad.toTicks(error.getRadians()));
-        angleMotor.set(output);
+        anglePIDController.setReference(
+                angleMotorPosition + error.getRadians(),
+                CANSparkMax.ControlType.kPosition);
     }
 
     @Override
     public double getVelocity() {
-        return ticksPerMeter.toVelocity((driveMotor.getEncoder().getVelocity() / 60) * 42);
+        return Units.rpsToRadsPerSec(driveEncoder.getVelocity()) * SwerveConstants.WHEEL_DIAMETER;
     }
 
     @Override
     public void setVelocity(double velocity) {
         var angleError = new Rotation2d(angleSetpoint).minus(new Rotation2d(currentAngle));
         velocity *= angleError.getCos();
-        driveMotorVelocitySetpoint = velocity;
-        double output = drivePIDController.calculate(getVelocity(), driveMotorVelocitySetpoint);
-        driveMotor.set(output);
+        drivePIDController.setReference(
+                velocity,
+                CANSparkMax.ControlType.kVelocity);
     }
 
     @Override
     public SwerveModulePosition getModulePosition() {
         return new SwerveModulePosition(
-                ticksPerMeter.toUnits(driveMotor.getEncoder().getPosition() * 42),
+                moduleDistance,
                 new Rotation2d(getAngle())
         );
     }
 
     @Override
     public void updateOffset(double offset) {
-        angleMotor.getEncoder().setPosition(
-                (((encoder.getAbsolutePosition() - offset) * 42) / SwerveConstants.ANGLE_REDUCTION) / 42);
+        angleEncoder.setPosition(encoder.getAbsolutePosition() - offset);
     }
 
     @Override
