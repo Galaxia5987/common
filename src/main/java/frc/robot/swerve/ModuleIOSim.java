@@ -4,8 +4,8 @@ import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.wpilibj.simulation.FlywheelSim;
-import lib.math.AngleUtil;
-import lib.math.differential.Integral;
+import frc.robot.utils.math.AngleUtil;
+import frc.robot.utils.math.differential.Integral;
 
 public class ModuleIOSim implements ModuleIO {
     private final FlywheelSim driveMotor;
@@ -13,13 +13,16 @@ public class ModuleIOSim implements ModuleIO {
 
     private final PIDController angleFeedback;
     private final PIDController velocityFeedback;
-    private final Integral currentAngle = new Integral();
-    private final Integral moduleDistance = new Integral();
+
     private double currentVelocity = 0;
     private double driveMotorAppliedVoltage = 0;
     private double angleMotorAppliedVoltage = 0;
+
     private double velocitySetpoint = 0;
     private double angleSetpoint = 0;
+
+    private final Integral currentAngle = new Integral(0, 0);
+    private final Integral moduleDistance = new Integral(0, 0);
 
     public ModuleIOSim() {
         driveMotor = new FlywheelSim(

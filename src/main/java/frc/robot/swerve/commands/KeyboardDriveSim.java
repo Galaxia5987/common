@@ -1,10 +1,10 @@
 package frc.robot.swerve.commands;
 
 import edu.wpi.first.wpilibj.GenericHID;
-import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.swerve.SwerveDrive;
+import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.subsystems.drivetrain.SwerveDrive;
 
-public class KeyboardDriveSim extends Command {
+public class KeyboardDriveSim extends CommandBase {
 
     private final SwerveDrive drive = SwerveDrive.getInstance();
 

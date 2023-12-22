@@ -1,8 +1,5 @@
 package frc.robot.swerve;
 
-import com.ctre.phoenix.motorcontrol.StatorCurrentLimitConfiguration;
-import com.ctre.phoenix.motorcontrol.SupplyCurrentLimitConfiguration;
-import com.ctre.phoenix.motorcontrol.TalonFXInvertType;
 import edu.wpi.first.math.geometry.Translation2d;
 
 public class SwerveConstants {
@@ -10,10 +7,10 @@ public class SwerveConstants {
             {0.5686593642164841, 0.26232458155811456, 0.00854002521350063, 0.5429330635733266};
 
     public static final double VOLT_COMP_SATURATION = 12;
-    public static final SupplyCurrentLimitConfiguration SUPPLY_CURRENT_LIMIT = new SupplyCurrentLimitConfiguration(true, 50, 0, 0);
-    public static final StatorCurrentLimitConfiguration STATOR_CURRENT_LIMIT = new StatorCurrentLimitConfiguration(true, 50, 0, 0);
+    public static final int CURRENT_LIMIT = 50;
+    public static final int ALT_CURRENT_LIMIT = 20;
 
-    public static final double robotWidth = 0.512; //[m]
+    public static final double robotWidth = 0.512; //[m] //TODO: update
     public static final double robotLength = 0.67; //[m]
     public static final double WHEEL_DIAMETER = 0.1023679821; //[m]
     public static final double DRIVE_REDUCTION = (1 / 2.0) * (24.0 / 22.0) * (15.0 / 45.0);
@@ -50,15 +47,12 @@ public class SwerveConstants {
     public static final double MAX_OMEGA_VELOCITY = MAX_X_Y_VELOCITY / //[m/s]
             Math.sqrt((robotLength / 2) * (robotLength / 2) + (robotWidth / 2) * (robotWidth / 2));
 
-    public static final TalonFXInvertType CLOCKWISE = TalonFXInvertType.Clockwise;
-    public static final TalonFXInvertType COUNTER_CLOCKWISE = TalonFXInvertType.CounterClockwise;
-
     public static final double NEUTRAL_DEADBAND = 0.15;
     public static final double XBOX_DEADBAND = 0.15;
 
 
-    public static final double TICKS_PER_RADIAN = 2048 / ANGLE_REDUCTION / (Math.PI * 2);
-    public static final double TICKS_PER_METER = (2048 / DRIVE_REDUCTION) / (Math.PI * WHEEL_DIAMETER);
+    public static final double TICKS_PER_RADIAN = 42 / ANGLE_REDUCTION / (Math.PI * 2);
+    public static final double TICKS_PER_METER = (42 / DRIVE_REDUCTION) / (Math.PI * WHEEL_DIAMETER);
 
     public static final Translation2d[] wheelPositions = {
             new Translation2d(robotLength / 2, robotWidth / 2),   //FL

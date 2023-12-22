@@ -12,6 +12,8 @@ public interface ModuleIO {
 
     void setAngle(double angle);
 
+    default void setAngleSpeed(double speed){}
+
     default double getVelocity() {
         return 0;
     }
@@ -25,7 +27,7 @@ public interface ModuleIO {
     default void updateOffset(double offset) {
     }
 
-    default void neutralOutput() {
+    default void stop() {
     }
 
     default boolean encoderConnected() {

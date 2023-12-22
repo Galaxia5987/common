@@ -5,8 +5,10 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.*;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import lib.Utils;
-import lib.math.differential.Derivative;
+import frc.robot.Ports;
+import frc.robot.Robot;
+import frc.robot.utils.Utils;
+import frc.robot.utils.math.differential.Derivative;
 import org.littletonrobotics.junction.Logger;
 
 
@@ -22,21 +24,21 @@ public class SwerveDrive extends SubsystemBase {
             SwerveConstants.wheelPositions[3]
     );
     private final SwerveDriveOdometry odometry;
-    private final Derivative acceleration = new Derivative();
+    private SwerveDriveInputsAutoLogged loggerInputs = new SwerveDriveInputsAutoLogged();
+    private SwerveModuleState[] currentModuleStates = new SwerveModuleState[4];
+    private SwerveModuleState[] desiredModuleStates = new SwerveModuleState[4];
+    private final Derivative acceleration = new Derivative(0, 0);
     private final SwerveModulePosition[] modulePositions = new SwerveModulePosition[4];
-    private final SwerveDriveInputsAutoLogged loggerInputs = new SwerveDriveInputsAutoLogged();
-    private final SwerveModuleState[] currentModuleStates = new SwerveModuleState[4];
 
-    private SwerveDrive(boolean isReal,
-                        int[] driveIds,
-                        int[] angleIds,
-                        int[] encoderIds) {
-        if (isReal) {
+    private SwerveDrive() {
+        if (Robot.isReal()) {
             for (int i = 0; i < modules.length; i++) {
                 ModuleIO io = new ModuleIOReal(
-                        driveIds[i],
-                        angleIds[i],
-                        encoderIds[i],
+                        Ports.SwerveDrive.DRIVE_IDS[i],
+                        Ports.SwerveDrive.ANGLE_IDS[i],
+                        Ports.SwerveDrive.ENCODER_IDS[i],
+                        Ports.SwerveDrive.DRIVE_INVERTED[i],
+                        Ports.SwerveDrive.ANGLE_INVERTED[i],
                         SwerveConstants.motionMagicConfigs[i],
                         i + 1);
 
@@ -61,16 +63,10 @@ public class SwerveDrive extends SubsystemBase {
     }
 
     public static SwerveDrive getInstance() {
-        return INSTANCE;
-    }
-
-    public static void setInstance(boolean isReal,
-                                   int[] driveIds,
-                                   int[] angleIds,
-                                   int[] encoderIds) {
         if (INSTANCE == null) {
-            INSTANCE = new SwerveDrive(isReal, driveIds, angleIds, encoderIds);
+            INSTANCE = new SwerveDrive();
         }
+        return INSTANCE;
     }
 
     /**
@@ -135,10 +131,6 @@ public class SwerveDrive extends SubsystemBase {
         return loggerInputs.linearVelocity;
     }
 
-    public ChassisSpeeds getCurrentSpeeds() {
-        return Utils.arrayToChassisSpeeds(loggerInputs.currentSpeeds);
-    }
-
     public void resetPose(Pose2d pose) {
         odometry.resetPosition(new Rotation2d(getYaw()), modulePositions, pose);
     }
@@ -174,10 +166,6 @@ public class SwerveDrive extends SubsystemBase {
         modules[3].setModuleState(new SwerveModuleState(0, Rotation2d.fromDegrees(225)));
     }
 
-    public SwerveModulePosition[] getModulePositions() {
-        return modulePositions;
-    }
-
     /**
      * Sets the correct module states from desired chassis speeds.
      *
@@ -196,7 +184,7 @@ public class SwerveDrive extends SubsystemBase {
 
         if (chassisSpeeds.equals(new ChassisSpeeds(0, 0, 0))) {
             for (SwerveModule module : modules) {
-                module.neutralOutput();
+                module.stop();
             }
         }
 
@@ -208,7 +196,7 @@ public class SwerveDrive extends SubsystemBase {
     }
 
     /**
-     * Sets the desired percentage of x, y and omega speeds for the frc.robot.swerve
+     * Sets the desired percentage of x, y and omega speeds for the swerve
      *
      * @param xOutput     percentage of the x speed
      * @param yOutput     percentage of the y speed
@@ -227,16 +215,16 @@ public class SwerveDrive extends SubsystemBase {
         updateModulePositions();
         odometry.update(new Rotation2d(getYaw()), modulePositions);
 
-        loggerInputs.botPose[0] = odometry.getPoseMeters().getX();
-        loggerInputs.botPose[1] = odometry.getPoseMeters().getY();
-        loggerInputs.botPose[2] = odometry.getPoseMeters().getRotation().getRadians();
+        loggerInputs.botPose[0] = getBotPose().getX();
+        loggerInputs.botPose[1] = getBotPose().getY();
+        loggerInputs.botPose[2] = getBotPose().getRotation().getRadians();
 
         for (int i = 0; i < modules.length; i++) {
             currentModuleStates[i] = modules[i].getModuleState();
             loggerInputs.absolutePositions[i] = modules[i].getPosition();
         }
 
-        Logger.recordOutput("SwerveDrive/currentModuleSates", currentModuleStates);
+        Logger.getInstance().recordOutput("SwerveDrive/currentModuleSates", currentModuleStates);
 
         for (int i = 0; i < 3; i++) {
             loggerInputs.currentSpeeds[i] =
@@ -265,11 +253,12 @@ public class SwerveDrive extends SubsystemBase {
         loggerInputs.pitch = gyro.getPitch();
         gyro.updateInputs(loggerInputs);
 
+//        desiredModuleStates = Utils.arrayToSwerveModuleStates(loggerInputs.desiredModuleStates);
         SwerveDriveKinematics.desaturateWheelSpeeds(Utils.arrayToSwerveModuleStates(loggerInputs.desiredModuleStates), SwerveConstants.MAX_X_Y_VELOCITY); //TODO: may not work
         for (int i = 0; i < modules.length; i++) {
             modules[i].setModuleState(Utils.arrayToSwerveModuleStates(loggerInputs.desiredModuleStates)[i]);
         }
 
-        Logger.processInputs("SwerveDrive", loggerInputs);
+        Logger.getInstance().processInputs("SwerveDrive", loggerInputs);
     }
 }

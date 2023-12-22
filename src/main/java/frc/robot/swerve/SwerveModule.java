@@ -5,7 +5,7 @@ import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import lib.math.differential.BooleanTrigger;
+import frc.robot.utils.math.differential.BooleanTrigger;
 import org.littletonrobotics.junction.Logger;
 
 public class SwerveModule extends SubsystemBase {
@@ -15,7 +15,7 @@ public class SwerveModule extends SubsystemBase {
     private final ModuleIO io;
 
     private final int number;
-    private final BooleanTrigger encoderTrigger = new BooleanTrigger();
+    private final BooleanTrigger encoderTrigger = new BooleanTrigger(false, false);
     private final Timer timer = new Timer();
     private SwerveModuleState currentModuleState = new SwerveModuleState();
 
@@ -45,6 +45,14 @@ public class SwerveModule extends SubsystemBase {
         moduleState = SwerveModuleState.optimize(moduleState, new Rotation2d(loggerInputs.angle));
         io.setVelocity(moduleState.speedMetersPerSecond);
         io.setAngle(moduleState.angle.getRadians());
+    }
+
+    public void setAngleSpeed(double speed){
+        io.setAngleSpeed(speed);
+    }
+
+    public void setVelocity(double speed){
+        io.setVelocity(speed);
     }
 
     /**
@@ -94,8 +102,8 @@ public class SwerveModule extends SubsystemBase {
         io.updateOffset(offset);
     }
 
-    public void neutralOutput() {
-        io.neutralOutput();
+    public void stop() {
+        io.stop();
     }
 
     public boolean encoderConnected() {
@@ -114,9 +122,9 @@ public class SwerveModule extends SubsystemBase {
 
         io.updateInputs(loggerInputs);
 
-        Logger.recordOutput("SwerveDrive/currentModuleState" + number, currentModuleState);
+        Logger.getInstance().recordOutput("SwerveDrive/currentModuleState" + number, currentModuleState);
 
-        Logger.processInputs("module_" + number, loggerInputs);
+        Logger.getInstance().processInputs("module_" + number, loggerInputs);
 
         encoderTrigger.update(io.encoderConnected());
 

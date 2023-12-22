@@ -1,9 +1,9 @@
 package frc.robot.swerve;
 
-import lib.math.differential.Integral;
+import frc.robot.utils.math.differential.Integral;
 
 public class GyroIOSim implements GyroIO {
-    private final Integral yaw = new Integral();
+    private final Integral yaw = new Integral(0, 0);
 
     @Override
     public double getYaw() {
