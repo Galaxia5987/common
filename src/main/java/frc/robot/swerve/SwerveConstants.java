@@ -13,6 +13,9 @@ public class SwerveConstants {
     public static final SupplyCurrentLimitConfiguration SUPPLY_CURRENT_LIMIT = new SupplyCurrentLimitConfiguration(true, 50, 0, 0);
     public static final StatorCurrentLimitConfiguration STATOR_CURRENT_LIMIT = new StatorCurrentLimitConfiguration(true, 50, 0, 0);
 
+    public static final int CURRENT_LIMIT = 50;
+    public static final int ALT_CURRENT_LIMIT = 20;
+
     public static final double robotWidth = 0.512; //[m]
     public static final double robotLength = 0.67; //[m]
     public static final double WHEEL_DIAMETER = 0.1023679821; //[m]
