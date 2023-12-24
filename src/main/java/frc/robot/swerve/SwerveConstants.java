@@ -1,20 +1,18 @@
 package frc.robot.swerve;
 
-import com.ctre.phoenix.motorcontrol.StatorCurrentLimitConfiguration;
-import com.ctre.phoenix.motorcontrol.SupplyCurrentLimitConfiguration;
-import com.ctre.phoenix.motorcontrol.TalonFXInvertType;
+import com.ctre.phoenix6.configs.CurrentLimitsConfigs;
 import com.ctre.phoenix6.configs.MotionMagicConfigs;
 import com.ctre.phoenix6.configs.Slot0Configs;
 import edu.wpi.first.math.geometry.Translation2d;
+import frc.robot.Constants;
 
 public class SwerveConstants {
     public static final double[] OFFSETS =
             {0.5686593642164841, 0.26232458155811456, 0.00854002521350063, 0.5429330635733266};
 
     public static final double VOLT_COMP_SATURATION = 12;
-    public static final SupplyCurrentLimitConfiguration SUPPLY_CURRENT_LIMIT = new SupplyCurrentLimitConfiguration(true, 50, 0, 0);
-    public static final StatorCurrentLimitConfiguration STATOR_CURRENT_LIMIT = new StatorCurrentLimitConfiguration(true, 50, 0, 0);
-
+    public static final CurrentLimitsConfigs CURRENT_LIMITS_CONFIGS = new
+            CurrentLimitsConfigs().withSupplyCurrentLimit(50).withStatorCurrentLimit(50);
     public static final double ROBOT_WIDTH = 0.512; //[m]
     public static final double ROBOT_LENGTH = 0.67; //[m]
     public static final double WHEEL_DIAMETER = 0.1023679821; //[m]

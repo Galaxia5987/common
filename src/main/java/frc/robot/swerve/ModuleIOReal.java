@@ -13,6 +13,7 @@ import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RunCommand;
+import frc.robot.Constants;
 import utils.math.AngleUtil;
 import utils.math.differential.Integral;
 
@@ -42,8 +43,7 @@ public class ModuleIOReal implements ModuleIO {
         driveMotorConfig.Slot0 = drivePIDGains;
         driveMotorConfig.Voltage.PeakForwardVoltage = SwerveConstants.VOLT_COMP_SATURATION;
         driveMotorConfig.Voltage.PeakReverseVoltage = -SwerveConstants.VOLT_COMP_SATURATION;
-        driveMotorConfig.CurrentLimits.SupplyCurrentLimit = SwerveConstants.SUPPLY_CURRENT_LIMIT.currentLimit;
-        driveMotorConfig.CurrentLimits.StatorCurrentLimit = SwerveConstants.STATOR_CURRENT_LIMIT.currentLimit;
+        driveMotorConfig.CurrentLimits = SwerveConstants.CURRENT_LIMITS_CONFIGS;
         driveMotorConfig.ClosedLoopGeneral.ContinuousWrap = true;
         driveMotorConfig.Feedback.SensorToMechanismRatio = 1 / SwerveConstants.DRIVE_REDUCTION;
         driveMotorConfig.Feedback.RotorToSensorRatio = 1;
@@ -57,8 +57,7 @@ public class ModuleIOReal implements ModuleIO {
         angleMotorConfig.MotionMagic = motionMagicConfigs;
         angleMotorConfig.Voltage.PeakForwardVoltage = SwerveConstants.VOLT_COMP_SATURATION;
         angleMotorConfig.Voltage.PeakReverseVoltage = -SwerveConstants.VOLT_COMP_SATURATION;
-        angleMotorConfig.CurrentLimits.SupplyCurrentLimit = SwerveConstants.SUPPLY_CURRENT_LIMIT.currentLimit;
-        angleMotorConfig.CurrentLimits.StatorCurrentLimit = SwerveConstants.STATOR_CURRENT_LIMIT.currentLimit;
+        angleMotorConfig.CurrentLimits = SwerveConstants.CURRENT_LIMITS_CONFIGS;
         angleMotorConfig.ClosedLoopGeneral.ContinuousWrap = true;
         angleMotorConfig.Feedback.SensorToMechanismRatio = 1 / SwerveConstants.ANGLE_REDUCTION;
         angleMotorConfig.Feedback.RotorToSensorRatio = 1;
