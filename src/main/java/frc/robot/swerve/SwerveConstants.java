@@ -54,34 +54,12 @@ public class SwerveConstants {
     public static final double MAX_OMEGA_VELOCITY = MAX_X_Y_VELOCITY / //[m/s]
             Math.sqrt((ROBOT_LENGTH / 2) * (ROBOT_LENGTH / 2) + (ROBOT_WIDTH / 2) * (ROBOT_WIDTH / 2));
 
-    public static final TalonFXInvertType CLOCKWISE = TalonFXInvertType.Clockwise;
-    public static final TalonFXInvertType COUNTER_CLOCKWISE = TalonFXInvertType.CounterClockwise;
-
     public static final double NEUTRAL_DEADBAND = 0.15;
     public static final double XBOX_DEADBAND = 0.15;
 
     public static final Translation2d[] WHEEL_POSITIONS = {
-    public static final double TICKS_PER_RADIAN = FALCON_TICKS / ANGLE_REDUCTION / (Math.PI * 2);
-    public static final double TICKS_PER_METER = (FALCON_TICKS / DRIVE_REDUCTION) / (Math.PI * WHEEL_DIAMETER);
-
             new Translation2d(ROBOT_LENGTH / 2, ROBOT_WIDTH / 2),   //FL
             new Translation2d(ROBOT_LENGTH / 2, -ROBOT_WIDTH / 2),   //FR
             new Translation2d(-ROBOT_LENGTH / 2, ROBOT_WIDTH / 2),  //RL
             new Translation2d(-ROBOT_LENGTH / 2, -ROBOT_WIDTH / 2)}; //RR
-
-    public static final double MAX_VELOCITY_AUTO = 4.0;
-    public static final double MAX_ACCELERATION_AUTO = 2.5;
-
-    public static double AUTO_X_Kp = 3.20;
-    public static double AUTO_X_Ki = 0.0;
-    public static double AUTO_X_Kd = 0.73;
-    public static double AUTO_Y_Kp = 3.20;
-    public static double AUTO_Y_Ki = 0.0;
-    public static double AUTO_Y_Kd = 0.6;
-    public static double AUTO_ROTATION_Kp = 10;
-    public static double AUTO_ROTATION_Ki = 0.0;
-    public static double AUTO_ROTATION_Kd = 0.0;
-
-    public static double FORWARD_BALANCE_TIME = 0.65;
-    public static double BACKWARD_BALANCE_TIME = 0.55;
 }
