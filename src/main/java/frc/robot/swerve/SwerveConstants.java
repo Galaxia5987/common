@@ -1,8 +1,6 @@
 package frc.robot.swerve;
 
-import com.ctre.phoenix6.configs.CurrentLimitsConfigs;
-import com.ctre.phoenix6.configs.MotionMagicConfigs;
-import com.ctre.phoenix6.configs.Slot0Configs;
+import com.ctre.phoenix6.configs.*;
 import edu.wpi.first.math.geometry.Translation2d;
 import frc.robot.Constants;
 
@@ -21,31 +19,26 @@ public class SwerveConstants {
     public static final double DRIVE_MOTOR_MOMENT_OF_INERTIA = 0.025;
     public static final double ANGLE_MOTOR_MOMENT_OF_INERTIA = 0.004;
 
+    public static final double NEUTRAL_DEADBAND = 0.15;
+    public static final double XBOX_DEADBAND = 0.15;
+
     public static final Slot0Configs DRIVE_PID_GAINS =
             new Slot0Configs().withKP(0.005).withKI(0.0).withKD(0.148).withKV(0.05).withKS(0);
-
-    public static final Slot0Configs FRONT_LEFT_ANGLE_PID_GAINS =
+    public static final Slot0Configs ANGLE_PID_GAINS =
             new Slot0Configs().withKP(1).withKI(0).withKD(0).withKV(0.2).withKS(0);
-
-    public static final Slot0Configs FRONT_RIGHT_ANGLE_PID_GAINS =
-            new Slot0Configs().withKP(1).withKI(0).withKD(0).withKV(0.2).withKS(0);
-
-    public static final Slot0Configs REAR_LEFT_ANGLE_PID_GAINS =
-            new Slot0Configs().withKP(1).withKI(0).withKD(0).withKV(0.2).withKS(0);
-
-    public static final Slot0Configs REAR_RIGHT_ANGLE_PID_GAINS =
-            new Slot0Configs().withKP(1).withKI(0).withKD(0).withKV(0.2).withKS(0);
-
     public static final MotionMagicConfigs MOTION_MAGIC_CONFIGS =
-            new MotionMagicConfigs()
-                    .withMotionMagicAcceleration(25000).withMotionMagicCruiseVelocity(21288).withMotionMagicJerk(1);
+            new MotionMagicConfigs().withMotionMagicAcceleration(25000).withMotionMagicCruiseVelocity(21288).withMotionMagicJerk(1);
 
-    public static final Slot0Configs[] SLOT_0_ANGLE_CONFIGS = {
-            FRONT_LEFT_ANGLE_PID_GAINS,
-            FRONT_RIGHT_ANGLE_PID_GAINS,
-            REAR_LEFT_ANGLE_PID_GAINS,
-            REAR_RIGHT_ANGLE_PID_GAINS
-    };
+    public static final VoltageConfigs VOLTAGE_CONFIGS = new VoltageConfigs().withPeakForwardVoltage(VOLT_COMP_SATURATION).withPeakReverseVoltage(VOLT_COMP_SATURATION);
+    public static final FeedbackConfigs FEEDBACK_CONFIGS = new FeedbackConfigs().withRotorToSensorRatio(1).withSensorToMechanismRatio(1/DRIVE_REDUCTION);
+    public static final MotorOutputConfigs MOTOR_OUTPUT_CONFIGS = new MotorOutputConfigs().withDutyCycleNeutralDeadband(NEUTRAL_DEADBAND);
+
+    public static final TalonFXConfiguration DRIVE_MOTOR_CONFIGS = new TalonFXConfiguration()
+            .withSlot0(DRIVE_PID_GAINS).withVoltage(VOLTAGE_CONFIGS)
+            .withCurrentLimits(CURRENT_LIMITS_CONFIGS).withFeedback(FEEDBACK_CONFIGS);
+    public static final TalonFXConfiguration ANGLE_MOTOR_CONFIGS = new TalonFXConfiguration()
+            .withSlot0(ANGLE_PID_GAINS).withMotionMagic(MOTION_MAGIC_CONFIGS).withVoltage(VOLTAGE_CONFIGS)
+            .withCurrentLimits(CURRENT_LIMITS_CONFIGS).withFeedback(FEEDBACK_CONFIGS).withMotorOutput(MOTOR_OUTPUT_CONFIGS);
 
     public static final double MAX_X_Y_VELOCITY = 6380.0 / 60.0 * //[m/s]
             DRIVE_REDUCTION *
@@ -53,9 +46,6 @@ public class SwerveConstants {
 
     public static final double MAX_OMEGA_VELOCITY = MAX_X_Y_VELOCITY / //[m/s]
             Math.sqrt((ROBOT_LENGTH / 2) * (ROBOT_LENGTH / 2) + (ROBOT_WIDTH / 2) * (ROBOT_WIDTH / 2));
-
-    public static final double NEUTRAL_DEADBAND = 0.15;
-    public static final double XBOX_DEADBAND = 0.15;
 
     public static final Translation2d[] WHEEL_POSITIONS = {
             new Translation2d(ROBOT_LENGTH / 2, ROBOT_WIDTH / 2),   //FL

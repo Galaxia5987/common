@@ -31,39 +31,25 @@ public class ModuleIOReal implements ModuleIO {
     private Rotation2d currentAngle;
     private double driveMotorVelocitySetpoint;
 
-    public ModuleIOReal(int driveMotorID, int angleMotorID, int encoderID,
-                        Slot0Configs drivePIDGains, Slot0Configs anglePIDGains,
-                        MotionMagicConfigs motionMagicConfigs, int number) {
+    public ModuleIOReal(int driveMotorID, int angleMotorID, int encoderID, int number,
+                        TalonFXConfiguration driveConfig, TalonFXConfiguration angleConfig) {
         this.driveMotor = new TalonFX(driveMotorID);
         this.angleMotor = new TalonFX(angleMotorID);
 
         this.encoder = new DutyCycleEncoder(encoderID);
 
         TalonFXConfiguration driveMotorConfig = new TalonFXConfiguration();
-        driveMotorConfig.Slot0 = drivePIDGains;
-        driveMotorConfig.Voltage.PeakForwardVoltage = SwerveConstants.VOLT_COMP_SATURATION;
-        driveMotorConfig.Voltage.PeakReverseVoltage = -SwerveConstants.VOLT_COMP_SATURATION;
-        driveMotorConfig.CurrentLimits = SwerveConstants.CURRENT_LIMITS_CONFIGS;
+        driveMotorConfig = driveConfig;
         driveMotorConfig.ClosedLoopGeneral.ContinuousWrap = true;
-        driveMotorConfig.Feedback.SensorToMechanismRatio = 1 / SwerveConstants.DRIVE_REDUCTION;
-        driveMotorConfig.Feedback.RotorToSensorRatio = 1;
         driveMotor.getConfigurator().apply(driveMotorConfig);
+
+        TalonFXConfiguration angleMotorConfig = new TalonFXConfiguration();
+        angleMotorConfig = angleConfig;
+        angleMotorConfig.ClosedLoopGeneral.ContinuousWrap = true;
+        angleMotor.getConfigurator().apply(angleMotorConfig);
 
         driveMotor.setNeutralMode(NeutralModeValue.Brake);
         driveMotor.setInverted(true);
-
-        TalonFXConfiguration angleMotorConfig = new TalonFXConfiguration();
-        angleMotorConfig.Slot0 = anglePIDGains;
-        angleMotorConfig.MotionMagic = motionMagicConfigs;
-        angleMotorConfig.Voltage.PeakForwardVoltage = SwerveConstants.VOLT_COMP_SATURATION;
-        angleMotorConfig.Voltage.PeakReverseVoltage = -SwerveConstants.VOLT_COMP_SATURATION;
-        angleMotorConfig.CurrentLimits = SwerveConstants.CURRENT_LIMITS_CONFIGS;
-        angleMotorConfig.ClosedLoopGeneral.ContinuousWrap = true;
-        angleMotorConfig.Feedback.SensorToMechanismRatio = 1 / SwerveConstants.ANGLE_REDUCTION;
-        angleMotorConfig.Feedback.RotorToSensorRatio = 1;
-        angleMotorConfig.MotorOutput.DutyCycleNeutralDeadband = SwerveConstants.NEUTRAL_DEADBAND;
-        angleMotor.getConfigurator().apply(angleMotorConfig);
-
         angleMotor.setNeutralMode(NeutralModeValue.Brake);
         angleMotor.setInverted(true);
     }
