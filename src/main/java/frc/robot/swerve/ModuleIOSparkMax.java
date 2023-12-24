@@ -70,9 +70,9 @@ public class ModuleIOSparkMax implements ModuleIO {
         anglePIDController.setFF(motionMagicConfigs[3]);
         anglePIDController.setSmartMotionMaxVelocity(motionMagicConfigs[5], 0);
         anglePIDController.setSmartMotionMaxAccel(motionMagicConfigs[6], 0);
-        anglePIDController.setSmartMotionAllowedClosedLoopError(motionMagicConfigs[7], 0);
-        anglePIDController.setIMaxAccum(motionMagicConfigs[8], 0);
-        anglePIDController.setOutputRange(-motionMagicConfigs[9], motionMagicConfigs[9]);
+//        anglePIDController.setSmartMotionAllowedClosedLoopError(motionMagicConfigs[7], 0);
+//        anglePIDController.setIMaxAccum(motionMagicConfigs[8], 0);
+//        anglePIDController.setOutputRange(-motionMagicConfigs[9], motionMagicConfigs[9]);
         angleEncoder.setPositionConversionFactor(SwerveConstants.ANGLE_REDUCTION);
         angleEncoder.setVelocityConversionFactor(SwerveConstants.ANGLE_REDUCTION);
         angleMotor.burnFlash();
