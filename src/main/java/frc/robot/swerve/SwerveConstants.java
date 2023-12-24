@@ -62,11 +62,10 @@ public class SwerveConstants {
     public static final double NEUTRAL_DEADBAND = 0.15;
     public static final double XBOX_DEADBAND = 0.15;
 
-
+    public static final Translation2d[] WHEEL_POSITIONS = {
     public static final double TICKS_PER_RADIAN = FALCON_TICKS / ANGLE_REDUCTION / (Math.PI * 2);
     public static final double TICKS_PER_METER = (FALCON_TICKS / DRIVE_REDUCTION) / (Math.PI * WHEEL_DIAMETER);
 
-    public static final Translation2d[] wheelPositions = {
             new Translation2d(ROBOT_LENGTH / 2, ROBOT_WIDTH / 2),   //FL
             new Translation2d(ROBOT_LENGTH / 2, -ROBOT_WIDTH / 2),   //FR
             new Translation2d(-ROBOT_LENGTH / 2, ROBOT_WIDTH / 2),  //RL

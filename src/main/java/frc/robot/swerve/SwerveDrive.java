@@ -16,10 +16,10 @@ public class SwerveDrive extends SubsystemBase {
     private final SwerveModule[] modules = new SwerveModule[4]; //FL, FR, RL, RR
     private final LinearFilter accelFilter = LinearFilter.movingAverage(15);
     private final SwerveDriveKinematics kinematics = new SwerveDriveKinematics(
-            SwerveConstants.wheelPositions[0],
-            SwerveConstants.wheelPositions[1],
-            SwerveConstants.wheelPositions[2],
-            SwerveConstants.wheelPositions[3]
+            SwerveConstants.WHEEL_POSITIONS[0],
+            SwerveConstants.WHEEL_POSITIONS[1],
+            SwerveConstants.WHEEL_POSITIONS[2],
+            SwerveConstants.WHEEL_POSITIONS[3]
     );
     private final SwerveDriveOdometry odometry;
     private final Derivative acceleration = new Derivative();
