@@ -60,26 +60,9 @@ public class SwerveConstants {
                     .withKV(0.2)
                     .withKS(0);
 
-    public static final MotionMagicConfigs FRONT_LEFT_MOTION_MAGIC_CONFIGS =
+    public static final MotionMagicConfigs MOTION_MAGIC_CONFIGS =
             new MotionMagicConfigs()
-                    .withMotionMagicAcceleration(25000)
-                    .withMotionMagicCruiseVelocity(21288)
-                    .withMotionMagicJerk(1);
-    public static final MotionMagicConfigs FRONT_RIGHT_MOTION_MAGIC_CONFIGS =
-            new MotionMagicConfigs()
-                    .withMotionMagicAcceleration(25000)
-                    .withMotionMagicCruiseVelocity(21288)
-                    .withMotionMagicJerk(1);
-    public static final MotionMagicConfigs REAR_LEFT_MOTION_MAGIC_CONFIGS =
-            new MotionMagicConfigs()
-                    .withMotionMagicAcceleration(25000)
-                    .withMotionMagicCruiseVelocity(21288)
-                    .withMotionMagicJerk(1);
-    public static final MotionMagicConfigs REAR_RIGHT_MOTION_MAGIC_CONFIGS =
-            new MotionMagicConfigs()
-                    .withMotionMagicAcceleration(25000)
-                    .withMotionMagicCruiseVelocity(21288)
-                    .withMotionMagicJerk(1);
+                    .withMotionMagicAcceleration(25000).withMotionMagicCruiseVelocity(21288).withMotionMagicJerk(1);
 
 
     public static final Slot0Configs[] SLOT_0_ANGLE_CONFIGS = {
@@ -87,13 +70,6 @@ public class SwerveConstants {
             FRONT_RIGHT_ANGLE_PID_GAINS,
             REAR_LEFT_ANGLE_PID_GAINS,
             REAR_RIGHT_ANGLE_PID_GAINS
-    };
-
-    public static final MotionMagicConfigs[] MOTION_MAGIC_CONFIGS = {
-            FRONT_LEFT_MOTION_MAGIC_CONFIGS,
-            FRONT_RIGHT_MOTION_MAGIC_CONFIGS,
-            REAR_LEFT_MOTION_MAGIC_CONFIGS,
-            REAR_RIGHT_MOTION_MAGIC_CONFIGS
     };
 
     public static final double MAX_X_Y_VELOCITY = 6380.0 / 60.0 * //[m/s]
