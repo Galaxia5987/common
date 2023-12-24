@@ -24,46 +24,23 @@ public class SwerveConstants {
     public static final double ANGLE_MOTOR_MOMENT_OF_INERTIA = 0.004;
 
     public static final Slot0Configs DRIVE_PID_GAINS =
-            new Slot0Configs()
-                    .withKP(0.005)
-                    .withKI(0.0)
-                    .withKD(0.148)
-                    .withKV(0.05)
-                    .withKS(0);
+            new Slot0Configs().withKP(0.005).withKI(0.0).withKD(0.148).withKV(0.05).withKS(0);
 
     public static final Slot0Configs FRONT_LEFT_ANGLE_PID_GAINS =
-            new Slot0Configs()
-                    .withKP(1)
-                    .withKI(0)
-                    .withKD(0)
-                    .withKV(0.2)
-                    .withKS(0);
+            new Slot0Configs().withKP(1).withKI(0).withKD(0).withKV(0.2).withKS(0);
+
     public static final Slot0Configs FRONT_RIGHT_ANGLE_PID_GAINS =
-            new Slot0Configs()
-                    .withKP(1)
-                    .withKI(0)
-                    .withKD(0)
-                    .withKV(0.2)
-                    .withKS(0);
+            new Slot0Configs().withKP(1).withKI(0).withKD(0).withKV(0.2).withKS(0);
+
     public static final Slot0Configs REAR_LEFT_ANGLE_PID_GAINS =
-            new Slot0Configs()
-                    .withKP(1)
-                    .withKI(0)
-                    .withKD(0)
-                    .withKV(0.2)
-                    .withKS(0);
+            new Slot0Configs().withKP(1).withKI(0).withKD(0).withKV(0.2).withKS(0);
+
     public static final Slot0Configs REAR_RIGHT_ANGLE_PID_GAINS =
-            new Slot0Configs()
-                    .withKP(1)
-                    .withKI(0)
-                    .withKD(0)
-                    .withKV(0.2)
-                    .withKS(0);
+            new Slot0Configs().withKP(1).withKI(0).withKD(0).withKV(0.2).withKS(0);
 
     public static final MotionMagicConfigs MOTION_MAGIC_CONFIGS =
             new MotionMagicConfigs()
                     .withMotionMagicAcceleration(25000).withMotionMagicCruiseVelocity(21288).withMotionMagicJerk(1);
-
 
     public static final Slot0Configs[] SLOT_0_ANGLE_CONFIGS = {
             FRONT_LEFT_ANGLE_PID_GAINS,
