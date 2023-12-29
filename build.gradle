@@ -54,7 +54,7 @@ wpi.java.debugJni = false
 // Set this to true to enable desktop support.
 def includeDesktopSupport = true
 
-// Configuration for AdvantageKit
+// Configuration for lib publishing and AdvantageKit
 repositories {
     maven {
       name = "GitHubPackages"
