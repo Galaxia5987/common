@@ -4,7 +4,7 @@ import edu.wpi.first.wpilibj.Timer;
 
 /*
 This class contains an integral.
-This integral is used to approximate the area under a curve.
+This integral is used to approximate the area under a curve over time.
  */
 public class Integral {
 

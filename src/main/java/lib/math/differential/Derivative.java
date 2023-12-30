@@ -2,6 +2,9 @@ package lib.math.differential;
 
 import edu.wpi.first.wpilibj.Timer;
 
+/*
+This class represents the derivative of a value over time.
+ */
 public class Derivative {
 
     // The value to differentiate
