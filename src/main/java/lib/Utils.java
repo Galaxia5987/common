@@ -9,19 +9,6 @@ import edu.wpi.first.math.kinematics.SwerveModuleState;
 public class Utils {
     public static final double EPSILON = 1e-9;
 
-    /**
-     * sets the value of the joystick to 0 if the value is less than the threshold
-     *
-     * @param val       the joystick value
-     * @param threshold the threshold value
-     * @return 0 if val is less than the threshold else val
-     */
-    public static double deadband(double val, double threshold) {
-        if (Math.abs(val) < threshold)
-            return 0;
-        return (val - Math.signum(val) * threshold) / (1 - threshold);
-    }
-
     public static boolean epsilonEquals(double a, double b) {
         return epsilonEquals(a, b, EPSILON);
     }

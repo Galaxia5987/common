@@ -11,41 +11,6 @@ import org.junit.jupiter.api.Test;
 public class TestUtils {
 
     @Test
-    public void testDeadband() {
-        Assertions.assertEquals(
-                0,
-                Utils.deadband(0.5, 0.5),
-                Utils.EPSILON
-        );
-        Assertions.assertEquals(
-                0,
-                Utils.deadband(0.25, 0.5),
-                Utils.EPSILON
-        );
-        Assertions.assertEquals(
-                0.5,
-                Utils.deadband(0.75, 0.5),
-                Utils.EPSILON
-        );
-
-        Assertions.assertEquals(
-                0,
-                Utils.deadband(-0.5, 0.5),
-                Utils.EPSILON
-        );
-        Assertions.assertEquals(
-                0,
-                Utils.deadband(-0.25, 0.5),
-                Utils.EPSILON
-        );
-        Assertions.assertEquals(
-                -0.5,
-                Utils.deadband(-0.75, 0.5),
-                Utils.EPSILON
-        );
-    }
-
-    @Test
     public void testEpsilonEqualsDefaultEpsilon() {
         Assertions.assertTrue(
                 Utils.epsilonEquals(1, 1)
