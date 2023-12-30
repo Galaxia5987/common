@@ -59,9 +59,4 @@ public class Utils {
                 epsilonEquals(speeds.vyMetersPerSecond, 0) &&
                 epsilonEquals(speeds.omegaRadiansPerSecond, 0);
     }
-    public static double[] pose3dToArray(Pose3d pose){
-        return new double[]{
-                pose.getX(), pose.getY(), pose.getZ(),
-                pose.getRotation().getQuaternion().getW(), pose.getRotation().getQuaternion().getX(), pose.getRotation().getQuaternion().getY(), pose.getRotation().getQuaternion().getZ()};
-    }
 }
