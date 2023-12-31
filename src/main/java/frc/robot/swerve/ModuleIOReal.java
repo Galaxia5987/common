@@ -145,9 +145,9 @@ public class ModuleIOReal implements ModuleIO {
     }
 
     @Override
-    public void neutralOutput() {
-        driveMotor.setControl(new NeutralOut());
-        angleMotor.setControl(new NeutralOut());
+    public void stopMotor() {
+        driveMotor.stopMotor();
+        angleMotor.stopMotor();
     }
 
     @Override

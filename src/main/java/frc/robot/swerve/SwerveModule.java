@@ -92,8 +92,8 @@ public class SwerveModule extends SubsystemBase {
         io.updateOffset(offset);
     }
 
-    public void neutralOutput() {
-        io.neutralOutput();
+    public void stopMotor() {
+        io.stopMotor();
     }
 
     public boolean encoderConnected() {

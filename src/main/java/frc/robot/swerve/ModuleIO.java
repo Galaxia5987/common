@@ -30,7 +30,7 @@ public interface ModuleIO {
     default void updateOffset(double offset) {
     }
 
-    default void neutralOutput() {
+    default void stopMotor() {
     }
 
     default boolean encoderConnected() {
