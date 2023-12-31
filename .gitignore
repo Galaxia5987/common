@@ -164,6 +164,3 @@ bin/
 main/java/frc/robot/common/
 
 BuildConstants.java
-Main.java
-Robot.java
-RobotContainer.java
