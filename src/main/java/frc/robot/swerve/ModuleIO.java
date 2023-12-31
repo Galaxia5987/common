@@ -4,20 +4,15 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj2.command.Command;
-import org.littletonrobotics.junction.AutoLog;
 
 public interface ModuleIO {
     void updateInputs(SwerveModuleInputs inputs);
 
-    default Rotation2d getAngle() {
-        return new Rotation2d();
-    }
+    Rotation2d getAngle();
 
     void setAngle(Rotation2d angle);
 
-    default double getVelocity() {
-        return 0;
-    }
+    double getVelocity();
 
     void setVelocity(double velocity);
 
