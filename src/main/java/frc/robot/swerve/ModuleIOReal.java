@@ -1,7 +1,5 @@
 package frc.robot.swerve;
 
-import com.ctre.phoenix6.configs.MotionMagicConfigs;
-import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.*;
 import com.ctre.phoenix6.hardware.TalonFX;
@@ -30,6 +28,9 @@ public class ModuleIOReal implements ModuleIO {
     private Rotation2d angleSetpoint;
     private Rotation2d currentAngle;
     private double driveMotorVelocitySetpoint;
+
+    private MotionMagicVoltage angleControlRequest = new MotionMagicVoltage(0).withEnableFOC(true);
+    private VelocityVoltage velocityControlRequest = new VelocityVoltage(0).withEnableFOC(true);
 
     public ModuleIOReal(int driveMotorID, int angleMotorID, int encoderID, int number,
                         TalonFXConfiguration driveConfig, TalonFXConfiguration angleConfig) {
@@ -95,9 +96,8 @@ public class ModuleIOReal implements ModuleIO {
     public void setAngle(Rotation2d angle) {
         angleSetpoint = angle;
         Rotation2d error = angle.minus(currentAngle);
-        angleMotor.setControl(
-                new MotionMagicVoltage(angleMotor.getPosition().getValue() + error.getRotations())
-                        .withEnableFOC(true));
+        angleControlRequest.withPosition(angleMotor.getPosition().getValue() + error.getRotations());
+        angleMotor.setControl(angleControlRequest);
     }
 
     @Override
@@ -111,11 +111,11 @@ public class ModuleIOReal implements ModuleIO {
         velocity *= angleError.getCos();
 
         driveMotorVelocitySetpoint = velocity;
-        driveMotor.setControl(
-                new VelocityVoltage(utils.units.Units.metersToRotations(
+
+        velocityControlRequest.withVelocity(utils.units.Units.metersToRotations(
                         velocity,
-                SwerveConstants.WHEEL_DIAMETER / 2
-        )).withEnableFOC(true));
+                        SwerveConstants.WHEEL_DIAMETER / 2));
+        driveMotor.setControl(velocityControlRequest);
     }
 
     @Override
