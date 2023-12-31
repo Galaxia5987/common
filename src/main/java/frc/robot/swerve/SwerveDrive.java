@@ -24,7 +24,7 @@ public class SwerveDrive extends SubsystemBase {
     private final SwerveDriveOdometry odometry;
     private final Derivative acceleration = new Derivative();
     private final SwerveModulePosition[] modulePositions = new SwerveModulePosition[4];
-    private final SwerveDriveInputs loggerInputs = new SwerveDriveInputs();
+    private final SwerveDriveInputsAutoLogged loggerInputs = new SwerveDriveInputsAutoLogged();
 
     private SwerveDrive(boolean isReal,
                         int[] driveIds,

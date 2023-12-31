@@ -1,6 +1,5 @@
 package frc.robot.swerve;
 
-import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.Timer;
@@ -10,7 +9,7 @@ import org.littletonrobotics.junction.Logger;
 
 public class SwerveModule extends SubsystemBase {
 
-    private final SwerveModuleInputs loggerInputs = new SwerveModuleInputs();
+    private final SwerveModuleInputsAutoLogged loggerInputs = new SwerveModuleInputsAutoLogged();
 
     private final ModuleIO io;
 
