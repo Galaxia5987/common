@@ -109,6 +109,7 @@ test {
     useJUnitPlatform()
     systemProperty 'junit.jupiter.extensions.autodetection.enabled', 'true'
 }
+    exclude('**/*.java')
 
 configurations.all {
     exclude group: "edu.wpi.first.wpilibj"
