@@ -17,8 +17,8 @@ public class ModuleIOSim implements ModuleIO {
     private final TalonFXSim driveMotor;
     private final TalonFXSim angleMotor;
 
-    private VelocityVoltage driveControl = new VelocityVoltage(0);
-    private PositionVoltage angleControl = new PositionVoltage(0);
+    private VelocityVoltage driveControl = new VelocityVoltage(0).withEnableFOC(true);
+    private PositionVoltage angleControl = new PositionVoltage(0).withEnableFOC(true);
 
     private final PIDController angleFeedback;
     private final PIDController velocityFeedback;
