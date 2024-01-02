@@ -6,6 +6,7 @@ import com.ctre.phoenix6.controls.VoltageOut;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.Timer;
 import utils.math.AngleUtil;
@@ -101,5 +102,21 @@ public class ModuleIOSim implements ModuleIO {
                 getVelocity(),
                 getAngle()
         );
+    }
+
+    @Override
+    public SwerveModulePosition getModulePosition() {
+        return new SwerveModulePosition(Units.rpsToMetersPerSecond(
+                driveMotor.getRotorPosition(), SwerveConstants.WHEEL_DIAMETER/2),
+                currentAngle);
+    }
+
+    @Override
+    public void stopMotor() {
+        driveControl.withVelocity(0);
+        driveMotor.setControl(driveControl);
+
+        angleControl.withVelocity(0);
+        angleMotor.setControl(angleControl);
     }
 }

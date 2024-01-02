@@ -18,14 +18,11 @@ public interface ModuleIO {
 
     SwerveModuleState getModuleState();
 
-    default SwerveModulePosition getModulePosition(){
-        return null;
-    }
+    SwerveModulePosition getModulePosition();
+
+    void stopMotor();
 
     default void updateOffset(double offset) {
-    }
-
-    default void stopMotor() {
     }
 
     default boolean encoderConnected() {
