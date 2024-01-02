@@ -39,15 +39,11 @@ public class ModuleIOReal implements ModuleIO {
 
         this.encoder = new DutyCycleEncoder(encoderID);
 
-        TalonFXConfiguration driveMotorConfig = new TalonFXConfiguration();
-        driveMotorConfig = driveConfig;
-        driveMotorConfig.ClosedLoopGeneral.ContinuousWrap = true;
-        driveMotor.getConfigurator().apply(driveMotorConfig);
+        driveConfig.ClosedLoopGeneral.ContinuousWrap = true;
+        driveMotor.getConfigurator().apply(driveConfig);
 
-        TalonFXConfiguration angleMotorConfig = new TalonFXConfiguration();
-        angleMotorConfig = angleConfig;
-        angleMotorConfig.ClosedLoopGeneral.ContinuousWrap = true;
-        angleMotor.getConfigurator().apply(angleMotorConfig);
+        angleConfig.ClosedLoopGeneral.ContinuousWrap = true;
+        angleMotor.getConfigurator().apply(angleConfig);
 
         driveMotor.setNeutralMode(NeutralModeValue.Brake);
         driveMotor.setInverted(true);
