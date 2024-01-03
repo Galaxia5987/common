@@ -164,3 +164,4 @@ bin/
 main/java/frc/robot/common/
 
 BuildConstants.java
+/.idea
