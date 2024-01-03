@@ -30,6 +30,7 @@ public class ModuleIOSparkMax implements ModuleIO {
     private double currentAngle;
     private double angleMotorPosition;
     private double moduleDistance;
+    private double driveMotorSetpoint;
 
     public ModuleIOSparkMax(int driveMotorID, int angleMotorID, int encoderID,
                             boolean driveInverted, boolean angleInverted,
@@ -89,6 +90,7 @@ public class ModuleIOSparkMax implements ModuleIO {
         inputs.driveMotorStatorCurrentOverTime = driveStatorChargeUsedCoulomb.get();
         inputs.driveMotorPosition = driveEncoder.getPosition();
         inputs.driveMotorVelocity = getVelocity();
+        inputs.driveMotorVelocitySetpoint = driveMotorSetpoint;
 
         inputs.angleMotorSupplyCurrent = angleMotor.getOutputCurrent();
         angleSupplyChargeUsedCoulomb.update(inputs.angleMotorSupplyCurrent);
@@ -124,15 +126,16 @@ public class ModuleIOSparkMax implements ModuleIO {
 
     @Override
     public double getVelocity() {
-        return Units.rpsToRadsPerSec(driveEncoder.getVelocity()) * SwerveConstants.WHEEL_DIAMETER;
+        return Units.rpmToRadsPerSec(driveEncoder.getVelocity()) * SwerveConstants.WHEEL_DIAMETER;
     }
 
     @Override
     public void setVelocity(double velocity) {
         var angleError = new Rotation2d(angleSetpoint).minus(new Rotation2d(currentAngle));
         velocity *= angleError.getCos();
+        driveMotorSetpoint = velocity;
         drivePIDController.setReference(
-                velocity,
+                Units.metersPerSecondToRps(velocity,SwerveConstants.WHEEL_DIAMETER/2)*60,
                 CANSparkMax.ControlType.kVelocity);
     }
 
