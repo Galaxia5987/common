@@ -27,10 +27,10 @@ public class SwerveConstants {
 
     // kP, kI, kD, kF, sCurveStrength, cruiseVelocity, acceleration, allowableError,
     // maxIntegralAccum, peakOutput
-    public static final double[] FRONT_LEFT_MOTION_MAGIC_CONFIGS = {0.35, 0, 1, 0.00065, 1, 0, 0, 10, 5, 1};
-    public static final double[] FRONT_RIGHT_MOTION_MAGIC_CONFIGS = {0.35, 0, 1, 0.00065, 1, 0, 0, 10, 5, 1};
-    public static final double[] REAR_LEFT_MOTION_MAGIC_CONFIGS = {0.35, 0, 1, 0.00065, 1, 0, 0, 10, 5, 1};
-    public static final double[] REAR_RIGHT_MOTION_MAGIC_CONFIGS = {0.35, 0, 1, 0.00065, 1, 0, 0, 10, 5, 1};
+    public static final double[] FRONT_LEFT_MOTION_MAGIC_CONFIGS = {3.5, 0, 0, 0.00065, 1, 0, 0, 10, 5, 1};
+    public static final double[] FRONT_RIGHT_MOTION_MAGIC_CONFIGS = {3.5, 0, 0, 0.00065, 1, 0, 0, 10, 5, 1};
+    public static final double[] REAR_LEFT_MOTION_MAGIC_CONFIGS = {3.5, 0, 0, 0.00065, 1, 0, 0, 10, 5, 1};
+    public static final double[] REAR_RIGHT_MOTION_MAGIC_CONFIGS = {3.5, 0, 0, 0.00065, 1, 0, 0, 10, 5, 1};
 
     public static final double[][] motionMagicConfigs = {
             FRONT_LEFT_MOTION_MAGIC_CONFIGS,
