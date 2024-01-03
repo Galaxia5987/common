@@ -135,6 +135,7 @@ jar {
     exclude('frc/robot/RobotContainer.class')
     exclude('frc/robot/Main.class')
     exclude('frc/robot/Constants.class')
+    exclude('frc/robot/Ports.class')
 }
 
 // Configure jar and deploy tasks
