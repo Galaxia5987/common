@@ -190,6 +190,12 @@ public class SwerveDrive extends SubsystemBase {
         return modulePositions;
     }
 
+    public void updateOffsets(double[] offsets){
+        for (int i = 0; i < modules.length; i++) {
+            modules[i].updateOffset(offsets[i]);
+        }
+    }
+
     /**
      * Sets the correct module states from desired chassis speeds.
      *
