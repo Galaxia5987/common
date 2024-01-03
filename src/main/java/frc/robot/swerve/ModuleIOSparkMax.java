@@ -120,7 +120,7 @@ public class ModuleIOSparkMax implements ModuleIO {
         angleSetpoint = AngleUtil.normalize(angle);
         Rotation2d error = new Rotation2d(angle).minus(new Rotation2d(currentAngle));
         anglePIDController.setReference(
-                angleMotorPosition + error.getRadians(),
+                angleMotorPosition + error.getRotations(),
                 CANSparkMax.ControlType.kPosition);
     }
 
