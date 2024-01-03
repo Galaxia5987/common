@@ -120,9 +120,9 @@ public class SwerveModule extends SubsystemBase {
 
         encoderTrigger.update(io.encoderConnected());
 
-        if (timer.hasElapsed(1)) {
-            io.updateOffset(SwerveConstants.OFFSETS[number - 1]);
-            timer.reset();
-        }
+//        if (timer.hasElapsed(1)) {
+//            io.updateOffset(SwerveConstants.OFFSETS[number - 1]);
+//            timer.reset();
+//        }
     }
 }
