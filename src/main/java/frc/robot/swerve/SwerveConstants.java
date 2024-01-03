@@ -18,19 +18,19 @@ public class SwerveConstants {
 
     public static final double robotWidth = 0.512; //[m]
     public static final double robotLength = 0.67; //[m]
-    public static final double WHEEL_DIAMETER = 0.1023679821; //[m]
+    public static final double WHEEL_DIAMETER = 0.0735; //[m]
     public static final double WHEEL_CIRCUMFERENCE = Math.PI * WHEEL_DIAMETER; //[m]
-    public static final double DRIVE_REDUCTION = (1 / 2.0) * (24.0 / 22.0) * (15.0 / 45.0);
-    public static final double ANGLE_REDUCTION = (14.0 / 72.0) * 0.5;
+    public static final double DRIVE_REDUCTION = (12.0 / 24.0) * (28.0 / 20.0) * (15.0 / 45.0);
+    public static final double ANGLE_REDUCTION = (6.0 / 40.0) * (11.0 / 59.0);
     public static final double DriveMotorMomentOfInertia = 0.025;
     public static final double AngleMotorMomentOfInertia = 0.004;
 
     // kP, kI, kD, kF, sCurveStrength, cruiseVelocity, acceleration, allowableError,
     // maxIntegralAccum, peakOutput
-    public static final double[] FRONT_LEFT_MOTION_MAGIC_CONFIGS = {0.1, 0, 0, 0, 1, 0, 0, 10, 5, 1};
-    public static final double[] FRONT_RIGHT_MOTION_MAGIC_CONFIGS = {0.1, 0, 0, 0, 1, 0, 0, 10, 5, 1};
-    public static final double[] REAR_LEFT_MOTION_MAGIC_CONFIGS = {0.1, 0, 0, 0, 1, 0, 0, 10, 5, 1};
-    public static final double[] REAR_RIGHT_MOTION_MAGIC_CONFIGS = {0.1, 0, 0, 0, 1, 0, 0, 10, 5, 1};
+    public static final double[] FRONT_LEFT_MOTION_MAGIC_CONFIGS = {0.35, 0, 1, 0.00065, 1, 0, 0, 10, 5, 1};
+    public static final double[] FRONT_RIGHT_MOTION_MAGIC_CONFIGS = {0.35, 0, 1, 0.00065, 1, 0, 0, 10, 5, 1};
+    public static final double[] REAR_LEFT_MOTION_MAGIC_CONFIGS = {0.35, 0, 1, 0.00065, 1, 0, 0, 10, 5, 1};
+    public static final double[] REAR_RIGHT_MOTION_MAGIC_CONFIGS = {0.35, 0, 1, 0.00065, 1, 0, 0, 10, 5, 1};
 
     public static final double[][] motionMagicConfigs = {
             FRONT_LEFT_MOTION_MAGIC_CONFIGS,
@@ -38,16 +38,16 @@ public class SwerveConstants {
             REAR_LEFT_MOTION_MAGIC_CONFIGS,
             REAR_RIGHT_MOTION_MAGIC_CONFIGS};
 
-    public static final double DRIVE_kP = 0.005;
+    public static final double DRIVE_kP = 0.01;
     public static final double DRIVE_kI = 0.0;
-    public static final double DRIVE_kD = 0.148;
-    public static final double DRIVE_KF = 0.05;
+    public static final double DRIVE_kD = 0.0;
+    public static final double DRIVE_KF = 0.00075;
 
-    public static final double OMEGA_kP = 0.5;
+    public static final double OMEGA_kP = 0.0;
     public static final double OMEGA_kI = 0.0;
     public static final double OMEGA_kD = 0.0;
 
-    public static final double MAX_X_Y_VELOCITY = 6380.0 / 60.0 * //[m/s]
+    public static final double MAX_X_Y_VELOCITY = 5874 / 60.0 * //[m/s]
             DRIVE_REDUCTION *
             WHEEL_DIAMETER * Math.PI;
 
