@@ -7,13 +7,14 @@ import com.ctre.phoenix6.signals.NeutralModeValue;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
-import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import frc.robot.Constants;
 import utils.math.AngleUtil;
 import utils.math.differential.Integral;
+
+import javax.swing.text.Position;
 
 public class ModuleIOReal implements ModuleIO {
 
@@ -29,11 +30,15 @@ public class ModuleIOReal implements ModuleIO {
     private Rotation2d currentAngle = new Rotation2d();
     private double driveMotorVelocitySetpoint = 0;
 
-    private MotionMagicVoltage angleControlRequest = new MotionMagicVoltage(0).withEnableFOC(true);
-    private VelocityVoltage velocityControlRequest = new VelocityVoltage(0).withEnableFOC(true);
+    private final PositionVoltage angleControlRequest = new PositionVoltage(0).withEnableFOC(true);
+    private final VelocityVoltage velocityControlRequest = new VelocityVoltage(0).withEnableFOC(true);
+
+    private final int number;
 
     public ModuleIOReal(int driveMotorID, int angleMotorID, int encoderID, int number,
                         TalonFXConfiguration driveConfig, TalonFXConfiguration angleConfig) {
+        this.number = number;
+
         this.driveMotor = new TalonFX(driveMotorID);
         this.angleMotor = new TalonFX(angleMotorID);
 
@@ -41,9 +46,11 @@ public class ModuleIOReal implements ModuleIO {
 
         driveConfig.ClosedLoopGeneral.ContinuousWrap = true;
         driveMotor.getConfigurator().apply(driveConfig);
+        driveMotor.setPosition(0);
 
         angleConfig.ClosedLoopGeneral.ContinuousWrap = true;
         angleMotor.getConfigurator().apply(angleConfig);
+        angleMotor.setPosition(0);
 
         driveMotor.setNeutralMode(NeutralModeValue.Brake);
         driveMotor.setInverted(true);
@@ -85,14 +92,16 @@ public class ModuleIOReal implements ModuleIO {
 
     @Override
     public Rotation2d getAngle() {
-        return new Rotation2d(AngleUtil.normalize(Units.rotationsToRadians(angleMotor.getPosition().getValue())));
+        return AngleUtil.normalize(Rotation2d.fromRotations(angleMotor.getPosition().getValue()));
     }
 
     @Override
     public void setAngle(Rotation2d angle) {
+        angle = AngleUtil.normalize(angle);
         angleSetpoint = angle;
         Rotation2d error = angle.minus(currentAngle);
-        angleControlRequest.withPosition(angleMotor.getPosition().getValue() + error.getRotations());
+        angleControlRequest.withPosition((angleMotor.getPosition().getValue() + error.getRotations()) / SwerveConstants.ANGLE_REDUCTION)
+                .withEnableFOC(true);
         angleMotor.setControl(angleControlRequest);
     }
 
@@ -110,7 +119,8 @@ public class ModuleIOReal implements ModuleIO {
 
         velocityControlRequest.withVelocity(utils.units.Units.metersToRotations(
                         velocity,
-                        SwerveConstants.WHEEL_DIAMETER / 2));
+                        SwerveConstants.WHEEL_DIAMETER / 2))
+                .withEnableFOC(true);
         driveMotor.setControl(velocityControlRequest);
     }
 
