@@ -37,30 +37,17 @@ public class Robot extends LoggedRobot {
     @Override
     public void robotInit() {
         SwerveDrive.setInstance(
-                Robot.isReal(), true,
-                new boolean[] {
-                        true, true, true, true
-                },
-                new boolean[] {
-                        true, true, true, true
-                },
-                new int[] {
-                        10, 6, 2, 4
-                },
-                new int[] {
-                        8, 13, 3, 5
-                },
-                new int[] {
-                        8, 6, 7, 9
-                }
-        );
+                true,
+                Ports.SwerveDrive.DRIVE_IDS,
+                Ports.SwerveDrive.ANGLE_IDS,
+                Ports.SwerveDrive.ENCODER_IDS);
+
         robotContainer = RobotContainer.getInstance();
 
         Logger.recordMetadata("ProjectName", "Robot-template");
 
         if (isReal()) {
             Logger.addDataReceiver(new NT4Publisher());
-            Logger.addDataReceiver(new WPILOGWriter("home/lvuser"));
 
             try (PowerDistribution pwr = new PowerDistribution(1, PowerDistribution.ModuleType.kRev)) {
                 System.out.println("Power distribution working");
