@@ -162,8 +162,3 @@ bin/
 *-window.json
 
 BuildConstants.java
-RobotContainer.java
-Robot.java
-Main.java
-
-/.idea
