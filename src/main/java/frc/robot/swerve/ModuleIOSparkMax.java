@@ -86,7 +86,7 @@ public class ModuleIOSparkMax implements ModuleIO {
 
     @Override
     public void updateInputs(SwerveModuleInputs inputs) {
-        inputs.absolutePosition = encoder.getAbsolutePosition();
+        inputs.absolutePosition = getEncoderAngle();
 
         inputs.driveMotorSupplyCurrent = driveMotor.getOutputCurrent();
         driveSupplyChargeUsedCoulomb.update(inputs.driveMotorSupplyCurrent);
@@ -155,7 +155,7 @@ public class ModuleIOSparkMax implements ModuleIO {
 
     @Override
     public void updateOffset(double offset) {
-        angleEncoder.setPosition(encoder.getAbsolutePosition() - offset);
+        angleEncoder.setPosition(getEncoderAngle() - offset);
     }
 
     @Override
@@ -173,5 +173,9 @@ public class ModuleIOSparkMax implements ModuleIO {
     public void checkModule() {
         driveMotor.set(0.8);
         angleMotor.set(0.2);
+    }
+
+    private double getEncoderAngle() {
+        return 1.0 - encoder.getAbsolutePosition();
     }
 }
