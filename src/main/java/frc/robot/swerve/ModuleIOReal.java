@@ -100,7 +100,7 @@ public class ModuleIOReal implements ModuleIO {
         angle = AngleUtil.normalize(angle);
         angleSetpoint = angle;
         Rotation2d error = angle.minus(currentAngle);
-        angleControlRequest.withPosition((angleMotor.getPosition().getValue() + error.getRotations()) / SwerveConstants.ANGLE_REDUCTION)
+        angleControlRequest.withPosition(angleMotor.getPosition().getValue() + error.getRotations())
                 .withEnableFOC(true);
         angleMotor.setControl(angleControlRequest);
     }
