@@ -25,9 +25,9 @@ public class ModuleIOReal implements ModuleIO {
     private final Integral driveStatorChargeUsedCoulomb = new Integral();
     private final Integral angleSupplyChargeUsedCoulomb = new Integral();
     private final Integral angleStatorChargeUsedCoulomb = new Integral();
-    private Rotation2d angleSetpoint;
-    private Rotation2d currentAngle;
-    private double driveMotorVelocitySetpoint;
+    private Rotation2d angleSetpoint = new Rotation2d();
+    private Rotation2d currentAngle = new Rotation2d();
+    private double driveMotorVelocitySetpoint = 0;
 
     private MotionMagicVoltage angleControlRequest = new MotionMagicVoltage(0).withEnableFOC(true);
     private VelocityVoltage velocityControlRequest = new VelocityVoltage(0).withEnableFOC(true);
@@ -62,7 +62,7 @@ public class ModuleIOReal implements ModuleIO {
         driveStatorChargeUsedCoulomb.update(inputs.driveMotorStatorCurrent);
         inputs.driveMotorStatorCurrentOverTime = driveStatorChargeUsedCoulomb.get();
         inputs.driveMotorPosition = driveMotor.getRotorPosition().getValue();
-        inputs.driveMotorVelocity = getVelocity();
+        inputs.driveMotorVelocity = utils.units.Units.rpsToMetersPerSecond(getVelocity(), SwerveConstants.WHEEL_DIAMETER/2);
         inputs.driveMotorVelocitySetpoint = driveMotorVelocitySetpoint;
 
         inputs.angleMotorSupplyCurrent = angleMotor.getSupplyCurrent().getValue();
@@ -98,7 +98,7 @@ public class ModuleIOReal implements ModuleIO {
 
     @Override
     public double getVelocity() {
-        return driveMotor.getVelocity().getValue();
+        return utils.units.Units.rpsToMetersPerSecond(driveMotor.getVelocity().getValue(), SwerveConstants.WHEEL_DIAMETER/2);
     }
 
     @Override
