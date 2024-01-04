@@ -162,3 +162,5 @@ bin/
 *-window.json
 
 BuildConstants.java
+
+/.idea
