@@ -4,9 +4,12 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.SparkMaxPIDController;
+import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
+import edu.wpi.first.wpilibj.RobotController;
 import lib.math.AngleUtil;
 import lib.math.differential.Integral;
 import lib.units.Units;
@@ -32,6 +35,12 @@ public class ModuleIOSparkMax implements ModuleIO {
     private double moduleDistance;
     private double driveMotorSetpoint;
 
+    private final SimpleMotorFeedforward feedforward = new SimpleMotorFeedforward(
+            SwerveConstants.DRIVE_kS,
+            SwerveConstants.DRIVE_kV,
+            SwerveConstants.DRIVE_kA
+    );
+
     public ModuleIOSparkMax(int driveMotorID, int angleMotorID, int encoderID,
                             boolean driveInverted, boolean angleInverted,
                             double[] motionMagicConfigs) {
@@ -45,10 +54,6 @@ public class ModuleIOSparkMax implements ModuleIO {
         drivePIDController = driveMotor.getPIDController();
         driveEncoder = driveMotor.getEncoder();
 
-        drivePIDController.setP(SwerveConstants.DRIVE_kP);
-        drivePIDController.setI(SwerveConstants.DRIVE_kI);
-        drivePIDController.setD(SwerveConstants.DRIVE_kD);
-        drivePIDController.setFF(SwerveConstants.DRIVE_KF);
         driveMotor.enableVoltageCompensation(SwerveConstants.VOLT_COMP_SATURATION);
         driveMotor.setIdleMode(CANSparkMax.IdleMode.kBrake);
         driveMotor.setSmartCurrentLimit(SwerveConstants.CURRENT_LIMIT);
@@ -91,6 +96,7 @@ public class ModuleIOSparkMax implements ModuleIO {
         inputs.driveMotorPosition = driveEncoder.getPosition();
         inputs.driveMotorVelocity = getVelocity();
         inputs.driveMotorVelocitySetpoint = driveMotorSetpoint;
+        inputs.driveMotorAppliedVoltage = driveMotor.getAppliedOutput() * RobotController.getBatteryVoltage();
 
         inputs.angleMotorSupplyCurrent = angleMotor.getOutputCurrent();
         angleSupplyChargeUsedCoulomb.update(inputs.angleMotorSupplyCurrent);
@@ -126,7 +132,7 @@ public class ModuleIOSparkMax implements ModuleIO {
 
     @Override
     public double getVelocity() {
-        return Units.rpmToRadsPerSec(driveEncoder.getVelocity()) * SwerveConstants.WHEEL_DIAMETER;
+        return Units.rpmToRadsPerSec(driveEncoder.getVelocity()) * (SwerveConstants.WHEEL_DIAMETER / 2);
     }
 
     @Override
@@ -135,8 +141,8 @@ public class ModuleIOSparkMax implements ModuleIO {
         velocity *= angleError.getCos();
         driveMotorSetpoint = velocity;
         drivePIDController.setReference(
-                Units.metersPerSecondToRps(velocity,SwerveConstants.WHEEL_DIAMETER/2)*60,
-                CANSparkMax.ControlType.kVelocity);
+                feedforward.calculate(velocity),
+                CANSparkMax.ControlType.kVoltage);
     }
 
     @Override
