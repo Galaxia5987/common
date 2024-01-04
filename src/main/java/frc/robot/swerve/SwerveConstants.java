@@ -23,7 +23,7 @@ public class SwerveConstants {
     public static final double XBOX_DEADBAND = 0.15;
 
     public static final Slot0Configs DRIVE_PID_GAINS =
-            new Slot0Configs().withKP(0.005).withKI(0.0).withKD(0.148).withKV(0.05).withKS(0);
+            new Slot0Configs().withKP(0.0).withKI(0.0).withKD(0.0).withKV(2.12).withKS(0.6);
     public static final Slot0Configs ANGLE_PID_GAINS =
             new Slot0Configs().withKP(1).withKI(0).withKD(0).withKV(0.2).withKS(0);
     public static final MotionMagicConfigs MOTION_MAGIC_CONFIGS =
