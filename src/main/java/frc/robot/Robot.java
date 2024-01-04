@@ -60,7 +60,6 @@ public class Robot extends LoggedRobot {
 
         if (isReal()) {
             Logger.addDataReceiver(new NT4Publisher());
-            Logger.addDataReceiver(new WPILOGWriter("home/lvuser"));
 
             try (PowerDistribution pwr = new PowerDistribution(1, PowerDistribution.ModuleType.kRev)) {
                 System.out.println("Power distribution working");
