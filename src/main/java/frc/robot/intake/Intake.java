@@ -5,6 +5,7 @@ import com.revrobotics.CANSparkMaxLowLevel;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import lib.Utils;
 
 public class Intake extends SubsystemBase {
 
@@ -20,11 +21,13 @@ public class Intake extends SubsystemBase {
         spinMotor.restoreFactoryDefaults();
         spinMotor.setInverted(false);
         spinMotor.setSmartCurrentLimit(40, 40);
+        spinMotor.setIdleMode(CANSparkMax.IdleMode.kCoast);
         spinMotor.burnFlash();
 
         angleMotor.restoreFactoryDefaults();
         angleMotor.setInverted(false);
-        spinMotor.setSmartCurrentLimit(40, 40);
+        angleMotor.setSmartCurrentLimit(40, 40);
+        angleMotor.setIdleMode(CANSparkMax.IdleMode.kBrake);
         angleMotor.burnFlash();
     }
 
