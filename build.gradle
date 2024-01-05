@@ -181,6 +181,9 @@ spotless {
     }
     java {
         targetExclude('**/BuildConstants.java')
+
+        cleanthat()
+
         // use AOSP style for 4-character wide indents
         googleJavaFormat().aosp()
         // fix formatting of type annotations
