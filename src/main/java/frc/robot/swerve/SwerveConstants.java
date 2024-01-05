@@ -5,7 +5,7 @@ import edu.wpi.first.math.geometry.Translation2d;
 
 public class SwerveConstants {
     public static final double[] OFFSETS =
-            {0.5686593642164841, 0.26232458155811456, 0.00854002521350063, 0.5429330635733266};
+            {0.5682190642054766,0.26206180655154515,0.0051252501281312535,0.5540886138522153};
 
     public static final double VOLT_COMP_SATURATION = 12;
     public static final CurrentLimitsConfigs CURRENT_LIMITS_CONFIGS = new
@@ -18,15 +18,15 @@ public class SwerveConstants {
     public static final double DRIVE_MOTOR_MOMENT_OF_INERTIA = 0.025;
     public static final double ANGLE_MOTOR_MOMENT_OF_INERTIA = 0.004;
 
-    public static final double NEUTRAL_DEADBAND = 0.15;
+    public static final double NEUTRAL_DEADBAND = 0.05;
     public static final double XBOX_DEADBAND = 0.15;
 
     public static final Slot0Configs DRIVE_PID_GAINS =
-            new Slot0Configs().withKP(0.0).withKI(0.0).withKD(0.0).withKV(0.0).withKS(0.0);
+            new Slot0Configs().withKP(0.0).withKI(0.0).withKD(0.0).withKV(0.6).withKS(0.6);
     public static final Slot0Configs ANGLE_PID_GAINS =
-            new Slot0Configs().withKP(1).withKI(0).withKD(0).withKV(0).withKS(0);
+            new Slot0Configs().withKP(50.0).withKI(0.0).withKD(0.0).withKV(2.0).withKS(0.0).withKA(0.0);
     public static final MotionMagicConfigs MOTION_MAGIC_CONFIGS =
-            new MotionMagicConfigs().withMotionMagicAcceleration(25000).withMotionMagicCruiseVelocity(21288).withMotionMagicJerk(1);
+            new MotionMagicConfigs().withMotionMagicCruiseVelocity(10.0).withMotionMagicAcceleration(30.0).withMotionMagicJerk(100.0);
 
     public static final VoltageConfigs VOLTAGE_CONFIGS = new VoltageConfigs().withPeakForwardVoltage(VOLT_COMP_SATURATION).withPeakReverseVoltage(VOLT_COMP_SATURATION);
     public static final FeedbackConfigs FEEDBACK_CONFIGS_DRIVE = new FeedbackConfigs().withRotorToSensorRatio(1).withSensorToMechanismRatio(1/DRIVE_REDUCTION);

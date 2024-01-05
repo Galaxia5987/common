@@ -3,6 +3,7 @@ package frc.robot.swerve;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.*;
 import com.ctre.phoenix6.hardware.TalonFX;
+import com.ctre.phoenix6.signals.InvertedValue;
 import com.ctre.phoenix6.signals.NeutralModeValue;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
@@ -30,7 +31,7 @@ public class ModuleIOReal implements ModuleIO {
     private Rotation2d currentAngle = new Rotation2d();
     private double driveMotorVelocitySetpoint = 0;
 
-    private final PositionVoltage angleControlRequest = new PositionVoltage(0).withEnableFOC(true);
+    private final MotionMagicVoltage angleControlRequest = new MotionMagicVoltage(0).withEnableFOC(true).withSlot(0);
     private final VelocityVoltage velocityControlRequest = new VelocityVoltage(0).withEnableFOC(true);
 
     private final int number;
@@ -45,17 +46,17 @@ public class ModuleIOReal implements ModuleIO {
         this.encoder = new DutyCycleEncoder(encoderID);
 
         driveConfig.ClosedLoopGeneral.ContinuousWrap = true;
+        driveConfig.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
         driveMotor.getConfigurator().apply(driveConfig);
         driveMotor.setPosition(0);
 
         angleConfig.ClosedLoopGeneral.ContinuousWrap = true;
+        angleConfig.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
         angleMotor.getConfigurator().apply(angleConfig);
         angleMotor.setPosition(0);
 
         driveMotor.setNeutralMode(NeutralModeValue.Brake);
-        driveMotor.setInverted(true);
         angleMotor.setNeutralMode(NeutralModeValue.Brake);
-        angleMotor.setInverted(true);
     }
 
     @Override
@@ -69,7 +70,7 @@ public class ModuleIOReal implements ModuleIO {
         driveStatorChargeUsedCoulomb.update(inputs.driveMotorStatorCurrent);
         inputs.driveMotorStatorCurrentOverTime = driveStatorChargeUsedCoulomb.get();
         inputs.driveMotorPosition = driveMotor.getRotorPosition().getValue();
-        inputs.driveMotorVelocity = utils.units.Units.rpsToMetersPerSecond(getVelocity(), SwerveConstants.WHEEL_DIAMETER/2);
+        inputs.driveMotorVelocity = getVelocity();
         inputs.driveMotorVelocitySetpoint = driveMotorVelocitySetpoint;
 
         inputs.angleMotorSupplyCurrent = angleMotor.getSupplyCurrent().getValue();
@@ -121,7 +122,7 @@ public class ModuleIOReal implements ModuleIO {
                         velocity,
                         SwerveConstants.WHEEL_DIAMETER / 2))
                 .withEnableFOC(true);
-        driveMotor.setControl(velocityControlRequest);
+//        driveMotor.setControl(velocityControlRequest);
     }
 
     @Override
@@ -146,8 +147,7 @@ public class ModuleIOReal implements ModuleIO {
 
     @Override
     public void updateOffset(double offset) {
-        angleMotor.setPosition(
-                ((encoder.getAbsolutePosition() - offset) * Constants.FALCON_TICKS) / SwerveConstants.ANGLE_REDUCTION);
+        angleMotor.setPosition(encoder.getAbsolutePosition() - offset);
     }
 
     @Override
