@@ -169,5 +169,15 @@ publishing {
         }
     }
 
-spotless {  }
+spotless {
+    format 'misc', {
+        // define the files to apply `misc` to
+        target '*gradle*', '.gitattributes', '.gitignore'
+
+        // define the steps to apply to those files
+        trimTrailingWhitespace()
+        indentWithSpaces(4)
+        endWithNewline()
+    }
+  }
 }
