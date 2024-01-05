@@ -122,7 +122,7 @@ public class ModuleIOReal implements ModuleIO {
                         velocity,
                         SwerveConstants.WHEEL_DIAMETER / 2))
                 .withEnableFOC(true);
-//        driveMotor.setControl(velocityControlRequest);
+        driveMotor.setControl(velocityControlRequest);
     }
 
     @Override
