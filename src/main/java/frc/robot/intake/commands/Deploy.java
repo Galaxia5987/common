@@ -29,6 +29,6 @@ public class Deploy extends Command {
 
     @Override
     public boolean isFinished() {
-        return intake.getAngleAppliedCurrent() > 20;
+        return intake.getAngleAppliedCurrent() > 40;
     }
 }

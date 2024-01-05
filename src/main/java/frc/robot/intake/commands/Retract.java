@@ -29,6 +29,6 @@ public class Retract extends Command {
 
     @Override
     public boolean isFinished() {
-        return intake.getAngleAppliedCurrent() > 35;
+        return intake.getAngleAppliedCurrent() > 40;
     }
 }

@@ -1,5 +1,6 @@
 package frc.robot;
 
+import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
@@ -9,6 +10,7 @@ import frc.robot.conveyor.Conveyor;
 import frc.robot.intake.Intake;
 import frc.robot.intake.commands.Deploy;
 import frc.robot.intake.commands.Retract;
+import frc.robot.intake.commands.TurretSpin;
 import frc.robot.swerve.SwerveDrive;
 import frc.robot.swerve.commands.XboxDrive;
 
@@ -21,6 +23,9 @@ public class RobotContainer {
     private final JoystickButton a = new JoystickButton(xboxController, XboxController.Button.kA.value);
     private final JoystickButton rb = new JoystickButton(xboxController, XboxController.Button.kRightBumper.value);
     private final JoystickButton lb = new JoystickButton(xboxController, XboxController.Button.kLeftBumper.value);
+    private final JoystickButton b = new JoystickButton(xboxController, XboxController.Button.kB.value);
+    private final JoystickButton x = new JoystickButton(xboxController, XboxController.Button.kX.value);
+
 
     /**
      * The container for the robot.  Contains subsystems, OI devices, and commands.
@@ -45,24 +50,27 @@ public class RobotContainer {
 
     private void configureButtonBindings() {
         a.onTrue(new InstantCommand(swerveDrive::resetGyro));
-        rb.onTrue(new Deploy(0.8, 0.3)
+        rb.onTrue(new Deploy(0.5, 0.4)
                 .alongWith(conveyor.spin(0.4)));
-        rb.onFalse(new Retract(0.8, -0.4)
+        rb.onFalse(new Retract(0.5, -0.4)
                 .andThen(Commands.parallel(
                                 intake.spin(0),
                                 conveyor.spin(0)
                         )
                 )
         );
-        lb.onTrue(new Deploy(-0.8, 0.3)
+        lb.onTrue(new Deploy(-0.5, 0.4)
                 .alongWith(conveyor.spin(-0.4)));
-        lb.onFalse(new Retract(-0.8, -0.4)
+        lb.onFalse(new Retract(-0.5, -0.4)
                 .andThen(Commands.parallel(
                                 intake.spin(0),
                                 conveyor.spin(0)
                         )
                 )
         );
+
+        b.whileTrue(new TurretSpin(0.5));
+        x.whileTrue(new TurretSpin(-0.5));
     }
 
     /**
