@@ -168,4 +168,6 @@ publishing {
             from components.java
         }
     }
+
+spotless {  }
 }
