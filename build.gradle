@@ -183,6 +183,7 @@ spotless {
         targetExclude('**/BuildConstants.java')
 
         cleanthat().sourceCompatibility(java.sourceCompatibility as String)
+                .addMutator('AllIncludingDraftSingleMutators').includeDraft(false)
 
         // use AOSP style for 4-character wide indents
         googleJavaFormat().aosp()
