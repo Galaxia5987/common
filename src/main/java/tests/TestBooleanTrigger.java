@@ -13,19 +13,11 @@ public class TestBooleanTrigger {
         trigger.update(true);
         trigger.update(false);
 
-        Assertions.assertTrue(
-                trigger.released()
-        );
-        Assertions.assertFalse(
-                trigger.triggered()
-        );
+        Assertions.assertTrue(trigger.released());
+        Assertions.assertFalse(trigger.triggered());
 
         trigger.update(true);
-        Assertions.assertTrue(
-                trigger.triggered()
-        );
-        Assertions.assertFalse(
-                trigger.released()
-        );
+        Assertions.assertTrue(trigger.triggered());
+        Assertions.assertFalse(trigger.released());
     }
 }

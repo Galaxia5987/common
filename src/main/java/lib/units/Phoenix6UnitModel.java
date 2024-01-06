@@ -10,8 +10,8 @@ public class Phoenix6UnitModel {
     /**
      * Constructor.
      *
-     * @param gearRatio the ratio between the motor and the system.
-     *                  If the gear ratio is larger than 1, it is a reduction.
+     * @param gearRatio the ratio between the motor and the system. If the gear ratio is larger than
+     *     1, it is a reduction.
      */
     public Phoenix6UnitModel(double gearRatio) {
         this.gearRatio = gearRatio;

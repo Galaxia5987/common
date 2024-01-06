@@ -23,7 +23,6 @@ public class JoystickDrive extends Command {
                 MathUtil.applyDeadband(-joystick1.getY(), 0.1),
                 MathUtil.applyDeadband(-joystick1.getX(), 0.1),
                 MathUtil.applyDeadband(-joystick2.getX(), 0.1),
-                true
-        );
+                true);
     }
 }

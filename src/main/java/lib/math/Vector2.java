@@ -1,11 +1,10 @@
 package lib.math;
 
 import edu.wpi.first.math.MathUtil;
-import lib.Utils;
-
 import java.io.Serializable;
 import java.text.DecimalFormat;
 import java.util.Objects;
+import lib.Utils;
 
 /**
  * A vector representing a point in 2d space.
@@ -20,7 +19,9 @@ public final class Vector2 implements Interpolable<Vector2>, Serializable {
      * @since 0.1
      */
     public static final Vector2 ZERO = new Vector2(0, 0);
+
     private static final long serialVersionUID = 7566662924062254722L;
+
     /**
      * The x coordinate of the vector
      *
@@ -205,7 +206,8 @@ public final class Vector2 implements Interpolable<Vector2>, Serializable {
     }
 
     /**
-     * Calculates the cross product of this vector and another vector in 3d space and returns the length.
+     * Calculates the cross product of this vector and another vector in 3d space and returns the
+     * length.
      *
      * @param other The other vector to calculate the cross product with
      * @return The length of the calculated vector
@@ -223,12 +225,11 @@ public final class Vector2 implements Interpolable<Vector2>, Serializable {
      * @since 0.2
      */
     public Vector2 rotateBy(Rotation2 rotation) {
-        return new Vector2(x * rotation.cos - y * rotation.sin, x * rotation.sin + y * rotation.cos);
+        return new Vector2(
+                x * rotation.cos - y * rotation.sin, x * rotation.sin + y * rotation.cos);
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public boolean equals(Object obj) {
         if (!(obj instanceof Vector2)) {
@@ -239,21 +240,17 @@ public final class Vector2 implements Interpolable<Vector2>, Serializable {
     }
 
     public boolean equals(Vector2 other, double allowableError) {
-        return Utils.epsilonEquals(x, other.x, allowableError) &&
-                Utils.epsilonEquals(y, other.y, allowableError);
+        return Utils.epsilonEquals(x, other.x, allowableError)
+                && Utils.epsilonEquals(y, other.y, allowableError);
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public int hashCode() {
         return Objects.hash(x, y);
     }
 
-    /**
-     * {@inheritDoc}
-     */
+    /** {@inheritDoc} */
     @Override
     public String toString() {
         DecimalFormat fmt = new DecimalFormat("#0.000");

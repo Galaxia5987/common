@@ -22,18 +22,15 @@ public interface ModuleIO {
         return null;
     }
 
-    default void updateOffset(double offset) {
-    }
+    default void updateOffset(double offset) {}
 
-    default void neutralOutput() {
-    }
+    default void neutralOutput() {}
 
     default boolean encoderConnected() {
         return false;
     }
 
-    default void checkModule() {
-    }
+    default void checkModule() {}
 
     @AutoLog
     class SwerveModuleInputs {

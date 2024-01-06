@@ -9,36 +9,33 @@ import lib.Utils;
 import lib.math.differential.Derivative;
 import org.littletonrobotics.junction.Logger;
 
-
 public class SwerveDrive extends SubsystemBase {
     private static SwerveDrive INSTANCE = null;
     private final GyroIO gyro;
-    private final SwerveModule[] modules = new SwerveModule[4]; //FL, FR, RL, RR
+    private final SwerveModule[] modules = new SwerveModule[4]; // FL, FR, RL, RR
     private final LinearFilter accelFilter = LinearFilter.movingAverage(15);
-    private final SwerveDriveKinematics kinematics = new SwerveDriveKinematics(
-            SwerveConstants.wheelPositions[0],
-            SwerveConstants.wheelPositions[1],
-            SwerveConstants.wheelPositions[2],
-            SwerveConstants.wheelPositions[3]
-    );
+    private final SwerveDriveKinematics kinematics =
+            new SwerveDriveKinematics(
+                    SwerveConstants.wheelPositions[0],
+                    SwerveConstants.wheelPositions[1],
+                    SwerveConstants.wheelPositions[2],
+                    SwerveConstants.wheelPositions[3]);
     private final SwerveDriveOdometry odometry;
     private final Derivative acceleration = new Derivative();
     private final SwerveModulePosition[] modulePositions = new SwerveModulePosition[4];
     private final SwerveDriveInputsAutoLogged loggerInputs = new SwerveDriveInputsAutoLogged();
     private final SwerveModuleState[] currentModuleStates = new SwerveModuleState[4];
 
-    private SwerveDrive(boolean isReal,
-                        int[] driveIds,
-                        int[] angleIds,
-                        int[] encoderIds) {
+    private SwerveDrive(boolean isReal, int[] driveIds, int[] angleIds, int[] encoderIds) {
         if (isReal) {
             for (int i = 0; i < modules.length; i++) {
-                ModuleIO io = new ModuleIOReal(
-                        driveIds[i],
-                        angleIds[i],
-                        encoderIds[i],
-                        SwerveConstants.motionMagicConfigs[i],
-                        i + 1);
+                ModuleIO io =
+                        new ModuleIOReal(
+                                driveIds[i],
+                                angleIds[i],
+                                encoderIds[i],
+                                SwerveConstants.motionMagicConfigs[i],
+                                i + 1);
 
                 modules[i] = new SwerveModule(io, i + 1);
             }
@@ -54,20 +51,15 @@ public class SwerveDrive extends SubsystemBase {
         }
 
         updateModulePositions();
-        odometry = new SwerveDriveOdometry(
-                kinematics, new Rotation2d(getYaw()),
-                modulePositions
-        );
+        odometry = new SwerveDriveOdometry(kinematics, new Rotation2d(getYaw()), modulePositions);
     }
 
     public static SwerveDrive getInstance() {
         return INSTANCE;
     }
 
-    public static void setInstance(boolean isReal,
-                                   int[] driveIds,
-                                   int[] angleIds,
-                                   int[] encoderIds) {
+    public static void setInstance(
+            boolean isReal, int[] driveIds, int[] angleIds, int[] encoderIds) {
         if (INSTANCE == null) {
             INSTANCE = new SwerveDrive(isReal, driveIds, angleIds, encoderIds);
         }
@@ -187,14 +179,14 @@ public class SwerveDrive extends SubsystemBase {
     public void drive(ChassisSpeeds chassisSpeeds, boolean fieldOriented) {
         loggerInputs.desiredSpeeds = Utils.chassisSpeedsToArray(chassisSpeeds);
 
-        ChassisSpeeds fieldOrientedChassisSpeeds = ChassisSpeeds.fromFieldRelativeSpeeds(
-                chassisSpeeds.vxMetersPerSecond,
-                chassisSpeeds.vyMetersPerSecond,
-                chassisSpeeds.omegaRadiansPerSecond,
-                new Rotation2d(getYaw())
-        );
+        ChassisSpeeds fieldOrientedChassisSpeeds =
+                ChassisSpeeds.fromFieldRelativeSpeeds(
+                        chassisSpeeds.vxMetersPerSecond,
+                        chassisSpeeds.vyMetersPerSecond,
+                        chassisSpeeds.omegaRadiansPerSecond,
+                        new Rotation2d(getYaw()));
 
-        if (chassisSpeeds.equals(new ChassisSpeeds(0, 0, 0))) {
+        if (new ChassisSpeeds(0, 0, 0).equals(chassisSpeeds)) {
             for (SwerveModule module : modules) {
                 module.neutralOutput();
             }
@@ -210,15 +202,16 @@ public class SwerveDrive extends SubsystemBase {
     /**
      * Sets the desired percentage of x, y and omega speeds for the frc.robot.swerve
      *
-     * @param xOutput     percentage of the x speed
-     * @param yOutput     percentage of the y speed
+     * @param xOutput percentage of the x speed
+     * @param yOutput percentage of the y speed
      * @param omegaOutput percentage of the omega speed
      */
     public void drive(double xOutput, double yOutput, double omegaOutput, boolean fieldOriented) {
-        ChassisSpeeds chassisSpeeds = new ChassisSpeeds(
-                SwerveConstants.MAX_X_Y_VELOCITY * xOutput,
-                SwerveConstants.MAX_X_Y_VELOCITY * yOutput,
-                SwerveConstants.MAX_OMEGA_VELOCITY * omegaOutput); //removed angleFF
+        ChassisSpeeds chassisSpeeds =
+                new ChassisSpeeds(
+                        SwerveConstants.MAX_X_Y_VELOCITY * xOutput,
+                        SwerveConstants.MAX_X_Y_VELOCITY * yOutput,
+                        SwerveConstants.MAX_OMEGA_VELOCITY * omegaOutput); // removed angleFF
 
         drive(chassisSpeeds, fieldOriented);
     }
@@ -245,29 +238,38 @@ public class SwerveDrive extends SubsystemBase {
                                     currentModuleStates[0],
                                     currentModuleStates[1],
                                     currentModuleStates[2],
-                                    currentModuleStates[3]
-                            ))[i];
+                                    currentModuleStates[3]))[i];
         }
 
-        loggerInputs.linearVelocity = Math.hypot(loggerInputs.currentSpeeds[0], loggerInputs.currentSpeeds[1]);
+        loggerInputs.linearVelocity =
+                Math.hypot(loggerInputs.currentSpeeds[0], loggerInputs.currentSpeeds[1]);
 
         acceleration.update(loggerInputs.linearVelocity);
         loggerInputs.acceleration = accelFilter.calculate(acceleration.get());
 
         loggerInputs.supplyCurrent =
-                modules[0].getSupplyCurrent() + modules[1].getSupplyCurrent() + modules[2].getSupplyCurrent() + modules[3].getStatorCurrent();
+                modules[0].getSupplyCurrent()
+                        + modules[1].getSupplyCurrent()
+                        + modules[2].getSupplyCurrent()
+                        + modules[3].getStatorCurrent();
 
         loggerInputs.statorCurrent =
-                modules[0].getStatorCurrent() + modules[1].getStatorCurrent() + modules[2].getStatorCurrent() + modules[3].getStatorCurrent();
+                modules[0].getStatorCurrent()
+                        + modules[1].getStatorCurrent()
+                        + modules[2].getStatorCurrent()
+                        + modules[3].getStatorCurrent();
 
         loggerInputs.rawYaw = gyro.getRawYaw();
         loggerInputs.yaw = gyro.getYaw();
         loggerInputs.pitch = gyro.getPitch();
         gyro.updateInputs(loggerInputs);
 
-        SwerveDriveKinematics.desaturateWheelSpeeds(Utils.arrayToSwerveModuleStates(loggerInputs.desiredModuleStates), SwerveConstants.MAX_X_Y_VELOCITY); //TODO: may not work
+        SwerveDriveKinematics.desaturateWheelSpeeds(
+                Utils.arrayToSwerveModuleStates(loggerInputs.desiredModuleStates),
+                SwerveConstants.MAX_X_Y_VELOCITY); // TODO: may not work
         for (int i = 0; i < modules.length; i++) {
-            modules[i].setModuleState(Utils.arrayToSwerveModuleStates(loggerInputs.desiredModuleStates)[i]);
+            modules[i].setModuleState(
+                    Utils.arrayToSwerveModuleStates(loggerInputs.desiredModuleStates)[i]);
         }
 
         Logger.processInputs("SwerveDrive", loggerInputs);

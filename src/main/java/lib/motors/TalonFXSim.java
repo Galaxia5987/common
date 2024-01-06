@@ -30,38 +30,42 @@ public class TalonFXSim extends SimMotor {
     }
 
     public void setControl(PositionDutyCycle request) {
-        voltageRequest = controller.calculate(
-                motorSim.getAngularPositionRotations(), request.Position);
+        voltageRequest =
+                controller.calculate(motorSim.getAngularPositionRotations(), request.Position);
         this.setControl(new VoltageOut(voltageRequest + 12 * request.FeedForward));
     }
 
     public void setControl(PositionVoltage request) {
-        voltageRequest = controller.calculate(
-                motorSim.getAngularPositionRotations(), request.Position);
+        voltageRequest =
+                controller.calculate(motorSim.getAngularPositionRotations(), request.Position);
         this.setControl(new VoltageOut(voltageRequest + request.FeedForward));
     }
 
     public void setControl(VelocityDutyCycle request) {
-        voltageRequest = controller.calculate(
-                Units.rpmToRps(motorSim.getAngularVelocityRPM()), request.Velocity);
+        voltageRequest =
+                controller.calculate(
+                        Units.rpmToRps(motorSim.getAngularVelocityRPM()), request.Velocity);
         this.setControl(new VoltageOut(voltageRequest + 12 * request.FeedForward));
     }
 
     public void setControl(VelocityVoltage request) {
-        voltageRequest = controller.calculate(
-                Units.rpmToRps(motorSim.getAngularVelocityRPM()), request.Velocity);
+        voltageRequest =
+                controller.calculate(
+                        Units.rpmToRps(motorSim.getAngularVelocityRPM()), request.Velocity);
         this.setControl(new VoltageOut(voltageRequest + request.FeedForward));
     }
 
     public void setControl(MotionMagicDutyCycle request) {
-        voltageRequest = profiledController.calculate(
-                motorSim.getAngularPositionRotations(), request.Position);
+        voltageRequest =
+                profiledController.calculate(
+                        motorSim.getAngularPositionRotations(), request.Position);
         this.setControl(new VoltageOut(voltageRequest + 12 * request.FeedForward));
     }
 
     public void setControl(MotionMagicVoltage request) {
-        voltageRequest = profiledController.calculate(
-                motorSim.getAngularPositionRotations(), request.Position);
+        voltageRequest =
+                profiledController.calculate(
+                        motorSim.getAngularPositionRotations(), request.Position);
         this.setControl(new VoltageOut(voltageRequest + request.FeedForward));
     }
 
