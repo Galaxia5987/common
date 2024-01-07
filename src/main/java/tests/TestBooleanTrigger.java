@@ -1,8 +1,8 @@
 package tests;
 
-import org.junit.jupiter.api.Test;
+import lib.math.differential.BooleanTrigger;
 import org.junit.jupiter.api.Assertions;
-import utils.math.differential.BooleanTrigger;
+import org.junit.jupiter.api.Test;
 
 public class TestBooleanTrigger {
 
@@ -13,19 +13,11 @@ public class TestBooleanTrigger {
         trigger.update(true);
         trigger.update(false);
 
-        Assertions.assertTrue(
-                trigger.released()
-        );
-        Assertions.assertFalse(
-                trigger.triggered()
-        );
+        Assertions.assertTrue(trigger.released());
+        Assertions.assertFalse(trigger.triggered());
 
         trigger.update(true);
-        Assertions.assertTrue(
-                trigger.triggered()
-        );
-        Assertions.assertFalse(
-                trigger.released()
-        );
+        Assertions.assertTrue(trigger.triggered());
+        Assertions.assertFalse(trigger.released());
     }
 }

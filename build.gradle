@@ -4,6 +4,7 @@ plugins {
     id "java"
     id "edu.wpi.first.GradleRIO" version "2024.1.1-beta-4"
     id "com.peterabeles.gversion" version "1.10"
+    id "com.diffplug.spotless" version "6.23.3"
     id 'maven-publish'
 }
 
@@ -127,6 +128,15 @@ jar {
     from sourceSets.main.allSource
     manifest edu.wpi.first.gradlerio.GradleRIOPlugin.javaManifest(ROBOT_MAIN_CLASS)
     duplicatesStrategy = DuplicatesStrategy.INCLUDE
+    // Exclude source files from the JAR
+    exclude('**/*.java')
+    // Exclude tests folder from the JAR
+    exclude('**/tests/**')
+    exclude('frc/robot/Robot.class')
+    exclude('frc/robot/RobotContainer.class')
+    exclude('frc/robot/Main.class')
+    exclude('frc/robot/Constants.class')
+    exclude('frc/robot/Ports.class')
 }
 
 // Configure jar and deploy tasks
@@ -146,7 +156,7 @@ gversion {
     classPackage = "frc.robot"
     className    = "BuildConstants"
     dateFormat   = "yyyy-MM-dd HH:mm:ss z"
-    timeZone     = "America/New_York"
+    timeZone     = "Asia/Jerusalem"
     indent       = "  "
 }
 
@@ -154,11 +164,33 @@ publishing {
     publications {
         mavenJava(MavenPublication) {
             groupId = 'com.github.Galaxia5987'
-        }
-    }
-    publications {
-        maven(MavenPublication) {
+            artifactId = 'common'
             from components.java
         }
+    }
+}
+
+spotless {
+    format 'misc', {
+        // define the files to apply `misc` to
+        target '*gradle*', '.gitattributes', '.gitignore'
+
+        // define the steps to apply to those files
+        trimTrailingWhitespace()
+        indentWithSpaces(4)
+        endWithNewline()
+    }
+    java {
+        targetExclude('**/BuildConstants.java')
+
+        cleanthat().sourceCompatibility(java.sourceCompatibility as String)
+                .addMutator('AllIncludingDraftSingleMutators').includeDraft(false)
+
+        // use AOSP style for 4-character wide indents
+        googleJavaFormat().aosp()
+        // fix formatting of type annotations
+        formatAnnotations()
+        trimTrailingWhitespace()
+        endWithNewline()
     }
 }
