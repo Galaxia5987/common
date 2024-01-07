@@ -2,14 +2,11 @@ package frc.robot.swerve;
 
 import com.ctre.phoenix6.controls.PositionVoltage;
 import com.ctre.phoenix6.controls.VelocityVoltage;
-import com.ctre.phoenix6.controls.VoltageOut;
-import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.Timer;
-import utils.math.AngleUtil;
 import utils.math.differential.Integral;
 import utils.motors.TalonFXSim;
 import utils.units.Units;
@@ -21,8 +18,8 @@ public class ModuleIOSim implements ModuleIO {
     private VelocityVoltage driveControl = new VelocityVoltage(0).withEnableFOC(true);
     private PositionVoltage angleControl = new PositionVoltage(0).withEnableFOC(true);
 
-    private final PIDController angleFeedback;
-    private final PIDController velocityFeedback;
+    private final PIDController angleController;
+    private final PIDController velocityController;
     private final Integral moduleDistance = new Integral();
     private double currentVelocity = 0;
     private double velocitySetpoint = 0;
@@ -40,11 +37,11 @@ public class ModuleIOSim implements ModuleIO {
                 1 / SwerveConstants.ANGLE_REDUCTION,
                 SwerveConstants.ANGLE_MOTOR_MOMENT_OF_INERTIA);
 
-        angleFeedback = new PIDController(8, 0, 0, 0.02);
-        velocityFeedback = new PIDController(3.5, 0, 0.00, 0.02);
+        angleController = new PIDController(8, 0, 0, 0.02);
+        velocityController = new PIDController(3.5, 0, 0.00, 0.02);
 
-        driveMotor.setController(velocityFeedback);
-        angleMotor.setController(angleFeedback);
+        driveMotor.setController(velocityController);
+        angleMotor.setController(angleController);
     }
 
     @Override
