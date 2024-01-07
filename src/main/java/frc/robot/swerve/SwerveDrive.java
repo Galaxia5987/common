@@ -26,28 +26,34 @@ public class SwerveDrive extends SubsystemBase {
     private final SwerveDriveInputsAutoLogged loggerInputs = new SwerveDriveInputsAutoLogged();
     private final SwerveModuleState[] currentModuleStates = new SwerveModuleState[4];
 
-    private SwerveDrive(boolean isReal, boolean isNeo,
-                        boolean[] drivesInverted, boolean[] anglesInverted,
-                        int[] driveIds,
-                        int[] angleIds,
-                        int[] encoderIds) {
+    private SwerveDrive(
+            boolean isReal,
+            boolean isNeo,
+            boolean[] drivesInverted,
+            boolean[] anglesInverted,
+            int[] driveIds,
+            int[] angleIds,
+            int[] encoderIds) {
         if (isReal) {
             for (int i = 0; i < modules.length; i++) {
                 ModuleIO io;
                 if (!isNeo) {
-                    io = new ModuleIOReal(
-                            driveIds[i],
-                            angleIds[i],
-                            encoderIds[i],
-                            SwerveConstants.motionMagicConfigs[i],
-                            i + 1);
+                    io =
+                            new ModuleIOReal(
+                                    driveIds[i],
+                                    angleIds[i],
+                                    encoderIds[i],
+                                    SwerveConstants.motionMagicConfigs[i],
+                                    i + 1);
                 } else {
-                    io = new ModuleIOSparkMax(
-                            driveIds[i],
-                            angleIds[i],
-                            encoderIds[i],
-                            drivesInverted[i], anglesInverted[i],
-                            SwerveConstants.motionMagicConfigs[i]);
+                    io =
+                            new ModuleIOSparkMax(
+                                    driveIds[i],
+                                    angleIds[i],
+                                    encoderIds[i],
+                                    drivesInverted[i],
+                                    anglesInverted[i],
+                                    SwerveConstants.motionMagicConfigs[i]);
                 }
 
                 modules[i] = new SwerveModule(io, i + 1);
@@ -71,13 +77,24 @@ public class SwerveDrive extends SubsystemBase {
         return INSTANCE;
     }
 
-    public static void setInstance(boolean isReal, boolean isNeo,
-                                   boolean[] drivesInverted, boolean[] anglesInverted,
-                                   int[] driveIds,
-                                   int[] angleIds,
-                                   int[] encoderIds) {
+    public static void setInstance(
+            boolean isReal,
+            boolean isNeo,
+            boolean[] drivesInverted,
+            boolean[] anglesInverted,
+            int[] driveIds,
+            int[] angleIds,
+            int[] encoderIds) {
         if (INSTANCE == null) {
-            INSTANCE = new SwerveDrive(isReal, isNeo, drivesInverted, anglesInverted, driveIds, angleIds, encoderIds);
+            INSTANCE =
+                    new SwerveDrive(
+                            isReal,
+                            isNeo,
+                            drivesInverted,
+                            anglesInverted,
+                            driveIds,
+                            angleIds,
+                            encoderIds);
         }
     }
 
@@ -186,7 +203,7 @@ public class SwerveDrive extends SubsystemBase {
         return modulePositions;
     }
 
-    public void updateOffsets(double[] offsets){
+    public void updateOffsets(double[] offsets) {
         for (int i = 0; i < modules.length; i++) {
             modules[i].updateOffset(offsets[i]);
         }

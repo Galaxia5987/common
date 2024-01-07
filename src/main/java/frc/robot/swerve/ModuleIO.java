@@ -32,8 +32,7 @@ public interface ModuleIO {
 
     default void checkModule() {}
 
-    default void stop(){
-    }
+    default void stop() {}
 
     @AutoLog
     class SwerveModuleInputs {

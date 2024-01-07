@@ -34,15 +34,17 @@ public class ModuleIOSparkMax implements ModuleIO {
     private double moduleDistance;
     private double driveMotorSetpoint;
 
-    private final SimpleMotorFeedforward feedforward = new SimpleMotorFeedforward(
-            SwerveConstants.DRIVE_kS,
-            SwerveConstants.DRIVE_kV,
-            SwerveConstants.DRIVE_kA
-    );
+    private final SimpleMotorFeedforward feedforward =
+            new SimpleMotorFeedforward(
+                    SwerveConstants.DRIVE_kS, SwerveConstants.DRIVE_kV, SwerveConstants.DRIVE_kA);
 
-    public ModuleIOSparkMax(int driveMotorID, int angleMotorID, int encoderID,
-                            boolean driveInverted, boolean angleInverted,
-                            double[] motionMagicConfigs) {
+    public ModuleIOSparkMax(
+            int driveMotorID,
+            int angleMotorID,
+            int encoderID,
+            boolean driveInverted,
+            boolean angleInverted,
+            double[] motionMagicConfigs) {
 
         this.driveMotor = new CANSparkMax(driveMotorID, CANSparkMaxLowLevel.MotorType.kBrushless);
         this.angleMotor = new CANSparkMax(angleMotorID, CANSparkMaxLowLevel.MotorType.kBrushless);
@@ -90,7 +92,8 @@ public class ModuleIOSparkMax implements ModuleIO {
         inputs.driveMotorPosition = driveEncoder.getPosition();
         inputs.driveMotorVelocity = getVelocity();
         inputs.driveMotorVelocitySetpoint = driveMotorSetpoint;
-        inputs.driveMotorAppliedVoltage = driveMotor.getAppliedOutput() * RobotController.getBatteryVoltage();
+        inputs.driveMotorAppliedVoltage =
+                driveMotor.getAppliedOutput() * RobotController.getBatteryVoltage();
 
         inputs.angleMotorSupplyCurrent = angleMotor.getOutputCurrent();
         angleSupplyChargeUsedCoulomb.update(inputs.angleMotorSupplyCurrent);
@@ -120,13 +123,13 @@ public class ModuleIOSparkMax implements ModuleIO {
         angleSetpoint = AngleUtil.normalize(angle);
         Rotation2d error = new Rotation2d(angle).minus(new Rotation2d(currentAngle));
         anglePIDController.setReference(
-                angleMotorPosition + error.getRotations(),
-                CANSparkMax.ControlType.kPosition);
+                angleMotorPosition + error.getRotations(), CANSparkMax.ControlType.kPosition);
     }
 
     @Override
     public double getVelocity() {
-        return Units.rpmToRadsPerSec(driveEncoder.getVelocity()) * (SwerveConstants.WHEEL_DIAMETER / 2);
+        return Units.rpmToRadsPerSec(driveEncoder.getVelocity())
+                * (SwerveConstants.WHEEL_DIAMETER / 2);
     }
 
     @Override
@@ -135,16 +138,12 @@ public class ModuleIOSparkMax implements ModuleIO {
         velocity *= angleError.getCos();
         driveMotorSetpoint = velocity;
         drivePIDController.setReference(
-                feedforward.calculate(velocity),
-                CANSparkMax.ControlType.kVoltage);
+                feedforward.calculate(velocity), CANSparkMax.ControlType.kVoltage);
     }
 
     @Override
     public SwerveModulePosition getModulePosition() {
-        return new SwerveModulePosition(
-                moduleDistance,
-                new Rotation2d(getAngle())
-        );
+        return new SwerveModulePosition(moduleDistance, new Rotation2d(getAngle()));
     }
 
     @Override
