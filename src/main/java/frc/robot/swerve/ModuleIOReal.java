@@ -12,6 +12,7 @@ import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RunCommand;
+import org.littletonrobotics.junction.AutoLogOutput;
 import utils.math.AngleUtil;
 import utils.math.differential.Integral;
 
@@ -121,6 +122,7 @@ public class ModuleIOReal implements ModuleIO {
     }
 
     @Override
+    @AutoLogOutput
     public SwerveModuleState getModuleState() {
         return new SwerveModuleState(
                 utils.units.Units.rpsToMetersPerSecond(
