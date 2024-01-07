@@ -168,6 +168,7 @@ publishing {
             from components.java
         }
     }
+}
 
 spotless {
     format 'misc', {
@@ -192,5 +193,4 @@ spotless {
         trimTrailingWhitespace()
         endWithNewline()
     }
-  }
 }
