@@ -30,8 +30,12 @@ public class ModuleIOReal implements ModuleIO {
     private double angleMotorPosition;
     private double driveMotorVelocitySetpoint;
 
-    public ModuleIOReal(int driveMotorID, int angleMotorID, int encoderID,
-                        double[] motionMagicConfigs, int number) {
+    public ModuleIOReal(
+            int driveMotorID,
+            int angleMotorID,
+            int encoderID,
+            double[] motionMagicConfigs,
+            int number) {
 
         this.driveMotor = new TalonFX(driveMotorID);
         this.angleMotor = new TalonFX(angleMotorID);
@@ -97,7 +101,8 @@ public class ModuleIOReal implements ModuleIO {
         inputs.angleMotorStatorCurrentOverTime = angleStatorChargeUsedCoulomb.get();
         inputs.angleMotorPosition = angleMotor.getSelectedSensorPosition();
         angleMotorPosition = inputs.angleMotorPosition;
-        inputs.angleMotorVelocity = ticksPerMeter.toVelocity(angleMotor.getSelectedSensorVelocity());
+        inputs.angleMotorVelocity =
+                ticksPerMeter.toVelocity(angleMotor.getSelectedSensorVelocity());
 
         inputs.angle = getAngle();
         currentAngle = inputs.angle;
@@ -116,7 +121,9 @@ public class ModuleIOReal implements ModuleIO {
     public void setAngle(double angle) {
         angleSetpoint = AngleUtil.normalize(angle);
         Rotation2d error = new Rotation2d(angle).minus(new Rotation2d(currentAngle));
-        angleMotor.set(TalonFXControlMode.MotionMagic, angleMotorPosition + ticksPerRad.toTicks(error.getRadians()));
+        angleMotor.set(
+                TalonFXControlMode.MotionMagic,
+                angleMotorPosition + ticksPerRad.toTicks(error.getRadians()));
     }
 
     @Override
@@ -136,14 +143,14 @@ public class ModuleIOReal implements ModuleIO {
     public SwerveModulePosition getModulePosition() {
         return new SwerveModulePosition(
                 ticksPerMeter.toUnits(driveMotor.getSelectedSensorPosition()),
-                new Rotation2d(getAngle())
-        );
+                new Rotation2d(getAngle()));
     }
 
     @Override
     public void updateOffset(double offset) {
         angleMotor.setSelectedSensorPosition(
-                ((encoder.getAbsolutePosition() - offset) * 2048) / SwerveConstants.ANGLE_REDUCTION);
+                ((encoder.getAbsolutePosition() - offset) * 2048)
+                        / SwerveConstants.ANGLE_REDUCTION);
     }
 
     @Override

@@ -22,15 +22,17 @@ public class ModuleIOSim implements ModuleIO {
     private double angleSetpoint = 0;
 
     public ModuleIOSim() {
-        driveMotor = new FlywheelSim(
-                DCMotor.getFalcon500(1),
-                1 / SwerveConstants.DRIVE_REDUCTION,
-                SwerveConstants.DriveMotorMomentOfInertia);
+        driveMotor =
+                new FlywheelSim(
+                        DCMotor.getFalcon500(1),
+                        1 / SwerveConstants.DRIVE_REDUCTION,
+                        SwerveConstants.DriveMotorMomentOfInertia);
 
-        angleMotor = new FlywheelSim(
-                DCMotor.getFalcon500(1),
-                1 / SwerveConstants.ANGLE_REDUCTION,
-                SwerveConstants.AngleMotorMomentOfInertia);
+        angleMotor =
+                new FlywheelSim(
+                        DCMotor.getFalcon500(1),
+                        1 / SwerveConstants.ANGLE_REDUCTION,
+                        SwerveConstants.AngleMotorMomentOfInertia);
 
         angleFeedback = new PIDController(3.5, 0, 0, 0.02);
         velocityFeedback = new PIDController(0.5, 0, 0.00, 0.02);
@@ -64,7 +66,8 @@ public class ModuleIOSim implements ModuleIO {
     @Override
     public void setAngle(double angle) {
         angleSetpoint = angle;
-        angleMotorAppliedVoltage = angleFeedback.calculate(MathUtil.angleModulus(currentAngle.get()), angle);
+        angleMotorAppliedVoltage =
+                angleFeedback.calculate(MathUtil.angleModulus(currentAngle.get()), angle);
         angleMotor.setInputVoltage(angleMotorAppliedVoltage);
     }
 

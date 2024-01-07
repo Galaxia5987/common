@@ -5,8 +5,10 @@ package lib.math;
  *
  * @see InterpolatingTreeMap
  */
-public class InterpolatingDouble implements Interpolable<InterpolatingDouble>, InverseInterpolable<InterpolatingDouble>,
-        Comparable<InterpolatingDouble> {
+public class InterpolatingDouble
+        implements Interpolable<InterpolatingDouble>,
+                InverseInterpolable<InterpolatingDouble>,
+                Comparable<InterpolatingDouble> {
 
     public double value;
 

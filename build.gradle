@@ -4,6 +4,7 @@ plugins {
     id "java"
     id "edu.wpi.first.GradleRIO" version "2024.1.1-beta-4"
     id "com.peterabeles.gversion" version "1.10"
+    id "com.diffplug.spotless" version "6.23.3"
     id 'maven-publish'
 }
 
@@ -167,4 +168,29 @@ publishing {
             from components.java
         }
     }
+
+spotless {
+    format 'misc', {
+        // define the files to apply `misc` to
+        target '*gradle*', '.gitattributes', '.gitignore'
+
+        // define the steps to apply to those files
+        trimTrailingWhitespace()
+        indentWithSpaces(4)
+        endWithNewline()
+    }
+    java {
+        targetExclude('**/BuildConstants.java')
+
+        cleanthat().sourceCompatibility(java.sourceCompatibility as String)
+                .addMutator('AllIncludingDraftSingleMutators').includeDraft(false)
+
+        // use AOSP style for 4-character wide indents
+        googleJavaFormat().aosp()
+        // fix formatting of type annotations
+        formatAnnotations()
+        trimTrailingWhitespace()
+        endWithNewline()
+    }
+  }
 }
