@@ -26,7 +26,7 @@ public interface ModuleIO {
     }
 
     default boolean encoderConnected() {
-        return false;
+        return true;
     }
 
     default Command checkModule() {
