@@ -12,9 +12,9 @@ import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RunCommand;
+import lib.math.AngleUtil;
+import lib.math.differential.Integral;
 import org.littletonrobotics.junction.AutoLogOutput;
-import utils.math.AngleUtil;
-import utils.math.differential.Integral;
 
 
 public class ModuleIOReal implements ModuleIO {
@@ -104,7 +104,7 @@ public class ModuleIOReal implements ModuleIO {
 
     @Override
     public double getVelocity() {
-        return utils.units.Units.rpsToMetersPerSecond(driveMotor.getVelocity().getValue(), SwerveConstants.WHEEL_DIAMETER/2);
+        return lib.units.Units.rpsToMetersPerSecond(driveMotor.getVelocity().getValue(), SwerveConstants.WHEEL_DIAMETER/2);
     }
 
     @Override
@@ -114,7 +114,7 @@ public class ModuleIOReal implements ModuleIO {
 
         driveMotorVelocitySetpoint = velocity;
 
-        velocityControlRequest.withVelocity(utils.units.Units.metersToRotations(
+        velocityControlRequest.withVelocity(lib.units.Units.metersToRotations(
                         velocity,
                         SwerveConstants.WHEEL_DIAMETER / 2))
                 .withEnableFOC(true);
@@ -125,7 +125,7 @@ public class ModuleIOReal implements ModuleIO {
     @AutoLogOutput
     public SwerveModuleState getModuleState() {
         return new SwerveModuleState(
-                utils.units.Units.rpsToMetersPerSecond(
+                lib.units.Units.rpsToMetersPerSecond(
                         getVelocity(), SwerveConstants.WHEEL_DIAMETER/2)
                 , getAngle()
         );
@@ -134,7 +134,7 @@ public class ModuleIOReal implements ModuleIO {
     @Override
     public SwerveModulePosition getModulePosition() {
         return new SwerveModulePosition(
-                utils.units.Units.rpsToMetersPerSecond(
+                lib.units.Units.rpsToMetersPerSecond(
                         driveMotor.getPosition().getValue(),
                         SwerveConstants.WHEEL_DIAMETER / 2
                 ),

@@ -5,8 +5,8 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.*;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import utils.Utils;
-import utils.math.differential.Derivative;
+import lib.Utils;
+import lib.math.differential.Derivative;
 import org.littletonrobotics.junction.Logger;
 
 public class SwerveDrive extends SubsystemBase {
@@ -42,17 +42,16 @@ public class SwerveDrive extends SubsystemBase {
                                     driveIds[i],
                                     angleIds[i],
                                     encoderIds[i],
-                                    SwerveConstants.motionMagicConfigs[i],
-                                    i + 1);
+                                    SwerveConstants.DRIVE_MOTOR_CONFIGS,
+                                    SwerveConstants.ANGLE_MOTOR_CONFIGS);
                 } else {
                     io =
-                            new ModuleIOSparkMax(
+                            new ModuleIOReal(
                                     driveIds[i],
                                     angleIds[i],
                                     encoderIds[i],
-                                    drivesInverted[i],
-                                    anglesInverted[i],
-                                    SwerveConstants.motionMagicConfigs[i]);
+                                    SwerveConstants.DRIVE_MOTOR_CONFIGS,
+                                    SwerveConstants.ANGLE_MOTOR_CONFIGS);;
                 }
 
                 modules[i] = new SwerveModule(io, i + 1);
@@ -266,8 +265,6 @@ public class SwerveDrive extends SubsystemBase {
             loggerInputs.absolutePositions[i] = modules[i].getPosition();
             loggerInputs.currentModuleStates[i] = modules[i].getModuleState();
         }
-
-        Logger.recordOutput("SwerveDrive/currentModuleSates", currentModuleStates);
 
         for (int i = 0; i < 3; i++) {
             loggerInputs.currentSpeeds[i] =

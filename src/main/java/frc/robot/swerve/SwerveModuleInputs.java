@@ -5,7 +5,6 @@ import edu.wpi.first.math.kinematics.SwerveModuleState;
 import org.littletonrobotics.junction.AutoLog;
 import org.littletonrobotics.junction.LogTable;
 import org.littletonrobotics.junction.inputs.LoggableInputs;
-import utils.math.Rotation2;
 
 @AutoLog
 public class SwerveModuleInputs{

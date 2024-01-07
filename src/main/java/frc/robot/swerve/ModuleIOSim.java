@@ -7,9 +7,9 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.Timer;
-import utils.math.differential.Integral;
-import utils.motors.TalonFXSim;
-import utils.units.Units;
+import lib.math.differential.Integral;
+import lib.motors.TalonFXSim;
+import lib.units.Units;
 
 public class ModuleIOSim implements ModuleIO {
     private final TalonFXSim driveMotor;

@@ -53,4 +53,16 @@ public class SwerveConstants {
             new Translation2d(ROBOT_LENGTH / 2, -ROBOT_WIDTH / 2),   //FR
             new Translation2d(-ROBOT_LENGTH / 2, ROBOT_WIDTH / 2),  //RL
             new Translation2d(-ROBOT_LENGTH / 2, -ROBOT_WIDTH / 2)}; //RR
+
+    public static final double[] FRONT_LEFT_MOTION_MAGIC_CONFIGS = {3.5, 0, 0, 0.00065, 1, 0, 0, 10, 5, 1};
+    public static final double[] FRONT_RIGHT_MOTION_MAGIC_CONFIGS = {3.5, 0, 0, 0.00065, 1, 0, 0, 10, 5, 1};
+    public static final double[] REAR_LEFT_MOTION_MAGIC_CONFIGS = {3.5, 0, 0, 0.00065, 1, 0, 0, 10, 5, 1};
+    public static final double[] REAR_RIGHT_MOTION_MAGIC_CONFIGS = {3.5, 0, 0, 0.00065, 1, 0, 0, 10, 5, 1};
+
+    public static final double[][] motionMagicConfigs = {
+            FRONT_LEFT_MOTION_MAGIC_CONFIGS,
+            FRONT_RIGHT_MOTION_MAGIC_CONFIGS,
+            REAR_LEFT_MOTION_MAGIC_CONFIGS,
+            REAR_RIGHT_MOTION_MAGIC_CONFIGS
+    };
 }

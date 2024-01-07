@@ -36,12 +36,6 @@ public class Robot extends LoggedRobot {
      */
     @Override
     public void robotInit() {
-        SwerveDrive.setInstance(
-                true,
-                Ports.SwerveDrive.DRIVE_IDS,
-                Ports.SwerveDrive.ANGLE_IDS,
-                Ports.SwerveDrive.ENCODER_IDS);
-
         robotContainer = RobotContainer.getInstance();
 
         Logger.recordMetadata("ProjectName", "Robot-template");
