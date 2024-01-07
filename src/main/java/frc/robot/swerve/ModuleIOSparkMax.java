@@ -7,7 +7,6 @@ import com.revrobotics.SparkMaxPIDController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
-import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.RobotController;
 import lib.math.AngleUtil;
@@ -56,7 +55,7 @@ public class ModuleIOSparkMax implements ModuleIO {
 
         driveMotor.enableVoltageCompensation(SwerveConstants.VOLT_COMP_SATURATION);
         driveMotor.setIdleMode(CANSparkMax.IdleMode.kBrake);
-        driveMotor.setSmartCurrentLimit(SwerveConstants.CURRENT_LIMIT);
+        driveMotor.setSmartCurrentLimit(SwerveConstants.DRIVE_CURRENT_LIMIT);
         driveMotor.setInverted(driveInverted);
         driveEncoder.setPositionConversionFactor(SwerveConstants.DRIVE_REDUCTION);
         driveEncoder.setVelocityConversionFactor(SwerveConstants.DRIVE_REDUCTION);
@@ -68,7 +67,7 @@ public class ModuleIOSparkMax implements ModuleIO {
 
         angleMotor.enableVoltageCompensation(SwerveConstants.VOLT_COMP_SATURATION);
         angleMotor.setIdleMode(CANSparkMax.IdleMode.kBrake);
-        angleMotor.setSmartCurrentLimit(SwerveConstants.ALT_CURRENT_LIMIT);
+        angleMotor.setSmartCurrentLimit(SwerveConstants.ANGLE_CURRENT_LIMIT);
         angleMotor.setInverted(angleInverted);
         anglePIDController.setP(motionMagicConfigs[0]);
         anglePIDController.setI(motionMagicConfigs[1]);
