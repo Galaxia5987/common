@@ -20,6 +20,7 @@ public class SwerveConstants {
 
     public static final double NEUTRAL_DEADBAND = 0.05;
     public static final double XBOX_DEADBAND = 0.15;
+    public static final double STEERING_MULTIPLIER = 0.6;
 
     public static final Slot0Configs DRIVE_PID_GAINS =
             new Slot0Configs().withKP(0.0).withKI(0.0).withKD(0.0).withKV(0.6).withKS(0.6);
