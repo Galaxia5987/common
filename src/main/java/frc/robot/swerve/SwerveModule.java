@@ -51,9 +51,7 @@ public class SwerveModule extends SubsystemBase {
      * @return Position of the module.
      */
     public SwerveModulePosition getModulePosition() {
-        return new SwerveModulePosition(
-                loggerInputs.moduleDistance, loggerInputs.angle
-        );
+        return new SwerveModulePosition(loggerInputs.moduleDistance, loggerInputs.angle);
     }
 
     /**

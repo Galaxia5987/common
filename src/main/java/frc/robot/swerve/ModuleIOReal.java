@@ -16,7 +16,6 @@ import lib.math.AngleUtil;
 import lib.math.differential.Integral;
 import org.littletonrobotics.junction.AutoLogOutput;
 
-
 public class ModuleIOReal implements ModuleIO {
 
     private final TalonFX driveMotor;
@@ -27,14 +26,20 @@ public class ModuleIOReal implements ModuleIO {
     private final Integral driveStatorChargeUsedCoulomb = new Integral();
     private final Integral angleSupplyChargeUsedCoulomb = new Integral();
     private final Integral angleStatorChargeUsedCoulomb = new Integral();
-    private final MotionMagicVoltage angleControlRequest = new MotionMagicVoltage(0).withEnableFOC(true).withSlot(0);
-    private final VelocityVoltage velocityControlRequest = new VelocityVoltage(0).withEnableFOC(true);
+    private final MotionMagicVoltage angleControlRequest =
+            new MotionMagicVoltage(0).withEnableFOC(true).withSlot(0);
+    private final VelocityVoltage velocityControlRequest =
+            new VelocityVoltage(0).withEnableFOC(true);
     private Rotation2d angleSetpoint = new Rotation2d();
     private Rotation2d currentAngle = new Rotation2d();
     private double driveMotorVelocitySetpoint = 0;
 
-    public ModuleIOReal(int driveMotorID, int angleMotorID, int encoderID,
-                        TalonFXConfiguration driveConfig, TalonFXConfiguration angleConfig) {
+    public ModuleIOReal(
+            int driveMotorID,
+            int angleMotorID,
+            int encoderID,
+            TalonFXConfiguration driveConfig,
+            TalonFXConfiguration angleConfig) {
 
         this.driveMotor = new TalonFX(driveMotorID);
         this.angleMotor = new TalonFX(angleMotorID);
@@ -97,14 +102,16 @@ public class ModuleIOReal implements ModuleIO {
         angle = AngleUtil.normalize(angle);
         angleSetpoint = angle;
         Rotation2d error = angle.minus(currentAngle);
-        angleControlRequest.withPosition(angleMotor.getPosition().getValue() + error.getRotations())
+        angleControlRequest
+                .withPosition(angleMotor.getPosition().getValue() + error.getRotations())
                 .withEnableFOC(true);
         angleMotor.setControl(angleControlRequest);
     }
 
     @Override
     public double getVelocity() {
-        return lib.units.Units.rpsToMetersPerSecond(driveMotor.getVelocity().getValue(), SwerveConstants.WHEEL_DIAMETER/2);
+        return lib.units.Units.rpsToMetersPerSecond(
+                driveMotor.getVelocity().getValue(), SwerveConstants.WHEEL_DIAMETER / 2);
     }
 
     @Override
@@ -114,9 +121,10 @@ public class ModuleIOReal implements ModuleIO {
 
         driveMotorVelocitySetpoint = velocity;
 
-        velocityControlRequest.withVelocity(lib.units.Units.metersToRotations(
-                        velocity,
-                        SwerveConstants.WHEEL_DIAMETER / 2))
+        velocityControlRequest
+                .withVelocity(
+                        lib.units.Units.metersToRotations(
+                                velocity, SwerveConstants.WHEEL_DIAMETER / 2))
                 .withEnableFOC(true);
         driveMotor.setControl(velocityControlRequest);
     }
@@ -126,20 +134,16 @@ public class ModuleIOReal implements ModuleIO {
     public SwerveModuleState getModuleState() {
         return new SwerveModuleState(
                 lib.units.Units.rpsToMetersPerSecond(
-                        getVelocity(), SwerveConstants.WHEEL_DIAMETER/2)
-                , getAngle()
-        );
+                        getVelocity(), SwerveConstants.WHEEL_DIAMETER / 2),
+                getAngle());
     }
 
     @Override
     public SwerveModulePosition getModulePosition() {
         return new SwerveModulePosition(
                 lib.units.Units.rpsToMetersPerSecond(
-                        driveMotor.getPosition().getValue(),
-                        SwerveConstants.WHEEL_DIAMETER / 2
-                ),
-                getAngle()
-        );
+                        driveMotor.getPosition().getValue(), SwerveConstants.WHEEL_DIAMETER / 2),
+                getAngle());
     }
 
     @Override
@@ -160,9 +164,10 @@ public class ModuleIOReal implements ModuleIO {
 
     @Override
     public Command checkModule() {
-        return new RunCommand(() -> {
-            driveMotor.set(0.8);
-            angleMotor.set(0.2);
-        });
+        return new RunCommand(
+                () -> {
+                    driveMotor.set(0.8);
+                    angleMotor.set(0.2);
+                });
     }
 }

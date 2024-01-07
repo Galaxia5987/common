@@ -23,8 +23,7 @@ public interface ModuleIO {
 
     void stop();
 
-    default void updateOffset(double offset) {
-    }
+    default void updateOffset(double offset) {}
 
     default boolean encoderConnected() {
         return true;

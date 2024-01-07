@@ -3,11 +3,9 @@ package frc.robot.swerve;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import org.littletonrobotics.junction.AutoLog;
-import org.littletonrobotics.junction.LogTable;
-import org.littletonrobotics.junction.inputs.LoggableInputs;
 
 @AutoLog
-public class SwerveModuleInputs{
+public class SwerveModuleInputs {
     public double driveMotorVelocity = 0;
     public double driveMotorVelocitySetpoint = 0;
     public double driveMotorSupplyCurrent = 0;

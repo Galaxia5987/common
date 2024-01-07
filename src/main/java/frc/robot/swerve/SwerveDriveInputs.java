@@ -2,8 +2,6 @@ package frc.robot.swerve;
 
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import org.littletonrobotics.junction.AutoLog;
-import org.littletonrobotics.junction.LogTable;
-import org.littletonrobotics.junction.inputs.LoggableInputs;
 
 @AutoLog
 public class SwerveDriveInputs {
@@ -12,10 +10,11 @@ public class SwerveDriveInputs {
 
     public SwerveModuleState[] currentModuleStates = new SwerveModuleState[4];
     public SwerveModuleState[] desiredModuleStates = {
-            new SwerveModuleState(),
-            new SwerveModuleState(),
-            new SwerveModuleState(),
-            new SwerveModuleState()};
+        new SwerveModuleState(),
+        new SwerveModuleState(),
+        new SwerveModuleState(),
+        new SwerveModuleState()
+    };
 
     // x, y, omega
     public double[] currentSpeeds = {0, 0, 0};
@@ -31,5 +30,5 @@ public class SwerveDriveInputs {
     public double yaw;
     public double gyroOffset;
 
-    public double[] botPose = {0, 0, 0}; //x, y, rotation
+    public double[] botPose = {0, 0, 0}; // x, y, rotation
 }

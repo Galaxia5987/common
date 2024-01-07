@@ -14,12 +14,12 @@ public class SwerveDrive extends SubsystemBase {
     private final GyroIO gyro;
     private final SwerveModule[] modules = new SwerveModule[4]; // FL, FR, RL, RR
     private final LinearFilter accelFilter = LinearFilter.movingAverage(15);
-    private final SwerveDriveKinematics kinematics = new SwerveDriveKinematics(
-            SwerveConstants.WHEEL_POSITIONS[0],
-            SwerveConstants.WHEEL_POSITIONS[1],
-            SwerveConstants.WHEEL_POSITIONS[2],
-            SwerveConstants.WHEEL_POSITIONS[3]
-    );
+    private final SwerveDriveKinematics kinematics =
+            new SwerveDriveKinematics(
+                    SwerveConstants.WHEEL_POSITIONS[0],
+                    SwerveConstants.WHEEL_POSITIONS[1],
+                    SwerveConstants.WHEEL_POSITIONS[2],
+                    SwerveConstants.WHEEL_POSITIONS[3]);
     private final SwerveDriveOdometry odometry;
     private final Derivative acceleration = new Derivative();
     private final SwerveModulePosition[] modulePositions = new SwerveModulePosition[4];
@@ -51,7 +51,8 @@ public class SwerveDrive extends SubsystemBase {
                                     angleIds[i],
                                     encoderIds[i],
                                     SwerveConstants.DRIVE_MOTOR_CONFIGS,
-                                    SwerveConstants.ANGLE_MOTOR_CONFIGS);;
+                                    SwerveConstants.ANGLE_MOTOR_CONFIGS);
+                    ;
                 }
 
                 modules[i] = new SwerveModule(io, i + 1);
@@ -273,8 +274,7 @@ public class SwerveDrive extends SubsystemBase {
                                     loggerInputs.currentModuleStates[0],
                                     loggerInputs.currentModuleStates[1],
                                     loggerInputs.currentModuleStates[2],
-                                    loggerInputs.currentModuleStates[3]
-                            ))[i];
+                                    loggerInputs.currentModuleStates[3]))[i];
         }
 
         loggerInputs.linearVelocity =
@@ -300,7 +300,9 @@ public class SwerveDrive extends SubsystemBase {
         loggerInputs.pitch = gyro.getPitch();
         gyro.updateInputs(loggerInputs);
 
-        SwerveDriveKinematics.desaturateWheelSpeeds(loggerInputs.desiredModuleStates, SwerveConstants.MAX_X_Y_VELOCITY); //TODO: may not work
+        SwerveDriveKinematics.desaturateWheelSpeeds(
+                loggerInputs.desiredModuleStates,
+                SwerveConstants.MAX_X_Y_VELOCITY); // TODO: may not work
         for (int i = 0; i < modules.length; i++) {
             modules[i].setModuleState(loggerInputs.desiredModuleStates[i]);
         }

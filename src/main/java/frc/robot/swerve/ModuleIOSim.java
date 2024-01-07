@@ -27,15 +27,17 @@ public class ModuleIOSim implements ModuleIO {
     private Rotation2d angleSetpoint = new Rotation2d();
 
     public ModuleIOSim() {
-        driveMotor = new TalonFXSim(
-                1,
-                1/SwerveConstants.DRIVE_REDUCTION,
-                SwerveConstants.DRIVE_MOTOR_MOMENT_OF_INERTIA);
+        driveMotor =
+                new TalonFXSim(
+                        1,
+                        1 / SwerveConstants.DRIVE_REDUCTION,
+                        SwerveConstants.DRIVE_MOTOR_MOMENT_OF_INERTIA);
 
-        angleMotor = new TalonFXSim(
-                1,
-                1 / SwerveConstants.ANGLE_REDUCTION,
-                SwerveConstants.ANGLE_MOTOR_MOMENT_OF_INERTIA);
+        angleMotor =
+                new TalonFXSim(
+                        1,
+                        1 / SwerveConstants.ANGLE_REDUCTION,
+                        SwerveConstants.ANGLE_MOTOR_MOMENT_OF_INERTIA);
 
         angleController = new PIDController(8, 0, 0, 0.02);
         velocityController = new PIDController(3.5, 0, 0.00, 0.02);
@@ -50,9 +52,9 @@ public class ModuleIOSim implements ModuleIO {
         angleMotor.update(Timer.getFPGATimestamp());
 
         inputs.driveMotorAppliedVoltage = driveMotor.getAppliedVoltage();
-        inputs.driveMotorVelocity = Units.rpsToMetersPerSecond(
-                driveMotor.getRotorVelocity(),
-                SwerveConstants.WHEEL_DIAMETER/2);
+        inputs.driveMotorVelocity =
+                Units.rpsToMetersPerSecond(
+                        driveMotor.getRotorVelocity(), SwerveConstants.WHEEL_DIAMETER / 2);
         currentVelocity = inputs.driveMotorVelocity;
         inputs.driveMotorVelocitySetpoint = velocitySetpoint;
 
@@ -89,22 +91,21 @@ public class ModuleIOSim implements ModuleIO {
         velocity *= angleError.getCos();
 
         velocitySetpoint = velocity;
-        driveControl.withVelocity(Units.metersToRotations(velocity, SwerveConstants.WHEEL_DIAMETER/2));
+        driveControl.withVelocity(
+                Units.metersToRotations(velocity, SwerveConstants.WHEEL_DIAMETER / 2));
         driveMotor.setControl(driveControl);
     }
 
     @Override
     public SwerveModuleState getModuleState() {
-        return new SwerveModuleState(
-                getVelocity(),
-                getAngle()
-        );
+        return new SwerveModuleState(getVelocity(), getAngle());
     }
 
     @Override
     public SwerveModulePosition getModulePosition() {
-        return new SwerveModulePosition(Units.rpsToMetersPerSecond(
-                driveMotor.getRotorPosition(), SwerveConstants.WHEEL_DIAMETER/2),
+        return new SwerveModulePosition(
+                Units.rpsToMetersPerSecond(
+                        driveMotor.getRotorPosition(), SwerveConstants.WHEEL_DIAMETER / 2),
                 currentAngle);
     }
 
