@@ -38,13 +38,15 @@ public class SparkMaxSim extends SimMotor {
                 setInputVoltage(controller.calculate(getPosition(), value) + arbFeedforward);
                 break;
             case kSmartMotion:
-                setInputVoltage(profiledController.calculate(getPosition(), value) + arbFeedforward);
+                setInputVoltage(
+                        profiledController.calculate(getPosition(), value) + arbFeedforward);
                 break;
             case kVelocity:
                 setInputVoltage(controller.calculate(getVelocity(), value) + arbFeedforward);
                 break;
             case kSmartVelocity:
-                setInputVoltage(profiledController.calculate(getVelocity(), value) + arbFeedforward);
+                setInputVoltage(
+                        profiledController.calculate(getVelocity(), value) + arbFeedforward);
                 break;
             case kVoltage:
                 setInputVoltage(value);

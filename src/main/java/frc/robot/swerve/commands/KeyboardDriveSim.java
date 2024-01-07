@@ -20,11 +20,6 @@ public class KeyboardDriveSim extends Command {
         double yOutput = -controller.getRawAxis(0);
         double omegaOutput = controller.getRawAxis(2);
 
-        drive.drive(
-                xOutput,
-                yOutput,
-                omegaOutput,
-                true
-        );
+        drive.drive(xOutput, yOutput, omegaOutput, true);
     }
 }

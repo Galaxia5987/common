@@ -27,5 +27,5 @@ public class SwerveDriveInputs {
     public double error;
     public double pidSetpoint;
 
-    public double[] botPose = {0, 0, 0}; //x, y, rotation
+    public double[] botPose = {0, 0, 0}; // x, y, rotation
 }

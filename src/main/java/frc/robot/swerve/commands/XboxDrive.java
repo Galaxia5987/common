@@ -22,7 +22,6 @@ public class XboxDrive extends Command {
                 MathUtil.applyDeadband(-xboxController.getLeftY(), SwerveConstants.XBOX_DEADBAND),
                 MathUtil.applyDeadband(-xboxController.getLeftX(), SwerveConstants.XBOX_DEADBAND),
                 MathUtil.applyDeadband(-xboxController.getRightX(), SwerveConstants.XBOX_DEADBAND),
-                true
-        );
+                true);
     }
 }

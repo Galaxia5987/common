@@ -1,16 +1,8 @@
-// Copyright (c) 2023 FRC 6328
-// http://github.com/Mechanical-Advantage
-//
-// Use of this source code is governed by an MIT-style
-// license that can be found in the LICENSE file at
-// the root directory of this project.
-
 package lib.webconstants;
-
-import org.littletonrobotics.junction.networktables.LoggedDashboardNumber;
 
 import java.util.HashMap;
 import java.util.Map;
+import org.littletonrobotics.junction.networktables.LoggedDashboardNumber;
 
 /**
  * Class for a tunable number. Gets value from dashboard in tuning mode, returns default if not or
@@ -70,7 +62,11 @@ public class LoggedTunableNumber {
         if (!hasDefault) {
             return 0.0;
         } else {
-            return IN_TUNING_MODE ? dashboardNumber.get() : defaultValue;
+            if (IN_TUNING_MODE) {
+                return dashboardNumber.get();
+            } else {
+                return defaultValue;
+            }
         }
     }
 
@@ -78,9 +74,9 @@ public class LoggedTunableNumber {
      * Checks whether the number has changed since our last check
      *
      * @param id Unique identifier for the caller to avoid conflicts when shared between multiple
-     *           objects. Recommended approach is to pass the result of "hashCode()"
+     *     objects. Recommended approach is to pass the result of "hashCode()"
      * @return True if the number has changed since the last time this method was called, false
-     * otherwise.
+     *     otherwise.
      */
     public boolean hasChanged(int id) {
         double currentValue = get();

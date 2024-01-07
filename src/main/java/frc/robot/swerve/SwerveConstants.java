@@ -10,8 +10,10 @@ public class SwerveConstants {
             {0.6002859900071498,0.5906595147664879,0.3208662830216571,0.19138357978458953};
 
     public static final double VOLT_COMP_SATURATION = 12;
-    public static final SupplyCurrentLimitConfiguration SUPPLY_CURRENT_LIMIT = new SupplyCurrentLimitConfiguration(true, 50, 0, 0);
-    public static final StatorCurrentLimitConfiguration STATOR_CURRENT_LIMIT = new StatorCurrentLimitConfiguration(true, 50, 0, 0);
+    public static final SupplyCurrentLimitConfiguration SUPPLY_CURRENT_LIMIT =
+            new SupplyCurrentLimitConfiguration(true, 50, 0, 0);
+    public static final StatorCurrentLimitConfiguration STATOR_CURRENT_LIMIT =
+            new StatorCurrentLimitConfiguration(true, 50, 0, 0);
 
     public static final int DRIVE_CURRENT_LIMIT = 50;
     public static final int ANGLE_CURRENT_LIMIT = 20;
@@ -33,10 +35,11 @@ public class SwerveConstants {
     public static final double[] REAR_RIGHT_MOTION_MAGIC_CONFIGS = {3.5, 0, 0, 0.00065, 1, 0, 0, 10, 5, 1};
 
     public static final double[][] motionMagicConfigs = {
-            FRONT_LEFT_MOTION_MAGIC_CONFIGS,
-            FRONT_RIGHT_MOTION_MAGIC_CONFIGS,
-            REAR_LEFT_MOTION_MAGIC_CONFIGS,
-            REAR_RIGHT_MOTION_MAGIC_CONFIGS};
+        FRONT_LEFT_MOTION_MAGIC_CONFIGS,
+        FRONT_RIGHT_MOTION_MAGIC_CONFIGS,
+        REAR_LEFT_MOTION_MAGIC_CONFIGS,
+        REAR_RIGHT_MOTION_MAGIC_CONFIGS
+    };
 
     public static final double DRIVE_kP = 0.0006;
     public static final double DRIVE_kI = 0.0;
@@ -55,8 +58,12 @@ public class SwerveConstants {
             DRIVE_REDUCTION *
             WHEEL_DIAMETER * Math.PI;
 
-    public static final double MAX_OMEGA_VELOCITY = MAX_X_Y_VELOCITY / //[m/s]
-            Math.sqrt((robotLength / 2) * (robotLength / 2) + (robotWidth / 2) * (robotWidth / 2));
+    public static final double MAX_OMEGA_VELOCITY =
+            MAX_X_Y_VELOCITY
+                    / // [m/s]
+                    Math.sqrt(
+                            (robotLength / 2) * (robotLength / 2)
+                                    + (robotWidth / 2) * (robotWidth / 2));
 
     public static final TalonFXInvertType CLOCKWISE = TalonFXInvertType.Clockwise;
     public static final TalonFXInvertType COUNTER_CLOCKWISE = TalonFXInvertType.CounterClockwise;
@@ -64,15 +71,16 @@ public class SwerveConstants {
     public static final double NEUTRAL_DEADBAND = 0.15;
     public static final double XBOX_DEADBAND = 0.15;
 
-
     public static final double TICKS_PER_RADIAN = 2048 / ANGLE_REDUCTION / (Math.PI * 2);
-    public static final double TICKS_PER_METER = (2048 / DRIVE_REDUCTION) / (Math.PI * WHEEL_DIAMETER);
+    public static final double TICKS_PER_METER =
+            (2048 / DRIVE_REDUCTION) / (Math.PI * WHEEL_DIAMETER);
 
     public static final Translation2d[] wheelPositions = {
-            new Translation2d(robotLength / 2, robotWidth / 2),   //FL
-            new Translation2d(robotLength / 2, -robotWidth / 2),   //FR
-            new Translation2d(-robotLength / 2, robotWidth / 2),  //RL
-            new Translation2d(-robotLength / 2, -robotWidth / 2)}; //RR
+        new Translation2d(robotLength / 2, robotWidth / 2), // FL
+        new Translation2d(robotLength / 2, -robotWidth / 2), // FR
+        new Translation2d(-robotLength / 2, robotWidth / 2), // RL
+        new Translation2d(-robotLength / 2, -robotWidth / 2)
+    }; // RR
 
     public static final double MAX_VELOCITY_AUTO = 4.0;
     public static final double MAX_ACCELERATION_AUTO = 2.5;
