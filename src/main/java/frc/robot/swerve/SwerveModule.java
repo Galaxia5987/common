@@ -4,6 +4,7 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import lib.math.differential.BooleanTrigger;
 import org.littletonrobotics.junction.Logger;
@@ -42,9 +43,9 @@ public class SwerveModule extends SubsystemBase {
      * @param moduleState A module state to set the module to.
      */
     public void setModuleState(SwerveModuleState moduleState) {
-        moduleState = SwerveModuleState.optimize(moduleState, new Rotation2d(loggerInputs.angle));
+        moduleState = SwerveModuleState.optimize(moduleState, loggerInputs.angle);
         io.setVelocity(moduleState.speedMetersPerSecond);
-        io.setAngle(moduleState.angle.getRadians());
+        io.setAngle(moduleState.angle);
     }
 
     /**
@@ -54,7 +55,7 @@ public class SwerveModule extends SubsystemBase {
      */
     public SwerveModulePosition getModulePosition() {
         return new SwerveModulePosition(
-                loggerInputs.moduleDistance, new Rotation2d(loggerInputs.angle));
+                loggerInputs.moduleDistance, loggerInputs.angle);
     }
 
     /**
@@ -101,13 +102,13 @@ public class SwerveModule extends SubsystemBase {
         return io.encoderConnected();
     }
 
-    public void checkModule() {
-        io.checkModule();
+    public Command checkModule() {
+        return io.checkModule().withName("CheckModule_" + number);
     }
 
     @Override
     public void periodic() {
-        currentModuleState = new SwerveModuleState(io.getVelocity(), new Rotation2d(io.getAngle()));
+        currentModuleState = new SwerveModuleState(io.getVelocity(), io.getAngle());
 
         io.updateInputs(loggerInputs);
 

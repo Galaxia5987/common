@@ -2,6 +2,7 @@ package frc.robot.swerve;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.wpilibj.simulation.FlywheelSim;
 import lib.math.AngleUtil;
@@ -51,23 +52,23 @@ public class ModuleIOSim implements ModuleIO {
 
         inputs.angleMotorAppliedVoltage = angleMotorAppliedVoltage;
         inputs.angleMotorVelocity = angleMotor.getAngularVelocityRadPerSec();
-        inputs.angleSetpoint = angleSetpoint;
-        inputs.angle = AngleUtil.normalize(currentAngle.get());
+        inputs.angleSetpoint = Rotation2d.fromRadians(angleSetpoint);
+        inputs.angle = Rotation2d.fromRadians(AngleUtil.normalize(currentAngle.get()));
 
         moduleDistance.update(inputs.driveMotorVelocity);
         inputs.moduleDistance = moduleDistance.get();
     }
 
     @Override
-    public double getAngle() {
-        return currentAngle.get();
+    public Rotation2d getAngle() {
+        return Rotation2d.fromRadians(currentAngle.get());
     }
 
     @Override
-    public void setAngle(double angle) {
-        angleSetpoint = angle;
+    public void setAngle(Rotation2d angle) {
+        angleSetpoint = angle.getRadians();
         angleMotorAppliedVoltage =
-                angleFeedback.calculate(MathUtil.angleModulus(currentAngle.get()), angle);
+                angleFeedback.calculate(MathUtil.angleModulus(currentAngle.get()), angle.getRadians());
         angleMotor.setInputVoltage(angleMotorAppliedVoltage);
     }
 

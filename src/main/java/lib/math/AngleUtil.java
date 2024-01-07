@@ -39,6 +39,10 @@ public class AngleUtil {
         return angle % (2 * Math.PI);
     }
 
+    public static Rotation2d normalize(Rotation2d angle) {
+        return Rotation2d.fromRadians(normalize(angle.getRadians()));
+    }
+
     public static double absoluteAngleToYaw(double angle) {
         angle = normalize(angle);
         while (angle > Math.PI) {

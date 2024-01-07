@@ -6,6 +6,8 @@ import com.ctre.phoenix.motorcontrol.can.TalonFX;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import lib.math.AngleUtil;
 import lib.math.differential.Integral;
 import lib.units.UnitModel;
@@ -105,22 +107,22 @@ public class ModuleIOReal implements ModuleIO {
                 ticksPerMeter.toVelocity(angleMotor.getSelectedSensorVelocity());
 
         inputs.angle = getAngle();
-        currentAngle = inputs.angle;
+        currentAngle = inputs.angle.getRadians();
 
-        inputs.angleSetpoint = angleSetpoint;
+        inputs.angleSetpoint = Rotation2d.fromRadians(angleSetpoint);
 
         inputs.moduleDistance = getModulePosition().distanceMeters;
     }
 
     @Override
-    public double getAngle() {
-        return AngleUtil.normalize(ticksPerRad.toUnits(angleMotor.getSelectedSensorPosition()));
+    public Rotation2d getAngle() {
+        return AngleUtil.normalize(Rotation2d.fromRadians(ticksPerRad.toUnits(angleMotor.getSelectedSensorPosition())));
     }
 
     @Override
-    public void setAngle(double angle) {
-        angleSetpoint = AngleUtil.normalize(angle);
-        Rotation2d error = new Rotation2d(angle).minus(new Rotation2d(currentAngle));
+    public void setAngle(Rotation2d angle) {
+        angleSetpoint = AngleUtil.normalize(angle.getRadians());
+        Rotation2d error = angle.minus(new Rotation2d(currentAngle));
         angleMotor.set(
                 TalonFXControlMode.MotionMagic,
                 angleMotorPosition + ticksPerRad.toTicks(error.getRadians()));
@@ -143,7 +145,7 @@ public class ModuleIOReal implements ModuleIO {
     public SwerveModulePosition getModulePosition() {
         return new SwerveModulePosition(
                 ticksPerMeter.toUnits(driveMotor.getSelectedSensorPosition()),
-                new Rotation2d(getAngle()));
+                getAngle());
     }
 
     @Override
@@ -165,8 +167,12 @@ public class ModuleIOReal implements ModuleIO {
     }
 
     @Override
-    public void checkModule() {
-        driveMotor.set(TalonFXControlMode.PercentOutput, 0.8);
-        angleMotor.set(TalonFXControlMode.PercentOutput, 0.2);
+    public Command checkModule() {
+        return Commands.run(
+                () -> {
+                    driveMotor.set(TalonFXControlMode.PercentOutput, 0.8);
+                    angleMotor.set(TalonFXControlMode.PercentOutput, 0.2);
+                }
+        );
     }
 }
