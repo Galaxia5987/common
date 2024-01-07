@@ -26,18 +26,14 @@ public class ModuleIOReal implements ModuleIO {
     private final Integral driveStatorChargeUsedCoulomb = new Integral();
     private final Integral angleSupplyChargeUsedCoulomb = new Integral();
     private final Integral angleStatorChargeUsedCoulomb = new Integral();
+    private final MotionMagicVoltage angleControlRequest = new MotionMagicVoltage(0).withEnableFOC(true).withSlot(0);
+    private final VelocityVoltage velocityControlRequest = new VelocityVoltage(0).withEnableFOC(true);
     private Rotation2d angleSetpoint = new Rotation2d();
     private Rotation2d currentAngle = new Rotation2d();
     private double driveMotorVelocitySetpoint = 0;
 
-    private final MotionMagicVoltage angleControlRequest = new MotionMagicVoltage(0).withEnableFOC(true).withSlot(0);
-    private final VelocityVoltage velocityControlRequest = new VelocityVoltage(0).withEnableFOC(true);
-
-    private final int number;
-
-    public ModuleIOReal(int driveMotorID, int angleMotorID, int encoderID, int number,
+    public ModuleIOReal(int driveMotorID, int angleMotorID, int encoderID,
                         TalonFXConfiguration driveConfig, TalonFXConfiguration angleConfig) {
-        this.number = number;
 
         this.driveMotor = new TalonFX(driveMotorID);
         this.angleMotor = new TalonFX(angleMotorID);
