@@ -21,7 +21,7 @@ public interface ModuleIO {
 
     SwerveModulePosition getModulePosition();
 
-    void stopMotor();
+    void stop();
 
     default void updateOffset(double offset) {
     }

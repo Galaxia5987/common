@@ -93,7 +93,7 @@ public class SwerveModule extends SubsystemBase {
     }
 
     public void stopMotor() {
-        io.stopMotor();
+        io.stop();
     }
 
     public boolean encoderConnected() {

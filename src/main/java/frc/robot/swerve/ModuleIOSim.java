@@ -109,7 +109,7 @@ public class ModuleIOSim implements ModuleIO {
     }
 
     @Override
-    public void stopMotor() {
+    public void stop() {
         driveControl.withVelocity(0);
         driveMotor.setControl(driveControl);
 

@@ -148,7 +148,7 @@ public class ModuleIOReal implements ModuleIO {
     }
 
     @Override
-    public void stopMotor() {
+    public void stop() {
         driveMotor.stopMotor();
         angleMotor.stopMotor();
     }
