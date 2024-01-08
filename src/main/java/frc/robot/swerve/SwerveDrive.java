@@ -241,7 +241,7 @@ public class SwerveDrive extends SubsystemBase {
 
         if (new ChassisSpeeds(0, 0, 0).equals(chassisSpeeds)) {
             for (SwerveModule module : modules) {
-                module.stopMotor();
+                module.stop();
             }
         }
 
