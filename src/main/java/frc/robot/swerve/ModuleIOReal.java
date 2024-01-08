@@ -159,11 +159,8 @@ public class ModuleIOReal implements ModuleIO {
     }
 
     @Override
-    public Command checkModule() {
-        return new RunCommand(
-                () -> {
-                    driveMotor.set(0.8);
-                    angleMotor.set(0.2);
-                });
+    public void checkModule() {
+        driveMotor.set(0.8);
+        angleMotor.set(0.2);
     }
 }

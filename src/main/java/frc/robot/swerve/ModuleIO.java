@@ -29,7 +29,6 @@ public interface ModuleIO {
         return true;
     }
 
-    default Command checkModule() {
-        return Commands.none();
+    default void checkModule() {
     }
 }
