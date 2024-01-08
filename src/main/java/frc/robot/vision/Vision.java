@@ -19,17 +19,11 @@ public class Vision extends SubsystemBase {
         results = new Result[modules.length];
     }
 
-    public static Vision getInstance(boolean isReal, VisionModule[] modules) {
+    public static Vision getInstance(VisionModule[] modules) {
         if (INSTANCE == null) {
-            if (isReal) {
-                INSTANCE = new Vision(
-                    modules
-                );
-            } else {
-                INSTANCE = new Vision(
-                        VisionModule.simIO("simCam", 0)
-                );
-            }
+            INSTANCE = new Vision(
+                modules
+            );
         }
         return INSTANCE;
     }
