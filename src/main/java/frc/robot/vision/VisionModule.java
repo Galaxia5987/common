@@ -16,17 +16,4 @@ public class VisionModule {
         this.inputs = new VisionInputsAutoLogged();
         this.ROBOT_TO_CAM = ROBOT_TO_CAM;
     }
-
-    public static VisionModule photonVisionIO(String name, int index) {
-        return new VisionModule(
-                name,
-                new PhotonVisionIO(new PhotonCamera(name), VisionConstants.ROBOT_TO_CAM[index])
-        );
-    }
-    public static VisionModule simIO(String name,  int index){
-        return new VisionModule(
-                name,
-                new VisionSimIO(VisionConstants.ROBOT_TO_CAM[index])
-        );
-    }
 }
