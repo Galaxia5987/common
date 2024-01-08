@@ -109,7 +109,7 @@ public class ModuleIOReal implements ModuleIO {
 
     @Override
     public double getVelocity() {
-        return lib.units.Units.rpsToMetersPerSecond(
+        return Units.rpsToMetersPerSecond(
                 driveMotor.getVelocity().getValue(), SwerveConstants.WHEEL_DIAMETER / 2);
     }
 
@@ -139,7 +139,7 @@ public class ModuleIOReal implements ModuleIO {
     @Override
     public SwerveModulePosition getModulePosition() {
         return new SwerveModulePosition(
-                lib.units.Units.rpsToMetersPerSecond(
+                Units.rpsToMetersPerSecond(
                         driveMotor.getPosition().getValue(), SwerveConstants.WHEEL_DIAMETER / 2),
                 getAngle());
     }
