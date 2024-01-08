@@ -46,7 +46,6 @@ public class ModuleIOReal implements ModuleIO {
 
         this.encoder = new DutyCycleEncoder(encoderID);
 
-        driveConfig.ClosedLoopGeneral.ContinuousWrap = true;
         driveConfig.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
         driveMotor.getConfigurator().apply(driveConfig);
         driveMotor.setPosition(0);
