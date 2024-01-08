@@ -7,6 +7,7 @@ import edu.wpi.first.math.kinematics.*;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import lib.Utils;
 import lib.math.differential.Derivative;
+import org.littletonrobotics.junction.AutoLogOutput;
 import org.littletonrobotics.junction.Logger;
 
 public class SwerveDrive extends SubsystemBase {
@@ -115,6 +116,7 @@ public class SwerveDrive extends SubsystemBase {
      *
      * @return Yaw angle reading from gyro. [rad]
      */
+    @AutoLogOutput
     public double getRawYaw() {
         return loggerInputs.rawYaw;
     }
@@ -124,10 +126,12 @@ public class SwerveDrive extends SubsystemBase {
      *
      * @return Yaw angle with offset. [rad]
      */
+    @AutoLogOutput
     public double getYaw() {
         return loggerInputs.yaw;
     }
 
+    @AutoLogOutput
     public double getPitch() {
         return loggerInputs.pitch;
     }
@@ -147,6 +151,7 @@ public class SwerveDrive extends SubsystemBase {
         }
     }
 
+    @AutoLogOutput
     public Pose2d getBotPose() {
         return Utils.arrayToPose2d(loggerInputs.botPose);
     }
@@ -155,10 +160,12 @@ public class SwerveDrive extends SubsystemBase {
         return kinematics;
     }
 
+    @AutoLogOutput
     public double getVelocity() {
         return loggerInputs.linearVelocity;
     }
 
+    @AutoLogOutput
     public ChassisSpeeds getCurrentSpeeds() {
         return Utils.arrayToChassisSpeeds(loggerInputs.currentSpeeds);
     }
@@ -198,6 +205,7 @@ public class SwerveDrive extends SubsystemBase {
         modules[3].setModuleState(new SwerveModuleState(0, Rotation2d.fromDegrees(225)));
     }
 
+    @AutoLogOutput
     public SwerveModulePosition[] getModulePositions() {
         return modulePositions;
     }
