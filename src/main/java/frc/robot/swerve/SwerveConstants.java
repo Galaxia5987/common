@@ -39,7 +39,7 @@ public class SwerveConstants {
     public static final MotionMagicConfigs MOTION_MAGIC_CONFIGS =
             new MotionMagicConfigs()
                     .withMotionMagicCruiseVelocity(10.0)
-                    .withMotionMagicAcceleration(30.0)
+                    .withMotionMagicAcceleration(5.0)
                     .withMotionMagicJerk(100.0);
 
     public static final VoltageConfigs VOLTAGE_CONFIGS =
