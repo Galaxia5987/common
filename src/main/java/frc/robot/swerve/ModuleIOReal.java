@@ -122,7 +122,7 @@ public class ModuleIOReal implements ModuleIO {
 
         velocityControlRequest
                 .withVelocity(
-                        1 / Units.rpsToMetersPerSecond(
+                        Units.metersToRotations(
                                 velocity, SwerveConstants.WHEEL_DIAMETER / 2)
                 )
                 .withEnableFOC(true);
