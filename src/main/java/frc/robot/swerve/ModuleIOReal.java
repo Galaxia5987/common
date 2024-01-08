@@ -130,10 +130,7 @@ public class ModuleIOReal implements ModuleIO {
 
     @Override
     public SwerveModuleState getModuleState() {
-        return new SwerveModuleState(
-                lib.units.Units.rpsToMetersPerSecond(
-                        getVelocity(), SwerveConstants.WHEEL_DIAMETER / 2),
-                getAngle());
+        return new SwerveModuleState(getVelocity(), getAngle());
     }
 
     @Override
