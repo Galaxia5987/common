@@ -4,6 +4,7 @@ import edu.wpi.first.math.filter.LinearFilter;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.*;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import lib.Utils;
 import lib.math.differential.Derivative;
@@ -310,7 +311,7 @@ public class SwerveDrive extends SubsystemBase {
 
         SwerveDriveKinematics.desaturateWheelSpeeds(
                 loggerInputs.desiredModuleStates,
-                SwerveConstants.MAX_X_Y_VELOCITY); // TODO: may not work
+                SwerveConstants.MAX_X_Y_VELOCITY);
         for (int i = 0; i < modules.length; i++) {
             modules[i].setModuleState(loggerInputs.desiredModuleStates[i]);
         }
