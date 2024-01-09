@@ -26,16 +26,18 @@ public class VisionSimIO implements VisionIO {
 
     public VisionSimIO(Transform3d robotToCam) {
         this.robotToCam = robotToCam;
-//        simVisionSystem = new VisionSystemSim("simCam", 95, robotToCam.getRotation().getY(), new Transform2d(robotToCam.getTranslation().toTranslation2d(), robotToCam.getRotation().toRotation2d()), robotToCam.getZ(), 1000, 1600, 1200, 0);
-        photonCamera = new PhotonCamera(NetworkTableInstance.getDefault(), "photonCam");
-        cameraSim = new PhotonCameraSim(photonCamera);
-        try {
-            var field = AprilTagFields.k2023ChargedUp.loadAprilTagLayoutField();
-            field.getTags().forEach((tag) ->
-                    visionTargetsSim.add(new VisionTargetSim(tag.pose, new TargetModel(0.15, 0.15))));
-        } catch (Exception e) {
-            e.printStackTrace();
+
+        this.photonCamera = photonCamera;
+        cameraSim = new PhotonCameraSim(photonCamera, VisionConstants.simCameraProperties);
+        cameraSim.enableRawStream(true);
+        cameraSim.enableProcessedStream(true);
+        cameraSim.enableDrawWireframe(true);
         visionSim = new VisionSystemSim(photonCamera.getName());
+
+        try{
+            tagFieldLayout = AprilTagFieldLayout.loadFromResource(AprilTagFields.k2023ChargedUp.m_resourceFile);
+        }catch (Exception e){
+            return;
         }
 
         visionSim.addCamera(cameraSim, robotToCam);
@@ -57,6 +59,12 @@ public class VisionSimIO implements VisionIO {
     public Transform3d getCameraToRobot() {
         return robotToCam;
     }
+
+    @Override
+    public String getName() {
+        return photonCamera.getName();
+    }
+
     @Override
     public void updateInputs(VisionInputs inputs) {
         var pose = SwerveDrive.getInstance().getBotPose();
