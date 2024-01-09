@@ -90,4 +90,9 @@ public class PhotonVisionIOReal implements VisionIO {
     public Transform3d getCameraToRobot() {
         return robotToCamera;
     }
+
+    @Override
+    public String getName() {
+        return camera.getName();
+    }
 }
