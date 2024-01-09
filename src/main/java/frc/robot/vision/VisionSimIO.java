@@ -13,7 +13,7 @@ import org.photonvision.simulation.VisionTargetSim;
 import org.photonvision.targeting.PhotonPipelineResult;
 
 public class VisionSimIO implements VisionIO {
-    private VisionSystemSim visionSim;
+    private SimVisionSystem simVisionSystem;
     private PhotonCamera photonCamera;
     private PhotonCameraSim cameraSim;
     private PhotonPipelineResult latestResult = new PhotonPipelineResult();
@@ -23,14 +23,11 @@ public class VisionSimIO implements VisionIO {
 
     public VisionSimIO(PhotonCamera photonCamera, Transform3d robotToCam) {
         this.robotToCam = robotToCam;
-
         this.photonCamera = photonCamera;
         cameraSim = new PhotonCameraSim(photonCamera, VisionConstants.simCameraProperties);
         cameraSim.enableRawStream(true);
         cameraSim.enableProcessedStream(true);
         cameraSim.enableDrawWireframe(true);
-        visionSim = new VisionSystemSim(photonCamera.getName());
-
         try {
             tagFieldLayout =
                     AprilTagFieldLayout.loadFromResource(
@@ -38,9 +35,7 @@ public class VisionSimIO implements VisionIO {
         } catch (Exception e) {
             return;
         }
-
-        visionSim.addCamera(cameraSim, robotToCam);
-        visionSim.addAprilTags(tagFieldLayout);
+        simVisionSystem = SimVisionSystem.getInstance(cameraSim, robotToCam);
     }
 
     @Override
@@ -65,9 +60,7 @@ public class VisionSimIO implements VisionIO {
     public void updateInputs(VisionInputs inputs) {
         var pose = SwerveDrive.getInstance().getBotPose();
 
-        visionSim.update(pose);
-        visionSim.getDebugField();
-
+        simVisionSystem.update(Utils.pose2dToPose3d(pose));
         latestResult =
                 cameraSim.process(
                         0,
