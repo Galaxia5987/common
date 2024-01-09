@@ -4,13 +4,12 @@ import edu.wpi.first.math.filter.LinearFilter;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.*;
-import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.RunCommand;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import lib.Utils;
+import edu.wpi.first.wpilibj2.command.*;
 import lib.math.differential.Derivative;
 import org.littletonrobotics.junction.AutoLogOutput;
 import org.littletonrobotics.junction.Logger;
+
+import java.util.Arrays;
 
 public class SwerveDrive extends SubsystemBase {
     private static SwerveDrive INSTANCE = null;
@@ -183,15 +182,11 @@ public class SwerveDrive extends SubsystemBase {
         return connected;
     }
 
-    public Command checkModule(int moduleIndex){
-        return new RunCommand(
-                ()-> modules[moduleIndex].checkModule(), this);
-    }
-
-    public void checkSwerve() {
-        for (int i = 0; i < 4; i++) {
-            checkModule(i);
-        }
+    public Command checkSwerve() {
+        var command = Arrays.stream(modules).map((module)-> run(module::checkModule))
+                .reduce(Commands.none(), Commands::parallel);
+        command.addRequirements(this);
+        return command;
     }
 
     public void stop() {
