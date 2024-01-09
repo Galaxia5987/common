@@ -42,7 +42,11 @@ public class Units {
         return metersToInches(meters) / 12.0;
     }
 
-    public static double metersPerSecondToRps(double value, double radius) {
+    public static double metersToRotations(double value, double radius) {
         return value / (2 * Math.PI * radius);
+    }
+
+    public static double rpsToMetersPerSecond(double value, double radius) {
+        return value * (2 * Math.PI * radius);
     }
 }

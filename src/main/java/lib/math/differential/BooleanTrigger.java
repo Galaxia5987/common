@@ -14,11 +14,8 @@ public class BooleanTrigger {
     // Whether the trigger has been released
     private boolean released = false;
 
-    /**
-     * Constructor for BooleanTrigger.
-     */
-    public BooleanTrigger() {
-    }
+    /** Constructor for BooleanTrigger. */
+    public BooleanTrigger() {}
 
     /**
      * Updates the trigger.

@@ -1,6 +1,5 @@
 package frc.robot.swerve;
 
-import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.Timer;
@@ -17,7 +16,6 @@ public class SwerveModule extends SubsystemBase {
     private final int number;
     private final BooleanTrigger encoderTrigger = new BooleanTrigger();
     private final Timer timer = new Timer();
-    private SwerveModuleState currentModuleState = new SwerveModuleState();
 
     public SwerveModule(ModuleIO io, int number) {
         this.io = io;
@@ -33,7 +31,7 @@ public class SwerveModule extends SubsystemBase {
      * @return The state of a module.
      */
     public SwerveModuleState getModuleState() {
-        return currentModuleState;
+        return io.getModuleState();
     }
 
     /**
@@ -42,9 +40,9 @@ public class SwerveModule extends SubsystemBase {
      * @param moduleState A module state to set the module to.
      */
     public void setModuleState(SwerveModuleState moduleState) {
-        moduleState = SwerveModuleState.optimize(moduleState, new Rotation2d(loggerInputs.angle));
+        moduleState = SwerveModuleState.optimize(moduleState, loggerInputs.angle);
         io.setVelocity(moduleState.speedMetersPerSecond);
-        io.setAngle(moduleState.angle.getRadians());
+        io.setAngle(moduleState.angle);
     }
 
     /**
@@ -53,9 +51,7 @@ public class SwerveModule extends SubsystemBase {
      * @return Position of the module.
      */
     public SwerveModulePosition getModulePosition() {
-        return new SwerveModulePosition(
-                loggerInputs.moduleDistance, new Rotation2d(loggerInputs.angle)
-        );
+        return new SwerveModulePosition(loggerInputs.moduleDistance, loggerInputs.angle);
     }
 
     /**
@@ -94,8 +90,8 @@ public class SwerveModule extends SubsystemBase {
         io.updateOffset(offset);
     }
 
-    public void neutralOutput() {
-        io.neutralOutput();
+    public void stopMotor() {
+        io.stop();
     }
 
     public boolean encoderConnected() {
@@ -108,13 +104,7 @@ public class SwerveModule extends SubsystemBase {
 
     @Override
     public void periodic() {
-        currentModuleState = new SwerveModuleState(
-                io.getVelocity(), new Rotation2d(io.getAngle())
-        );
-
         io.updateInputs(loggerInputs);
-
-        Logger.recordOutput("SwerveDrive/currentModuleState" + number, currentModuleState);
 
         Logger.processInputs("module_" + number, loggerInputs);
 
