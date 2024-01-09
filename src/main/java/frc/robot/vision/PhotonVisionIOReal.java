@@ -9,10 +9,12 @@ public class PhotonVisionIOReal implements VisionIO {
 
     private final PhotonCamera camera;
     private final PhotonPoseEstimator estimator;
+    private final Transform3d robotToCamera;
     private Result result;
 
     public PhotonVisionIOReal(PhotonCamera camera, Transform3d robotToCamera) {
         this.camera = camera;
+        this.robotToCamera = robotToCamera;
         camera.setPipelineIndex(0);
         try {
             estimator = new PhotonPoseEstimator(
@@ -81,5 +83,9 @@ public class PhotonVisionIOReal implements VisionIO {
     @Override
     public Result getLatestResult() {
         return result;
+    }
+    @Override
+    public Transform3d getCameraToRobot() {
+        return robotToCamera;
     }
 }
