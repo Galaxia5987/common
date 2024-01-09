@@ -1,11 +1,10 @@
 package frc.robot.vision;
 
-import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.swerve.SwerveDrive;
+import lib.Utils;
 import org.littletonrobotics.junction.Logger;
 
-import static frc.robot.vision.VisionConstants.ROBOT_TO_CAM;
+import java.util.ArrayList;
 
 public class Vision extends SubsystemBase {
 
@@ -30,6 +29,14 @@ public class Vision extends SubsystemBase {
 
     public Result[] getResults() {
         return results;
+    }
+
+    public double getAverageAmbiguity(){
+        ArrayList<Double> ambiguityList = null;
+        for (int i = 0; i < modules.length; i++) {
+            ambiguityList.add(modules[i].inputs.targetAmbiguity);
+        }
+        return Utils.averageAmbiguity(ambiguityList);
     }
 
     @Override

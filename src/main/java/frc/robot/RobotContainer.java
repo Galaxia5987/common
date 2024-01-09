@@ -9,8 +9,6 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-import frc.robot.commandgroups.GoToPose;
-import frc.robot.subsystems.vision.Vision;
 import frc.robot.swerve.SwerveDrive;
 import frc.robot.swerve.commands.JoystickDrive;
 import frc.robot.vision.Vision;
@@ -18,8 +16,6 @@ import frc.robot.vision.VisionConstants;
 import frc.robot.vision.VisionModule;
 import frc.robot.vision.VisionSimIO;
 import org.photonvision.PhotonCamera;
-import swerve.SwerveDrive;
-import swerve.commands.JoystickDrive;
 
 import java.util.ArrayList;
 
