@@ -54,6 +54,10 @@ public class VisionSimIO implements VisionIO {
     }
 
     @Override
+    public Transform3d getCameraToRobot() {
+        return robotToCam;
+    }
+    @Override
     public void updateInputs(VisionInputs inputs) {
         var pose = SwerveDrive.getInstance().getBotPose();
 
