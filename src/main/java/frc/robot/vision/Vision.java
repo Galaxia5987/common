@@ -37,7 +37,7 @@ public class Vision extends SubsystemBase {
         for (int i = 0; i < modules.length; i++) {
             VisionModule module = modules[i];
             module.io.updateInputs(module.inputs);
-            Logger.processInputs(module.name, module.inputs);
+            Logger.processInputs(module.io.getName(), module.inputs);
             results[i] = module.io.getLatestResult();
         }
     }
