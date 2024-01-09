@@ -2,7 +2,6 @@ package frc.robot.vision;
 
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
-import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Transform3d;
 import frc.robot.swerve.SwerveDrive;
 import lib.Utils;
@@ -12,7 +11,6 @@ import org.photonvision.simulation.PhotonCameraSim;
 import org.photonvision.simulation.VisionSystemSim;
 import org.photonvision.simulation.VisionTargetSim;
 import org.photonvision.targeting.PhotonPipelineResult;
-import java.io.IOException;
 
 public class VisionSimIO implements VisionIO {
     private VisionSystemSim visionSim;
@@ -23,7 +21,7 @@ public class VisionSimIO implements VisionIO {
     private Result result;
     private AprilTagFieldLayout tagFieldLayout;
 
-    public VisionSimIO(PhotonCamera photonCamera, Transform3d robotToCam){
+    public VisionSimIO(PhotonCamera photonCamera, Transform3d robotToCam) {
         this.robotToCam = robotToCam;
 
         this.photonCamera = photonCamera;
@@ -33,9 +31,11 @@ public class VisionSimIO implements VisionIO {
         cameraSim.enableDrawWireframe(true);
         visionSim = new VisionSystemSim(photonCamera.getName());
 
-        try{
-            tagFieldLayout = AprilTagFieldLayout.loadFromResource(AprilTagFields.k2023ChargedUp.m_resourceFile);
-        }catch (Exception e){
+        try {
+            tagFieldLayout =
+                    AprilTagFieldLayout.loadFromResource(
+                            AprilTagFields.k2023ChargedUp.m_resourceFile);
+        } catch (Exception e) {
             return;
         }
 
@@ -43,10 +43,8 @@ public class VisionSimIO implements VisionIO {
         visionSim.addAprilTags(tagFieldLayout);
     }
 
-
     @Override
-    public void setPipeLine(int pipeLineIndex) {
-    }
+    public void setPipeLine(int pipeLineIndex) {}
 
     @Override
     public Result getLatestResult() {
@@ -70,9 +68,16 @@ public class VisionSimIO implements VisionIO {
         visionSim.update(pose);
         visionSim.getDebugField();
 
-        latestResult = cameraSim.process(0, Utils.pose2dToPose3d(pose).plus(robotToCam.div(-1)),
-                tagFieldLayout.getTags().stream().map((a) ->
-                        new VisionTargetSim(a.pose, TargetModel.kAprilTag36h11, a.ID)).toList());
+        latestResult =
+                cameraSim.process(
+                        0,
+                        Utils.pose2dToPose3d(pose).plus(robotToCam.div(-1)),
+                        tagFieldLayout.getTags().stream()
+                                .map(
+                                        (a) ->
+                                                new VisionTargetSim(
+                                                        a.pose, TargetModel.kAprilTag36h11, a.ID))
+                                .toList());
         inputs.latency = (long) latestResult.getLatencyMillis();
         inputs.hasTargets = latestResult.hasTargets();
 
@@ -84,17 +89,17 @@ public class VisionSimIO implements VisionIO {
             inputs.targetID = latestResult.getBestTarget().getFiducialId();
 
             var cameraToTarget = latestResult.getBestTarget().getBestCameraToTarget();
-            inputs.cameraToTarget = new double[]{
-                    cameraToTarget.getX(),
-                    cameraToTarget.getY(),
-                    cameraToTarget.getZ(),
-                    cameraToTarget.getRotation().getX(),
-                    cameraToTarget.getRotation().getY(),
-                    cameraToTarget.getRotation().getZ()
-            };
+            inputs.cameraToTarget =
+                    new double[] {
+                        cameraToTarget.getX(),
+                        cameraToTarget.getY(),
+                        cameraToTarget.getZ(),
+                        cameraToTarget.getRotation().getX(),
+                        cameraToTarget.getRotation().getY(),
+                        cameraToTarget.getRotation().getZ()
+                    };
         } else {
             result = null;
         }
     }
-
 }

@@ -10,8 +10,10 @@ import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.wpilibj.*;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.swerve.SwerveDrive;
 import org.littletonrobotics.junction.LoggedRobot;
 import org.littletonrobotics.junction.Logger;
+import org.littletonrobotics.junction.inputs.LoggedPowerDistribution;
 import org.littletonrobotics.junction.networktables.NT4Publisher;
 import org.littletonrobotics.junction.wpilog.WPILOGWriter;
 
@@ -34,27 +36,33 @@ public class Robot extends LoggedRobot {
      */
     @Override
     public void robotInit() {
-//        compressor.disable();
+        //        compressor.disable();
+        SwerveDrive.setInstance(
+                Robot.isReal(),
+                false,
+                new boolean[8],
+                new boolean[8],
+                new int[4],
+                new int[4],
+                new int[4]);
         robotContainer = RobotContainer.getInstance();
 
-        Logger.getInstance().recordMetadata("ProjectName", "Sim-bot-2023"); // Set a metadata value
+        Logger.recordMetadata("ProjectName", "Common"); // Set a metadata value
 
         if (isReal()) {
-            Logger.getInstance().addDataReceiver(new WPILOGWriter("/home/lvuser")); // Log to a USB stick
-            Logger.getInstance().addDataReceiver(new NT4Publisher()); // Publish data to NetworkTables
-            new PowerDistribution(1, PowerDistribution.ModuleType.kRev); // Enables power distribution logging
+            Logger.addDataReceiver(new WPILOGWriter("/home/lvuser")); // Log to a USB stick
+            Logger.addDataReceiver(new NT4Publisher()); // Publish data to NetworkTables
+            LoggedPowerDistribution.getInstance(
+                    1, PowerDistribution.ModuleType.kRev); // Enables power distribution logging
         } else {
-            Logger.getInstance().addDataReceiver(new NT4Publisher());
+            Logger.addDataReceiver(new NT4Publisher());
         }
 
-        Logger.getInstance().start(); // Start logging! No more data receivers, replay sources, or metadata values may be added.
+        Logger.start(); // Start logging! No more data receivers, replay sources, or metadata
+        // values may be added.
 
         timer.start();
         timer.reset();
-
-        Logger.getInstance().recordOutput("BottomArmPose", new Pose3d(new Translation3d(0, 0, 0), new Rotation3d(Math.toRadians(0), Math.toRadians(0), Math.toRadians(0))));
-        Logger.getInstance().recordOutput("TopArmPose", new Pose3d(new Translation3d(0, 0, 0), new Rotation3d(Math.toRadians(0), Math.toRadians(0), Math.toRadians(0))));
-        Logger.getInstance().recordOutput("IntakePose", new Pose3d(new Translation3d(0, 0, 0), new Rotation3d(Math.toRadians(0), Math.toRadians(0), Math.toRadians(0))));
     }
 
     /**
@@ -67,10 +75,6 @@ public class Robot extends LoggedRobot {
     @Override
     public void robotPeriodic() {
         CommandScheduler.getInstance().run();
-//        Optional<EstimatedRobotPose> estimatedGlobalPose1 = vision.getEstimatedGlobal1();
-//        estimatedGlobalPose1.ifPresent(pose -> System.out.println(pose.estimatedPose));
-//        Optional<EstimatedRobotPose> estimatedGlobalPose2 = vision.getEstimatedGlobal2();
-//        estimatedGlobalPose2.ifPresent(pose -> System.out.println(pose.estimatedPose));
     }
 
     /**
@@ -93,17 +97,11 @@ public class Robot extends LoggedRobot {
         }
     }
 
-    /**
-     * This function is called periodically during autonomous.
-     */
+    /** This function is called periodically during autonomous. */
     @Override
-    public void autonomousPeriodic() {
+    public void autonomousPeriodic() {}
 
-    }
-
-    /**
-     * This function is called once when teleop is enabled.
-     */
+    /** This function is called once when teleop is enabled. */
     @Override
     public void teleopInit() {
         if (autonomousCommand != null) {
@@ -111,39 +109,25 @@ public class Robot extends LoggedRobot {
         }
     }
 
-    /**
-     * This function is called periodically during operator control.
-     */
+    /** This function is called periodically during operator control. */
     @Override
-    public void teleopPeriodic() {
-    }
+    public void teleopPeriodic() {}
 
-    /**
-     * This function is called once when the robot is disabled.
-     */
+    /** This function is called once when the robot is disabled. */
     @Override
-    public void disabledInit() {
-    }
+    public void disabledInit() {}
 
-    /**
-     * This function is called periodically when disabled.
-     */
+    /** This function is called periodically when disabled. */
     @Override
-    public void disabledPeriodic() {
-    }
+    public void disabledPeriodic() {}
 
-    /**
-     * This function is called once when test mode is enabled.
-     */
+    /** This function is called once when test mode is enabled. */
     @Override
     public void testInit() {
         CommandScheduler.getInstance().cancelAll();
     }
 
-    /**
-     * This function is called periodically during test mode.
-     */
+    /** This function is called periodically during test mode. */
     @Override
-    public void testPeriodic() {
-    }
+    public void testPeriodic() {}
 }

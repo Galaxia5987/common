@@ -1,10 +1,9 @@
 package frc.robot.vision;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import java.util.ArrayList;
 import lib.Utils;
 import org.littletonrobotics.junction.Logger;
-
-import java.util.ArrayList;
 
 public class Vision extends SubsystemBase {
 
@@ -20,9 +19,7 @@ public class Vision extends SubsystemBase {
 
     public static Vision getInstance(VisionModule[] modules) {
         if (INSTANCE == null) {
-            INSTANCE = new Vision(
-                modules
-            );
+            INSTANCE = new Vision(modules);
         }
         return INSTANCE;
     }
@@ -31,10 +28,10 @@ public class Vision extends SubsystemBase {
         return results;
     }
 
-    public double getAverageAmbiguity(){
-        ArrayList<Double> ambiguityList = null;
-        for (int i = 0; i < modules.length; i++) {
-            ambiguityList.add(modules[i].inputs.targetAmbiguity);
+    public double getAverageAmbiguity() {
+        ArrayList<Double> ambiguityList = new ArrayList<>();
+        for (VisionModule module : modules) {
+            ambiguityList.add(module.inputs.targetAmbiguity);
         }
         return Utils.averageAmbiguity(ambiguityList);
     }

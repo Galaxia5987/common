@@ -1,7 +1,9 @@
 {
   "NTProvider": {
     "types": {
-      "/FMSInfo": "FMSInfo"
+      "/FMSInfo": "FMSInfo",
+      "/SmartDashboard/VisionSystemSim-LeftPie/Sim Field": "Field2d",
+      "/SmartDashboard/VisionSystemSim-RightPie/Sim Field": "Field2d"
     }
   }
 }

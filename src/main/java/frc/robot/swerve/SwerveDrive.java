@@ -55,7 +55,6 @@ public class SwerveDrive extends SubsystemBase {
                                     encoderIds[i],
                                     SwerveConstants.DRIVE_MOTOR_CONFIGS,
                                     SwerveConstants.ANGLE_MOTOR_CONFIGS);
-                    ;
                 }
 
                 modules[i] = new SwerveModule(io, i + 1);
@@ -188,9 +187,8 @@ public class SwerveDrive extends SubsystemBase {
         return connected;
     }
 
-    public Command checkModule(int moduleIndex){
-        return new RunCommand(
-                ()-> modules[moduleIndex].checkModule(), this);
+    public Command checkModule(int moduleIndex) {
+        return new RunCommand(() -> modules[moduleIndex].checkModule(), this);
     }
 
     public void checkSwerve() {
@@ -316,8 +314,7 @@ public class SwerveDrive extends SubsystemBase {
         gyro.updateInputs(loggerInputs);
 
         SwerveDriveKinematics.desaturateWheelSpeeds(
-                loggerInputs.desiredModuleStates,
-                SwerveConstants.MAX_X_Y_VELOCITY);
+                loggerInputs.desiredModuleStates, SwerveConstants.MAX_X_Y_VELOCITY);
         for (int i = 0; i < modules.length; i++) {
             modules[i].setModuleState(loggerInputs.desiredModuleStates[i]);
         }

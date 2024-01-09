@@ -10,8 +10,6 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
-import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.RunCommand;
 import lib.math.AngleUtil;
 import lib.math.differential.Integral;
 import lib.units.Units;
@@ -122,9 +120,9 @@ public class ModuleIOReal implements ModuleIO {
 
         velocityControlRequest
                 .withVelocity(
-                        1 / Units.rpsToMetersPerSecond(
-                                velocity, SwerveConstants.WHEEL_DIAMETER / 2)
-                )
+                        1
+                                / Units.rpsToMetersPerSecond(
+                                        velocity, SwerveConstants.WHEEL_DIAMETER / 2))
                 .withEnableFOC(true);
         driveMotor.setControl(velocityControlRequest);
     }

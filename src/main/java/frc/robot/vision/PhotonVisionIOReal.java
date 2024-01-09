@@ -17,12 +17,12 @@ public class PhotonVisionIOReal implements VisionIO {
         this.robotToCamera = robotToCamera;
         camera.setPipelineIndex(0);
         try {
-            estimator = new PhotonPoseEstimator(
-                    AprilTagFields.k2023ChargedUp.loadAprilTagLayoutField(),
-                    PhotonPoseEstimator.PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR,
-                    camera,
-                    robotToCamera
-            );
+            estimator =
+                    new PhotonPoseEstimator(
+                            AprilTagFields.k2023ChargedUp.loadAprilTagLayoutField(),
+                            PhotonPoseEstimator.PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR,
+                            camera,
+                            robotToCamera);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -37,7 +37,7 @@ public class PhotonVisionIOReal implements VisionIO {
     public void updateInputs(VisionInputs inputs) {
         var latestResult = camera.getLatestResult();
 
-        if (latestResult != null) {//TODO: check if the value can be null
+        if (latestResult != null) { // TODO: check if the value can be null
             inputs.latency = (long) latestResult.getLatencyMillis();
             inputs.hasTargets = latestResult.hasTargets();
 
@@ -50,29 +50,34 @@ public class PhotonVisionIOReal implements VisionIO {
                 inputs.targetAmbiguity = latestResult.getBestTarget().getPoseAmbiguity();
 
                 var cameraToTarget = latestResult.getBestTarget().getBestCameraToTarget();
-                inputs.cameraToTarget = new double[]{
-                        cameraToTarget.getX(),
-                        cameraToTarget.getY(),
-                        cameraToTarget.getZ(),
-                        cameraToTarget.getRotation().getX(),
-                        cameraToTarget.getRotation().getY(),
-                        cameraToTarget.getRotation().getZ()
-                };
+                inputs.cameraToTarget =
+                        new double[] {
+                            cameraToTarget.getX(),
+                            cameraToTarget.getY(),
+                            cameraToTarget.getZ(),
+                            cameraToTarget.getRotation().getX(),
+                            cameraToTarget.getRotation().getY(),
+                            cameraToTarget.getRotation().getZ()
+                        };
             }
 
             var estimatedPose = estimator.update(latestResult);
             if (estimatedPose.isPresent()) {
                 var pose = estimatedPose.get().estimatedPose;
-                inputs.poseFieldOriented = new double[]{
-                        pose.getX(),
-                        pose.getY(),
-                        pose.getZ(),
-                        pose.getRotation().getX(),
-                        pose.getRotation().getY(),
-                        pose.getRotation().getZ()
-                };
+                inputs.poseFieldOriented =
+                        new double[] {
+                            pose.getX(),
+                            pose.getY(),
+                            pose.getZ(),
+                            pose.getRotation().getX(),
+                            pose.getRotation().getY(),
+                            pose.getRotation().getZ()
+                        };
 
-                result = new Result(latestResult.getTimestampSeconds(), estimatedPose.get().estimatedPose);
+                result =
+                        new Result(
+                                latestResult.getTimestampSeconds(),
+                                estimatedPose.get().estimatedPose);
             } else {
                 result = null;
             }
