@@ -4,6 +4,8 @@ import edu.wpi.first.math.geometry.*;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 
+import java.util.List;
+
 public class Utils {
     public static final double EPSILON = 1e-9;
 
@@ -84,5 +86,19 @@ public class Utils {
     public static Pose3d pose2dToPose3d(Pose2d pose) {
         return new Pose3d(pose.getX(), pose.getY(), 0,
                 new Rotation3d(0, 0, pose.getRotation().getRadians()));
+    }
+
+    /**
+     * Averages ambiguity of estimated poses using a harmonic average.
+     * Can be from different targets in vision module, or between module.
+     *
+     * @param ambiguities the ambiguities to average.
+     * @return the average of the ambiguities.
+     */
+    public static double averageAmbiguity(List<Double> ambiguities) {
+        return 1.0 / ambiguities
+                .stream()
+                .map((num) -> 1.0 / num)
+                .reduce(0.0, Double::sum);
     }
 }
