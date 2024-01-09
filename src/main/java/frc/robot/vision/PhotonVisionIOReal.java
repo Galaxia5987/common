@@ -14,12 +14,10 @@ public class PhotonVisionIOReal implements VisionIO {
     public PhotonVisionIOReal(PhotonCamera camera, Transform3d robotToCamera) {
         this.camera = camera;
         camera.setPipelineIndex(0);
-
         try {
             estimator = new PhotonPoseEstimator(
                     AprilTagFields.k2023ChargedUp.loadAprilTagLayoutField(),
-//                    PhotonPoseEstimator.PoseStrategy.MULTI_TAG_PNP,
-                    PhotonPoseEstimator.PoseStrategy.AVERAGE_BEST_TARGETS,
+                    PhotonPoseEstimator.PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR,
                     camera,
                     robotToCamera
             );
