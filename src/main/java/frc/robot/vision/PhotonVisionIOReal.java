@@ -47,6 +47,7 @@ public class PhotonVisionIOReal implements VisionIO {
                 inputs.yaw = latestResult.getBestTarget().getYaw();
                 inputs.targetSkew = latestResult.getBestTarget().getSkew();
                 inputs.targetID = latestResult.getBestTarget().getFiducialId();
+                inputs.targetAmbiguity = latestResult.getBestTarget().getPoseAmbiguity();
 
                 var cameraToTarget = latestResult.getBestTarget().getBestCameraToTarget();
                 inputs.cameraToTarget = new double[]{
@@ -84,6 +85,7 @@ public class PhotonVisionIOReal implements VisionIO {
     public Result getLatestResult() {
         return result;
     }
+
     @Override
     public Transform3d getCameraToRobot() {
         return robotToCamera;
