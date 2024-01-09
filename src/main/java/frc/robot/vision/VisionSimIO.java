@@ -1,22 +1,21 @@
 package frc.robot.vision;
 
+import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Transform3d;
-import edu.wpi.first.networktables.NetworkTableInstance;
 import frc.robot.swerve.SwerveDrive;
+import lib.Utils;
 import org.photonvision.PhotonCamera;
 import org.photonvision.estimation.TargetModel;
 import org.photonvision.simulation.PhotonCameraSim;
 import org.photonvision.simulation.VisionSystemSim;
 import org.photonvision.simulation.VisionTargetSim;
 import org.photonvision.targeting.PhotonPipelineResult;
-import org.photonvision.targeting.PhotonTrackedTarget;
-
-import java.util.ArrayList;
-import java.util.List;
+import java.io.IOException;
 
 public class VisionSimIO implements VisionIO {
+    private VisionSystemSim visionSim;
     private PhotonCamera photonCamera;
     private PhotonCameraSim cameraSim;
     private PhotonPipelineResult latestResult = new PhotonPipelineResult();
@@ -36,7 +35,11 @@ public class VisionSimIO implements VisionIO {
                     visionTargetsSim.add(new VisionTargetSim(tag.pose, new TargetModel(0.15, 0.15))));
         } catch (Exception e) {
             e.printStackTrace();
+        visionSim = new VisionSystemSim(photonCamera.getName());
         }
+
+        visionSim.addCamera(cameraSim, robotToCam);
+        visionSim.addAprilTags(tagFieldLayout);
     }
 
 
