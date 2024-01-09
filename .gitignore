@@ -158,6 +158,7 @@ gradle-app.setting
 .settings/
 bin/
 .idea
+.xml
 
 # Simulation GUI and other tools window save file
 *-window.json
