@@ -21,8 +21,7 @@ public class VisionSimIO implements VisionIO {
     private PhotonPipelineResult latestResult = new PhotonPipelineResult();
     private Transform3d robotToCam;
     private Result result;
-    private List<VisionTargetSim> visionTargetsSim = new ArrayList<>();
-    private Transform3d robotToCam;
+    private AprilTagFieldLayout tagFieldLayout;
 
     public VisionSimIO(PhotonCamera photonCamera, Transform3d robotToCam){
         this.robotToCam = robotToCam;
@@ -69,9 +68,12 @@ public class VisionSimIO implements VisionIO {
     public void updateInputs(VisionInputs inputs) {
         var pose = SwerveDrive.getInstance().getBotPose();
 
-        latestResult = cameraSim.process(0, new Pose3d(pose).plus(robotToCam), visionTargetsSim);
         visionSim.update(pose);
         visionSim.getDebugField();
+
+        latestResult = cameraSim.process(0, Utils.pose2dToPose3d(pose).plus(robotToCam.div(-1)),
+                tagFieldLayout.getTags().stream().map((a) ->
+                        new VisionTargetSim(a.pose, TargetModel.kAprilTag36h11, a.ID)).toList());
         inputs.latency = (long) latestResult.getLatencyMillis();
         inputs.hasTargets = latestResult.hasTargets();
 
@@ -90,15 +92,6 @@ public class VisionSimIO implements VisionIO {
                     cameraToTarget.getRotation().getX(),
                     cameraToTarget.getRotation().getY(),
                     cameraToTarget.getRotation().getZ()
-            };
-
-            inputs.poseFieldOriented = new double[]{
-                    pose.getX(),
-                    pose.getY(),
-                    0,
-                    0,
-                    0,
-                    pose.getRotation().getRadians()
             };
         } else {
             result = null;
