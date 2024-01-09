@@ -25,5 +25,6 @@ public interface VisionIO {
         long targetID = 0;
         double[] cameraToTarget = new double[]{0,0,0,0,0,0};
         double[] poseFieldOriented = new double[6];
+        double targetAmbiguity = 0;
     }
 }
