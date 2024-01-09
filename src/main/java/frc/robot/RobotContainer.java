@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.swerve.SwerveDrive;
 import frc.robot.swerve.commands.JoystickDrive;
+import frc.robot.swerve.commands.XboxDrive;
 import frc.robot.vision.Vision;
 import frc.robot.vision.VisionConstants;
 import frc.robot.vision.VisionModule;
@@ -56,7 +57,7 @@ public class RobotContainer {
     }
 
     private void configureDefaultCommands() {
-        drive.setDefaultCommand(new JoystickDrive(drive, leftJoystick, rightJoystick));
+        drive.setDefaultCommand(new XboxDrive(drive, xboxController));
     }
 
     private void configureButtonBindings() {
