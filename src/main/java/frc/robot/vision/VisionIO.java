@@ -1,5 +1,6 @@
 package frc.robot.vision;
 
+import edu.wpi.first.math.geometry.Transform3d;
 import org.littletonrobotics.junction.AutoLog;
 
 public interface VisionIO {
@@ -10,6 +11,8 @@ public interface VisionIO {
     void updateInputs(VisionInputs inputs);
 
     Result getLatestResult();
+    Transform3d getCameraToRobot();
+    String getName();
 
     @AutoLog
     class VisionInputs {
