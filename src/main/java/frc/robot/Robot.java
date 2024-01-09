@@ -10,6 +10,7 @@ import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.wpilibj.*;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj2.command.Commands;
 import frc.robot.swerve.SwerveDrive;
 import org.littletonrobotics.junction.LoggedRobot;
 import org.littletonrobotics.junction.Logger;
@@ -26,9 +27,7 @@ import org.littletonrobotics.junction.wpilog.WPILOGWriter;
 public class Robot extends LoggedRobot {
     public static boolean debug = false;
     private final Compressor compressor = new Compressor(PneumaticsModuleType.CTREPCM);
-    private final Timer timer = new Timer();
-    private RobotContainer robotContainer;
-    private Command autonomousCommand;
+    private Command autonomousCommand = Commands.none();
 
     /**
      * This function is run when the robot is first started up and should be used for any
@@ -45,7 +44,6 @@ public class Robot extends LoggedRobot {
                 new int[4],
                 new int[4],
                 new int[4]);
-        robotContainer = RobotContainer.getInstance();
 
         Logger.recordMetadata("ProjectName", "Common"); // Set a metadata value
 
@@ -59,10 +57,8 @@ public class Robot extends LoggedRobot {
         }
 
         Logger.start(); // Start logging! No more data receivers, replay sources, or metadata
-        // values may be added.
 
-        timer.start();
-        timer.reset();
+        RobotContainer.getInstance();
     }
 
     /**
@@ -89,7 +85,7 @@ public class Robot extends LoggedRobot {
      */
     @Override
     public void autonomousInit() {
-        autonomousCommand = robotContainer.getAutonomousCommand();
+        autonomousCommand = RobotContainer.getInstance().getAutonomousCommand();
 
         // schedule the autonomous command (example)
         if (autonomousCommand != null) {
