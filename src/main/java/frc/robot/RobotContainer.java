@@ -3,6 +3,7 @@ package frc.robot;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -13,15 +14,25 @@ import frc.robot.subsystems.vision.Vision;
 import frc.robot.swerve.SwerveDrive;
 import frc.robot.swerve.commands.JoystickDrive;
 import frc.robot.vision.Vision;
+import frc.robot.vision.VisionConstants;
+import frc.robot.vision.VisionModule;
+import frc.robot.vision.VisionSimIO;
+import org.photonvision.PhotonCamera;
 import swerve.SwerveDrive;
 import swerve.commands.JoystickDrive;
+
+import java.util.ArrayList;
 
 public class RobotContainer {
     private static RobotContainer INSTANCE = null;
 
     private final SwerveDrive drive = SwerveDrive.getInstance();
     private final Vision vision = Vision.getInstance(
-
+        new VisionModule[]{
+            new VisionModule(new VisionSimIO(new PhotonCamera(NetworkTableInstance.getDefault(), "LeftPie"), VisionConstants.ROBOT_TO_CAM[0])),
+            new VisionModule(new VisionSimIO(new PhotonCamera(NetworkTableInstance.getDefault(), "RightPie"), VisionConstants.ROBOT_TO_CAM[1])),
+            new VisionModule(new VisionSimIO(new PhotonCamera(NetworkTableInstance.getDefault(), "LimeLight"), VisionConstants.ROBOT_TO_CAM[2]))
+        }
     );
     private final XboxController xboxController = new XboxController(0);
     private final Joystick leftJoystick = new Joystick(1);
