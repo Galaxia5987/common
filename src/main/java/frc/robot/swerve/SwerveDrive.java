@@ -23,8 +23,10 @@ public class SwerveDrive extends SubsystemBase {
                     SwerveConstants.WHEEL_POSITIONS[2],
                     SwerveConstants.WHEEL_POSITIONS[3]);
     private final SwerveDriveOdometry odometry;
+    @AutoLogOutput
     private Pose2d botPose = new Pose2d();
     private final Derivative acceleration = new Derivative();
+    @AutoLogOutput
     private final SwerveModulePosition[] modulePositions = new SwerveModulePosition[4];
     private final SwerveDriveInputsAutoLogged loggerInputs = new SwerveDriveInputsAutoLogged();
 
@@ -202,7 +204,6 @@ public class SwerveDrive extends SubsystemBase {
         modules[3].setModuleState(new SwerveModuleState(0, Rotation2d.fromDegrees(225)));
     }
 
-    @AutoLogOutput
     public SwerveModulePosition[] getModulePositions() {
         return modulePositions;
     }
