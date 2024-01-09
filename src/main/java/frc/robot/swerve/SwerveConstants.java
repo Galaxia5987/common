@@ -22,7 +22,7 @@ public class SwerveConstants {
     public static final double DRIVE_MOTOR_MOMENT_OF_INERTIA = 0.025;
     public static final double ANGLE_MOTOR_MOMENT_OF_INERTIA = 0.004;
 
-    public static final double NEUTRAL_DEADBAND = 0.05;
+    public static final double NEUTRAL_DEADBAND = 0.03;
     public static final double XBOX_DEADBAND = 0.15;
     public static final double STEERING_MULTIPLIER = 0.6;
 
@@ -30,17 +30,10 @@ public class SwerveConstants {
             new Slot0Configs().withKP(0.0).withKI(0.0).withKD(0.0).withKV(0.6).withKS(0.6);
     public static final Slot0Configs ANGLE_PID_GAINS =
             new Slot0Configs()
-                    .withKP(50.0)
+                    .withKP(28.0)
                     .withKI(0.0)
-                    .withKD(0.0)
-                    .withKV(2.0)
-                    .withKS(0.0)
-                    .withKA(0.0);
-    public static final MotionMagicConfigs MOTION_MAGIC_CONFIGS =
-            new MotionMagicConfigs()
-                    .withMotionMagicCruiseVelocity(10.0)
-                    .withMotionMagicAcceleration(5.0)
-                    .withMotionMagicJerk(100.0);
+                    .withKD(0.0);
+    public static final double kF = 0.28;
 
     public static final VoltageConfigs VOLTAGE_CONFIGS =
             new VoltageConfigs()
@@ -66,7 +59,6 @@ public class SwerveConstants {
     public static final TalonFXConfiguration ANGLE_MOTOR_CONFIGS =
             new TalonFXConfiguration()
                     .withSlot0(ANGLE_PID_GAINS)
-                    .withMotionMagic(MOTION_MAGIC_CONFIGS)
                     .withVoltage(VOLTAGE_CONFIGS)
                     .withCurrentLimits(CURRENT_LIMITS_CONFIGS)
                     .withFeedback(FEEDBACK_CONFIGS_ANGLE)

@@ -1,7 +1,7 @@
 package frc.robot.swerve;
 
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
-import com.ctre.phoenix6.controls.MotionMagicVoltage;
+import com.ctre.phoenix6.controls.PositionVoltage;
 import com.ctre.phoenix6.controls.VelocityVoltage;
 import com.ctre.phoenix6.hardware.TalonFX;
 import com.ctre.phoenix6.signals.InvertedValue;
@@ -10,8 +10,6 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
-import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.RunCommand;
 import lib.math.AngleUtil;
 import lib.math.differential.Integral;
 import lib.units.Units;
@@ -26,8 +24,8 @@ public class ModuleIOReal implements ModuleIO {
     private final Integral driveStatorChargeUsedCoulomb = new Integral();
     private final Integral angleSupplyChargeUsedCoulomb = new Integral();
     private final Integral angleStatorChargeUsedCoulomb = new Integral();
-    private final MotionMagicVoltage angleControlRequest =
-            new MotionMagicVoltage(0).withEnableFOC(true).withSlot(0);
+    private final PositionVoltage angleControlRequest =
+            new PositionVoltage(0).withEnableFOC(true).withSlot(0);
     private final VelocityVoltage velocityControlRequest =
             new VelocityVoltage(0).withEnableFOC(true);
     private Rotation2d angleSetpoint = new Rotation2d();
@@ -103,6 +101,7 @@ public class ModuleIOReal implements ModuleIO {
         Rotation2d error = angle.minus(currentAngle);
         angleControlRequest
                 .withPosition(angleMotor.getPosition().getValue() + error.getRotations())
+                .withFeedForward(SwerveConstants.kF)
                 .withEnableFOC(true);
         angleMotor.setControl(angleControlRequest);
     }
