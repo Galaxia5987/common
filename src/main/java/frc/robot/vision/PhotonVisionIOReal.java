@@ -1,18 +1,17 @@
 package frc.robot.vision;
 
-import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.geometry.Transform3d;
 import org.photonvision.PhotonCamera;
 import org.photonvision.PhotonPoseEstimator;
 
-public class PhotonVisionIO implements VisionIO {
+public class PhotonVisionIOReal implements VisionIO {
 
     private final PhotonCamera camera;
     private final PhotonPoseEstimator estimator;
     private Result result;
 
-    public PhotonVisionIO(PhotonCamera camera, Transform3d robotToCamera) {
+    public PhotonVisionIOReal(PhotonCamera camera, Transform3d robotToCamera) {
         this.camera = camera;
         camera.setPipelineIndex(0);
 
@@ -37,10 +36,8 @@ public class PhotonVisionIO implements VisionIO {
     @Override
     public void updateInputs(VisionInputs inputs) {
         var latestResult = camera.getLatestResult();
-        for (int i = 0; i < latestResult.targets.size(); i++) {
-        }
 
-        if (latestResult != null) {
+        if (latestResult != null) {//TODO: check if the value can be null
             inputs.latency = (long) latestResult.getLatencyMillis();
             inputs.hasTargets = latestResult.hasTargets();
 
