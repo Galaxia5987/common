@@ -1,8 +1,6 @@
 package lib;
 
-import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Pose3d;
-import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.*;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 
@@ -72,9 +70,14 @@ public class Utils {
                 epsilonEquals(speeds.vyMetersPerSecond, 0) &&
                 epsilonEquals(speeds.omegaRadiansPerSecond, 0);
     }
+
     public static double[] pose3dToArray(Pose3d pose){
         return new double[]{
                 pose.getX(), pose.getY(), pose.getZ(),
                 pose.getRotation().getQuaternion().getW(), pose.getRotation().getQuaternion().getX(), pose.getRotation().getQuaternion().getY(), pose.getRotation().getQuaternion().getZ()};
+    }
+
+    public static Pose3d transform3dToPose3d(Transform3d transform) {
+        return new Pose3d(transform.getTranslation(), transform.getRotation());
     }
 }
