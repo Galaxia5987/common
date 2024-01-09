@@ -80,4 +80,9 @@ public class Utils {
     public static Pose3d transform3dToPose3d(Transform3d transform) {
         return new Pose3d(transform.getTranslation(), transform.getRotation());
     }
+
+    public static Pose3d pose2dToPose3d(Pose2d pose) {
+        return new Pose3d(pose.getX(), pose.getY(), 0,
+                new Rotation3d(0, 0, pose.getRotation().getRadians()));
+    }
 }
