@@ -46,7 +46,6 @@ public class VisionSimIO implements VisionIO {
 
     @Override
     public void setPipeLine(int pipeLineIndex) {
-//        camera.setPipelineIndex(pipeLineIndex);
     }
 
     @Override
