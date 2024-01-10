@@ -14,10 +14,9 @@ import org.photonvision.targeting.PhotonTrackedTarget;
 
 public class VisionSimIO implements VisionIO {
     private SimVisionSystem simVisionSystem;
-    private PhotonCamera photonCamera;
-    private PhotonCameraSim cameraSim;
-    private PhotonPipelineResult latestResult = new PhotonPipelineResult();
-    private Transform3d robotToCam;
+    private final PhotonCamera photonCamera;
+    private final PhotonCameraSim cameraSim;
+    private final Transform3d robotToCam;
     private Result result;
     private AprilTagFieldLayout tagFieldLayout;
 
@@ -62,16 +61,15 @@ public class VisionSimIO implements VisionIO {
         var pose3d = Utils.pose2dToPose3d(pose);
 
         simVisionSystem.update();
-        latestResult =
-                cameraSim.process(
-                        0,
-                        pose3d.plus(robotToCam.div(-1)),
-                        tagFieldLayout.getTags().stream()
-                                .map(
-                                        (a) ->
-                                                new VisionTargetSim(
-                                                        a.pose, TargetModel.kAprilTag36h11, a.ID))
-                                .toList());
+        PhotonPipelineResult latestResult = cameraSim.process(
+                0,
+                pose3d.plus(robotToCam.div(-1)),
+                tagFieldLayout.getTags().stream()
+                        .map(
+                                (a) ->
+                                        new VisionTargetSim(
+                                                a.pose, TargetModel.kAprilTag36h11, a.ID))
+                        .toList());
         inputs.latency = (long) latestResult.getLatencyMillis();
         inputs.hasTargets = latestResult.hasTargets();
         if (inputs.hasTargets) {
