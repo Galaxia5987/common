@@ -61,15 +61,16 @@ public class VisionSimIO implements VisionIO {
         var pose3d = Utils.pose2dToPose3d(pose);
 
         simVisionSystem.update();
-        PhotonPipelineResult latestResult = cameraSim.process(
-                0,
-                pose3d.plus(robotToCam.div(-1)),
-                tagFieldLayout.getTags().stream()
-                        .map(
-                                (a) ->
-                                        new VisionTargetSim(
-                                                a.pose, TargetModel.kAprilTag36h11, a.ID))
-                        .toList());
+        PhotonPipelineResult latestResult =
+                cameraSim.process(
+                        0,
+                        pose3d.plus(robotToCam.div(-1)),
+                        tagFieldLayout.getTags().stream()
+                                .map(
+                                        (a) ->
+                                                new VisionTargetSim(
+                                                        a.pose, TargetModel.kAprilTag36h11, a.ID))
+                                .toList());
         inputs.latency = (long) latestResult.getLatencyMillis();
         inputs.hasTargets = latestResult.hasTargets();
         if (inputs.hasTargets) {
