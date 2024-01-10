@@ -17,6 +17,7 @@ public interface VisionIO {
 
     @AutoLog
     class VisionInputs {
+        public double[] totalAvaregeAmbiguties = new double[8];
         long latency = 0;
         boolean hasTargets = false;
         double yaw = 0;
@@ -26,6 +27,8 @@ public interface VisionIO {
         long targetID = 0;
         double[] cameraToTarget = new double[] {0, 0, 0, 0, 0, 0};
         double[] poseFieldOriented = new double[6];
-        double targetAmbiguity = 0;
+        double bestTargetAmbiguity = 0;
+        public double[] ambiguities = new double[8];
+        public double averageAmbiguity = 0;
     }
 }

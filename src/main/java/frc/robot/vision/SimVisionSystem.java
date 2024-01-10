@@ -4,7 +4,6 @@ import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.geometry.Transform3d;
 import frc.robot.swerve.SwerveDrive;
-import org.littletonrobotics.junction.Logger;
 import org.photonvision.simulation.PhotonCameraSim;
 import org.photonvision.simulation.VisionSystemSim;
 
@@ -34,6 +33,6 @@ public class SimVisionSystem {
 
     public void update() {
         visionSim.update(SwerveDrive.getInstance().getBotPose());
-        Logger.recordOutput("VisionSimField2d", visionSim.getDebugField());
+        //        Logger.recordOutput("VisionSimField2d", visionSim.getDebugField());
     }
 }

@@ -4,6 +4,8 @@ import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.geometry.Transform3d;
 import frc.robot.swerve.SwerveDrive;
+import java.util.List;
+import java.util.stream.Collectors;
 import lib.Utils;
 import org.photonvision.PhotonCamera;
 import org.photonvision.estimation.TargetModel;
@@ -13,10 +15,10 @@ import org.photonvision.targeting.PhotonPipelineResult;
 import org.photonvision.targeting.PhotonTrackedTarget;
 
 public class VisionSimIO implements VisionIO {
-    private SimVisionSystem simVisionSystem;
     private final PhotonCamera photonCamera;
     private final PhotonCameraSim cameraSim;
     private final Transform3d robotToCam;
+    private SimVisionSystem simVisionSystem;
     private Result result;
     private AprilTagFieldLayout tagFieldLayout;
 
@@ -59,10 +61,6 @@ public class VisionSimIO implements VisionIO {
     public void updateInputs(VisionInputs inputs) {
         var pose = SwerveDrive.getInstance().getBotPose();
         var pose3d = Utils.pose2dToPose3d(pose);
-//TODO: this is called from every instance of the function so it tries to
-// update so many time that it causes a CommandSchedulerLoopOverrun warning
-// and maybe causes the glitches in the PhotonLib simulation aswell
-        simVisionSystem.update();
         PhotonPipelineResult latestResult =
                 cameraSim.process(
                         0,
@@ -72,10 +70,19 @@ public class VisionSimIO implements VisionIO {
                                         (a) ->
                                                 new VisionTargetSim(
                                                         a.pose, TargetModel.kAprilTag36h11, a.ID))
-                                .toList());
+                                .collect(Collectors.toList()));
+        cameraSim.submitProcessedFrame(latestResult);
         inputs.latency = (long) latestResult.getLatencyMillis();
         inputs.hasTargets = latestResult.hasTargets();
         if (inputs.hasTargets) {
+            var targets = latestResult.getTargets();
+            List<Double> ambiguities =
+                    targets.stream().map(PhotonTrackedTarget::getPoseAmbiguity).toList();
+            inputs.averageAmbiguity = Utils.averageAmbiguity(ambiguities);
+            inputs.ambiguities = new double[ambiguities.size()];
+            for (int i = 0; i < ambiguities.size(); i++) {
+                inputs.ambiguities[i] = ambiguities.get(i);
+            }
             PhotonTrackedTarget bestTarget = latestResult.getBestTarget();
             if (bestTarget != null) {
                 inputs.area = bestTarget.getArea();
@@ -83,7 +90,7 @@ public class VisionSimIO implements VisionIO {
                 inputs.yaw = bestTarget.getYaw();
                 inputs.targetSkew = bestTarget.getSkew();
                 inputs.targetID = bestTarget.getFiducialId();
-                inputs.targetAmbiguity = bestTarget.getPoseAmbiguity();
+                inputs.bestTargetAmbiguity = bestTarget.getPoseAmbiguity();
 
                 var cameraToTarget = bestTarget.getBestCameraToTarget();
                 inputs.cameraToTarget =

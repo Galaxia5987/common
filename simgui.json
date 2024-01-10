@@ -3,7 +3,18 @@
     "types": {
       "/FMSInfo": "FMSInfo",
       "/SmartDashboard/VisionSystemSim-LeftPie/Sim Field": "Field2d",
-      "/SmartDashboard/VisionSystemSim-RightPie/Sim Field": "Field2d"
+      "/SmartDashboard/VisionSystemSim-RightPie/Sim Field": "Field2d",
+      "/SmartDashboard/VisionSystemSim-main/Sim Field": "Field2d"
     }
+  },
+  "NetworkTables": {
+    "transitory": {
+      "AdvantageKit": {
+        "open": true
+      }
+    }
+  },
+  "NetworkTables Info": {
+    "visible": true
   }
 }

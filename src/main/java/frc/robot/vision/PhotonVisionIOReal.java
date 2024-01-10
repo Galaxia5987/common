@@ -47,7 +47,7 @@ public class PhotonVisionIOReal implements VisionIO {
                 inputs.yaw = latestResult.getBestTarget().getYaw();
                 inputs.targetSkew = latestResult.getBestTarget().getSkew();
                 inputs.targetID = latestResult.getBestTarget().getFiducialId();
-                inputs.targetAmbiguity = latestResult.getBestTarget().getPoseAmbiguity();
+                inputs.bestTargetAmbiguity = latestResult.getBestTarget().getPoseAmbiguity();
 
                 var cameraToTarget = latestResult.getBestTarget().getBestCameraToTarget();
                 inputs.cameraToTarget =
