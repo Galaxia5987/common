@@ -28,10 +28,8 @@ public class SwerveDriveInputs {
 
     public double[] absolutePositions = new double[4];
 
-    public Rotation2d pitch;
-    public Rotation2d rawYaw;
-    public Rotation2d yaw;
-    public Rotation2d gyroOffset;
-
-    public Pose2d botPose = new Pose2d();
+    public Rotation2d pitch = new Rotation2d();
+    public Rotation2d rawYaw = new Rotation2d();
+    public Rotation2d yaw = new Rotation2d();
+    public Rotation2d gyroOffset = new Rotation2d();
 }
