@@ -59,7 +59,9 @@ public class VisionSimIO implements VisionIO {
     public void updateInputs(VisionInputs inputs) {
         var pose = SwerveDrive.getInstance().getBotPose();
         var pose3d = Utils.pose2dToPose3d(pose);
-
+//TODO: this is called from every instance of the function so it tries to
+// update so many time that it causes a CommandSchedulerLoopOverrun warning
+// and maybe causes the glitches in the PhotonLib simulation aswell
         simVisionSystem.update();
         PhotonPipelineResult latestResult =
                 cameraSim.process(
