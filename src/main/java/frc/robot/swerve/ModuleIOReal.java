@@ -1,5 +1,6 @@
 package frc.robot.swerve;
 
+import com.ctre.phoenix6.BaseStatusSignal;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.PositionVoltage;
 import com.ctre.phoenix6.controls.VelocityVoltage;
@@ -10,9 +11,14 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
+import lib.PhoenixOdometryThread;
 import lib.math.AngleUtil;
 import lib.math.differential.Integral;
 import lib.units.Units;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Queue;
 
 public class ModuleIOReal implements ModuleIO {
 
@@ -31,6 +37,8 @@ public class ModuleIOReal implements ModuleIO {
     private Rotation2d angleSetpoint = new Rotation2d();
     private Rotation2d currentAngle = new Rotation2d();
     private double driveMotorVelocitySetpoint = 0;
+    private final Queue<Double> distanceQueue;
+    private final Queue<Double> angleQueue;
 
     public ModuleIOReal(
             int driveMotorID,
@@ -39,8 +47,8 @@ public class ModuleIOReal implements ModuleIO {
             TalonFXConfiguration driveConfig,
             TalonFXConfiguration angleConfig) {
 
-        this.driveMotor = new TalonFX(driveMotorID);
-        this.angleMotor = new TalonFX(angleMotorID);
+        this.driveMotor = new TalonFX(driveMotorID, "swerveDrive");
+        this.angleMotor = new TalonFX(angleMotorID, "swerveDrive");
 
         this.encoder = new DutyCycleEncoder(encoderID);
 
@@ -55,6 +63,19 @@ public class ModuleIOReal implements ModuleIO {
 
         driveMotor.setNeutralMode(NeutralModeValue.Brake);
         angleMotor.setNeutralMode(NeutralModeValue.Brake);
+
+        var drivePositionSignal = driveMotor.getPosition();
+        distanceQueue = PhoenixOdometryThread
+                .getInstance()
+                .registerSignal(driveMotor, drivePositionSignal);
+
+        var anglePositionSignal = angleMotor.getPosition();
+        angleQueue = PhoenixOdometryThread
+                .getInstance()
+                .registerSignal(angleMotor, anglePositionSignal);
+
+        BaseStatusSignal.setUpdateFrequencyForAll(
+                SwerveConstants.ODOMETRY_FREQUENCY, drivePositionSignal, anglePositionSignal);
     }
 
     @Override
@@ -87,6 +108,24 @@ public class ModuleIOReal implements ModuleIO {
 
         inputs.moduleDistance = getModulePosition().distanceMeters;
         inputs.moduleState = getModuleState();
+
+        List<Double> distanceList = distanceQueue.stream().toList();
+        int nD = distanceList.size();
+        inputs.highFreqDistances = new double[nD];
+        for (int i = 0; i < nD; i++) {
+            inputs.highFreqDistances[i] = Units.rpsToMetersPerSecond(
+                    distanceList.get(i), SwerveConstants.WHEEL_DIAMETER/2
+            );
+        }
+        distanceQueue.clear();
+
+        List<Double> angleList = angleQueue.stream().toList();
+        int nA = angleList.size();
+        inputs.highFreqAngles = new double[nA];
+        for (int i = 0; i < nA; i++) {
+            inputs.highFreqAngles[i] = Units.rpsToRadsPerSec(angleList.get(i));
+        }
+        angleQueue.clear();
     }
 
     @Override

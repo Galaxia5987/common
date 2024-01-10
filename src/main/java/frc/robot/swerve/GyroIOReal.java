@@ -2,6 +2,7 @@ package frc.robot.swerve;
 
 import com.kauailabs.navx.frc.AHRS;
 import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.SPI;
 
 public class GyroIOReal implements GyroIO {
@@ -24,7 +25,7 @@ public class GyroIOReal implements GyroIO {
 
     @Override
     public double getPitch() {
-        return gyro.getPitch() - 2.95;
+        return gyro.getPitch();
     }
 
     @Override
@@ -34,6 +35,6 @@ public class GyroIOReal implements GyroIO {
 
     @Override
     public void updateInputs(SwerveDriveInputs inputs) {
-        inputs.gyroOffset = gyroOffset;
+        inputs.gyroOffset = Rotation2d.fromRadians(gyroOffset);
     }
 }

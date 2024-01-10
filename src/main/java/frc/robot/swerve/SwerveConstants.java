@@ -105,4 +105,6 @@ public class SwerveConstants {
         REAR_LEFT_MOTION_MAGIC_CONFIGS,
         REAR_RIGHT_MOTION_MAGIC_CONFIGS
     };
+
+    public static final double ODOMETRY_FREQUENCY = 250;
 }
