@@ -187,6 +187,7 @@ public class SwerveDrive extends SubsystemBase {
     public Command checkSwerve() {
         var command = Arrays.stream(modules).map((module)-> run(module::checkModule))
                 .reduce(Commands.none(), Commands::parallel);
+        command.setName("checkSwerve");
         command.addRequirements(this);
         return command;
     }
