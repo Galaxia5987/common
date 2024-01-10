@@ -2,17 +2,17 @@ package frc.robot.vision;
 
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
-import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Transform3d;
+import frc.robot.swerve.SwerveDrive;
 import org.photonvision.simulation.PhotonCameraSim;
 import org.photonvision.simulation.VisionSystemSim;
 
 public class SimVisionSystem {
     private static SimVisionSystem INSTANCE;
-    private static VisionSystemSim visionSim = new VisionSystemSim("main");
+    private static final VisionSystemSim visionSim = new VisionSystemSim("main");
     private AprilTagFieldLayout tagFieldLayout;
 
-    private SimVisionSystem(){
+    private SimVisionSystem() {
         try {
             tagFieldLayout =
                     AprilTagFieldLayout.loadFromResource(
@@ -30,8 +30,9 @@ public class SimVisionSystem {
         visionSim.addCamera(cameraSim, robotToCam);
         return INSTANCE;
     }
-    public void update(Pose3d robotPose){
-        visionSim.update(robotPose);
+
+    public void update() {
+        visionSim.update(SwerveDrive.getInstance().getBotPose());
         visionSim.getDebugField();
     }
 }
