@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.Commands;
 import frc.robot.swerve.SwerveDrive;
+import frc.robot.vision.SimVisionSystem;
 import org.littletonrobotics.junction.LoggedRobot;
 import org.littletonrobotics.junction.Logger;
 import org.littletonrobotics.junction.inputs.LoggedPowerDistribution;
@@ -22,7 +23,7 @@ import org.littletonrobotics.junction.wpilog.WPILOGWriter;
  * project.
  */
 public class Robot extends LoggedRobot {
-    public static boolean debug = false;
+    private final SimVisionSystem visionSim = SimVisionSystem.getInstance();
     private final Compressor compressor = new Compressor(PneumaticsModuleType.CTREPCM);
     private Command autonomousCommand = Commands.none();
 
@@ -113,6 +114,11 @@ public class Robot extends LoggedRobot {
     /** This function is called periodically when disabled. */
     @Override
     public void disabledPeriodic() {}
+
+    @Override
+    public void simulationPeriodic() {
+        visionSim.update();
+    }
 
     /** This function is called once when test mode is enabled. */
     @Override
