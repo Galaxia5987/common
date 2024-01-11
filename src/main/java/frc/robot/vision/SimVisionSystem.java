@@ -31,6 +31,13 @@ public class SimVisionSystem {
         return INSTANCE;
     }
 
+    public static SimVisionSystem getInstance() {
+        if (INSTANCE == null) {
+            INSTANCE = new SimVisionSystem();
+        }
+        return INSTANCE;
+    }
+
     public void update() {
         visionSim.update(SwerveDrive.getInstance().getBotPose());
         //        Logger.recordOutput("VisionSimField2d", visionSim.getDebugField());
