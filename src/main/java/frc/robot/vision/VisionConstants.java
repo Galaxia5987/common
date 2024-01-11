@@ -1,6 +1,7 @@
 package frc.robot.vision;
 
 import edu.wpi.first.math.geometry.*;
+import org.littletonrobotics.junction.Logger;
 import org.photonvision.simulation.SimCameraProperties;
 import org.photonvision.simulation.VisionTargetSim;
 
@@ -14,6 +15,10 @@ public class VisionConstants {
                         new Translation3d(-0.2363, -0.527, 0.196),
                         new Rotation3d(0, 28, Math.toRadians(-151)))
             };
+
+    static {
+        Logger.recordOutput("RobotToCam", ROBOT_TO_CAM);
+    }
 
     public static final Transform3d LIME_OFFSET =
             new Transform3d(new Translation3d((16.54) / 2, (8.02) / 2, 0), new Rotation3d());
