@@ -3,7 +3,6 @@ package frc.robot.vision;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import java.util.ArrayList;
 import java.util.List;
-
 import lib.Utils;
 import org.littletonrobotics.junction.Logger;
 
@@ -40,18 +39,16 @@ public class Vision extends SubsystemBase {
 
     @Override
     public void periodic() {
-        List<Double> totalAvaregeAmbiguties = new ArrayList<>();
-        double avaregeAmbiguties;
+        List<Double> totalAverageAmbiguties = new ArrayList<>();
+        double totalAverageAMBIGUITY;
         for (int i = 0; i < modules.length; i++) {
             VisionModule module = modules[i];
             module.io.updateInputs(module.inputs);
             Logger.processInputs(module.io.getName(), module.inputs);
             results[i] = module.io.getLatestResult();
-            totalAvaregeAmbiguties.add(module.inputs.averageAmbiguity);
-            avaregeAmbiguties =  Utils.averageAmbiguity(totalAvaregeAmbiguties);
-            System.out.println(avaregeAmbiguties);
+            totalAverageAmbiguties.add(module.inputs.averageAmbiguity);
         }
-        avaregeAmbiguties = 0;
+        totalAverageAMBIGUITY = Utils.averageAmbiguity(totalAverageAmbiguties);
+        Logger.recordOutput("totalAverageAmbiguties", totalAverageAMBIGUITY);
     }
-    /
 }
