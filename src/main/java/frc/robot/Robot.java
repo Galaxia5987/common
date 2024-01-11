@@ -24,7 +24,6 @@ import org.littletonrobotics.junction.wpilog.WPILOGWriter;
  */
 public class Robot extends LoggedRobot {
     private final SimVisionSystem visionSim = SimVisionSystem.getInstance();
-    private final Compressor compressor = new Compressor(PneumaticsModuleType.CTREPCM);
     private Command autonomousCommand = Commands.none();
 
     /**
