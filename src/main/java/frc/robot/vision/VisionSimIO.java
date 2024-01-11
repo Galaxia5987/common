@@ -26,13 +26,10 @@ public class VisionSimIO implements VisionIO {
         this.robotToCam = robotToCam;
         this.photonCamera = photonCamera;
         cameraSim = new PhotonCameraSim(photonCamera, VisionConstants.simCameraProperties);
-        cameraSim.enableRawStream(true);
-        cameraSim.enableProcessedStream(true);
-        cameraSim.enableDrawWireframe(true);
         try {
             tagFieldLayout =
                     AprilTagFieldLayout.loadFromResource(
-                            AprilTagFields.k2023ChargedUp.m_resourceFile);
+                            AprilTagFields.k2024Crescendo.m_resourceFile);
         } catch (Exception e) {
             return;
         }

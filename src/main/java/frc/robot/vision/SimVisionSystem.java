@@ -16,7 +16,7 @@ public class SimVisionSystem {
         try {
             tagFieldLayout =
                     AprilTagFieldLayout.loadFromResource(
-                            AprilTagFields.k2023ChargedUp.m_resourceFile);
+                            AprilTagFields.k2024Crescendo.m_resourceFile);
         } catch (Exception e) {
             return;
         }
