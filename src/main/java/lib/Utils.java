@@ -101,4 +101,8 @@ public class Utils {
     public static double averageAmbiguity(List<Double> ambiguities) {
         return 1.0 / ambiguities.stream().map((num) -> 1.0 / num).reduce(0.0, Double::sum);
     }
+
+    public static double continousAverageAmbiguity(double totalAverageAmbiguity, double currentAverageAmbiguity , int n){
+        return (n + 1.0) / ((n / totalAverageAmbiguity) + (1.0 / currentAverageAmbiguity));
+    }
 }
