@@ -13,7 +13,7 @@ public class SwerveConstants {
             new CurrentLimitsConfigs().withSupplyCurrentLimit(50).withStatorCurrentLimit(50);
     public static final double ROBOT_WIDTH = 0.512; // [m]
     public static final double ROBOT_LENGTH = 0.67; // [m]
-    public static final double WHEEL_DIAMETER = 0.99; // [m]
+    public static final double WHEEL_DIAMETER = 0.099; // [m]
     public static final double DRIVE_REDUCTION = (1 / 2.0) * (24.0 / 22.0) * (15.0 / 45.0);
     public static final double ANGLE_REDUCTION = (14.0 / 72.0) * 0.5;
     public static final double DRIVE_MOTOR_MOMENT_OF_INERTIA = 0.025;
