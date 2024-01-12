@@ -7,7 +7,6 @@ import lib.Utils;
 public class HeatMap {
 //16m x 8m
 //Square size: 0.5m * 0.5m
-    private Vision vision = Vision.getInstance();
     private VisionModule visionModule;
 
     private static HeatMap INSTANCE = null;
