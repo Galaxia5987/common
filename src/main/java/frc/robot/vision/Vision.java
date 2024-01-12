@@ -23,7 +23,9 @@ public class Vision extends SubsystemBase {
             INSTANCE = new Vision(modules);
         }
         return INSTANCE;
-    }public static Vision getInstance(){
+    }
+
+    public static Vision getInstance() {
         if (INSTANCE == null) {
             INSTANCE = new Vision();
         }
