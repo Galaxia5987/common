@@ -63,7 +63,7 @@ public class Robot extends LoggedRobot {
         }
 
         Logger.start();
-        compressor.enableDigital();
+        compressor.disable();
     }
 
     /**

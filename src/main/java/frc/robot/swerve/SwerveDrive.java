@@ -288,14 +288,19 @@ public class SwerveDrive extends SubsystemBase {
             }
 
             var twist = kinematics.toTwist2d(wheelDeltas);
-
+            twist.dtheta = 0;  //make the angle reading 0 because we want to update it only with the gyro
             botPose = botPose.exp(twist);
         }
         var dthetaTwist = new Twist2d();
         dthetaTwist.dtheta = getRawYaw().minus(lastGyroRotation).getRadians();
         botPose = botPose.exp(dthetaTwist);
-        System.out.println("last: "+lastGyroRotation);
-        System.out.println("curr: "+getRawYaw());
+    }
+
+    public void resetHighFreqOdometry(Pose2d pose){
+        botPose = pose;
+    }
+    public void resetHighFreqOdometry(){
+        resetHighFreqOdometry(new Pose2d());
     }
 
     public void periodic() {

@@ -53,6 +53,7 @@ public class RobotContainer {
 
     private void configureButtonBindings() {
         a.onTrue(new InstantCommand(swerveDrive::resetGyro));
+        b.onTrue(new InstantCommand(swerveDrive::resetHighFreqOdometry));
     }
 
     /**

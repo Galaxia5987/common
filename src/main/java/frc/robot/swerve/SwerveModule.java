@@ -17,7 +17,7 @@ public class SwerveModule extends SubsystemBase {
     private final BooleanTrigger encoderTrigger = new BooleanTrigger();
     private final Timer timer = new Timer();
 
-    private double[] lastDistances = new double[0];
+    private double lastDistance = 0;
     private double[] deltas = new double[0];
 
     public SwerveModule(ModuleIO io, int number) {
@@ -122,13 +122,11 @@ public class SwerveModule extends SubsystemBase {
     public void periodic() {
         encoderTrigger.update(io.encoderConnected());
 
-        deltas = new double[
-                Math.min(loggerInputs.highFreqDistances.length,
-                        lastDistances.length)];
+        deltas = new double[loggerInputs.highFreqDistances.length];
         for (int i = 0; i < deltas.length; i++) {
-            deltas[i] = loggerInputs.highFreqDistances[i] - lastDistances[i];
+            deltas[i] = loggerInputs.highFreqDistances[i] - lastDistance;
+            lastDistance = loggerInputs.highFreqDistances[i];
         }
-        lastDistances = loggerInputs.highFreqDistances;
 
         if (timer.hasElapsed(1)) {
             io.updateOffset(SwerveConstants.OFFSETS[number - 1]);
