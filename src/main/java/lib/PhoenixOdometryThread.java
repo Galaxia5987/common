@@ -25,7 +25,8 @@ import java.util.concurrent.locks.ReentrantLock;
 public class PhoenixOdometryThread extends Thread {
   private final Lock signalsLock =
       new ReentrantLock(); // Prevents conflicts when registering signals
-  private BaseStatusSignal[] signals = new BaseStatusSignal[0];
+  private StatusSignal<Double>[] signals = new StatusSignal[0];
+  private StatusSignal<Double>[] signalSlopes = new StatusSignal[0];
   private final List<Queue<Double>> queues = new ArrayList<>();
   private boolean isCANFD = false;
 
@@ -44,16 +45,22 @@ public class PhoenixOdometryThread extends Thread {
     start();
   }
 
-  public Queue<Double> registerSignal(ParentDevice device, StatusSignal<Double> signal) {
+  public Queue<Double> registerSignal(ParentDevice device, StatusSignal<Double> signal, StatusSignal<Double> signalSlope) {
     Queue<Double> queue = new ArrayBlockingQueue<>(100);
     signalsLock.lock();
     SwerveDrive.odometryLock.lock();
     try {
       isCANFD = CANBus.isNetworkFD(device.getNetwork());
-      BaseStatusSignal[] newSignals = new BaseStatusSignal[signals.length + 1];
+      StatusSignal<Double>[] newSignals = new StatusSignal[signals.length + 1];
       System.arraycopy(signals, 0, newSignals, 0, signals.length);
       newSignals[signals.length] = signal;
       signals = newSignals;
+
+      StatusSignal<Double>[] newSignalSlopes = new StatusSignal[signalSlopes.length + 1];
+      System.arraycopy(signalSlopes, 0, newSignalSlopes, 0, signalSlopes.length);
+      newSignals[signalSlopes.length] = signalSlope;
+      signalSlopes = newSignalSlopes;
+
       queues.add(queue);
     } finally {
       signalsLock.unlock();
@@ -88,7 +95,10 @@ public class PhoenixOdometryThread extends Thread {
       SwerveDrive.odometryLock.lock();
       try {
         for (int i = 0; i < signals.length; i++) {
-          queues.get(i).offer(signals[i].getValueAsDouble());
+          double value = BaseStatusSignal.getLatencyCompensatedValue(
+                  signals[i], signalSlopes[i]
+          );
+          queues.get(i).offer();
         }
       } finally {
         SwerveDrive.odometryLock.unlock();
