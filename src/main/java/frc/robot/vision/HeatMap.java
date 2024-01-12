@@ -54,7 +54,7 @@ public class HeatMap {
         return passed;
     }
 
-    public void update(double averageAmbiguity, Pose3d robotPose){
+    public void update(Pose3d robotPose){
         Pair<Integer, Integer> gridPose = poseToGrid(robotPose);
         if (hasPassed(gridPose)){
             double totalAverageAmbiguity = fieldArr[gridPose.getFirst()][gridPose.getSecond()];
