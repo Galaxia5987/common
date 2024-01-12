@@ -73,6 +73,9 @@ public class HeatMap {
 
         return passed;
     }
+    public double[][] getFieldArr(){
+        return fieldArr;
+    }
 
     public void update(Pose3d robotPose) {
         Pair<Integer, Integer> gridPose = poseToGrid(robotPose);
