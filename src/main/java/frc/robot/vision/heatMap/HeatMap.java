@@ -53,6 +53,16 @@ public class HeatMap {
         return roundedGridPair;
     }
 
+    public Pose3d gridToPose(Pair<Integer, Integer> grid, int pitch, int height){
+        return new Pose3d(
+                (grid.getFirst() * squareLength) * 0.5,
+                (grid.getSecond() * squareLength) * 0.5,
+                height,
+                new Rotation3d(
+                        0, pitch, 0
+                ));
+    }
+
     public boolean hasPassed(Pair<Integer, Integer> currentGrid) {
         boolean passed = currentGrid.equals(lastGrid);
 
