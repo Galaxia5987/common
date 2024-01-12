@@ -59,6 +59,7 @@ public class HeatMap {
         if (hasPassed(gridPose)){
             double totalAverageAmbiguity = fieldArr[gridPose.getFirst()][gridPose.getSecond()];
             double currentAverageAmbiguity =
+            double currentAverageAmbiguity = visionModule.inputs.averageAmbiguity;
         }
     }
 }
