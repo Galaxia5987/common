@@ -7,7 +7,7 @@ public class HeatMap {
 //16m x 8m
 //Square size: 0.5m * 0.5m
     private Vision vision = Vision.getInstance();
-    private static VisionModule visionModule;
+    private VisionModule visionModule;
 
     private static HeatMap INSTANCE = null;
 
@@ -27,7 +27,7 @@ public class HeatMap {
         if (INSTANCE == null){
             INSTANCE = new HeatMap();
         }
-        this.visionModule = visionModule; //TODO: make this work
+        INSTANCE.visionModule = visionModule;
         return INSTANCE;
     }
 
