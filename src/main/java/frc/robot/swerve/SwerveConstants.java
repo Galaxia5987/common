@@ -62,7 +62,7 @@ public class SwerveConstants {
                     .withMotorOutput(MOTOR_OUTPUT_CONFIGS);
 
     public static final double MAX_X_Y_VELOCITY =
-            6380.0
+            6000.0
                     / 60.0
                     * // [m/s]
                     DRIVE_REDUCTION
