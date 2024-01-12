@@ -2,6 +2,7 @@ package frc.robot.vision;
 
 import edu.wpi.first.math.Pair;
 import edu.wpi.first.math.geometry.Pose3d;
+import lib.Utils;
 
 public class HeatMap {
 //16m x 8m
@@ -15,7 +16,7 @@ public class HeatMap {
     private double xLength = 16; //m
     private double yLength = 8; //m
 
-    private double[][] entryCounter = new double[(int) (xLength / squareLength)][(int) (yLength / squareLength)];
+    private int[][] entryCounter = new int[(int) (xLength / squareLength)][(int) (yLength / squareLength)];
     private double[][] fieldArr = new double[(int) (xLength / squareLength)][(int) (yLength / squareLength)];
     private Pair<Integer, Integer> lastGrid;
 
