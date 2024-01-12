@@ -1,7 +1,9 @@
-package frc.robot.vision;
+package frc.robot.vision.heatMap;
 
 import edu.wpi.first.math.Pair;
 import edu.wpi.first.math.geometry.Pose3d;
+import edu.wpi.first.math.geometry.Rotation3d;
+import frc.robot.vision.VisionModule;
 import lib.Utils;
 
 public class HeatMap {
@@ -28,6 +30,13 @@ public class HeatMap {
             INSTANCE = new HeatMap();
         }
         INSTANCE.visionModule = visionModule;
+        return INSTANCE;
+    }
+
+    public static HeatMap getInstance(){
+        if (INSTANCE == null){
+            INSTANCE = new HeatMap();
+        }
         return INSTANCE;
     }
 
