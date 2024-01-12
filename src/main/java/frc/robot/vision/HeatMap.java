@@ -58,8 +58,9 @@ public class HeatMap {
         Pair<Integer, Integer> gridPose = poseToGrid(robotPose);
         if (hasPassed(gridPose)){
             double totalAverageAmbiguity = fieldArr[gridPose.getFirst()][gridPose.getSecond()];
-            double currentAverageAmbiguity =
             double currentAverageAmbiguity = visionModule.inputs.averageAmbiguity;
+
+            fieldArr[gridPose.getFirst()] [gridPose.getSecond()] = Utils.continousAverageAmbiguity(totalAverageAmbiguity, currentAverageAmbiguity, entryCounter[gridPose.getFirst()][gridPose.getSecond()]);
         }
     }
 }
