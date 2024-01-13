@@ -295,11 +295,7 @@ public class SwerveDrive extends SubsystemBase {
         botPose = botPose.exp(dThetaTwist);
     }
 
-    public void resetHighFreqOdometry(Pose2d pose){
         botPose = pose;
-    }
-    public void resetHighFreqOdometry(){
-        resetHighFreqOdometry(new Pose2d());
     }
 
     public void periodic() {
