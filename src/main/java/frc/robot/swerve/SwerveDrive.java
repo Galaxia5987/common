@@ -1,13 +1,10 @@
 package frc.robot.swerve;
 
+import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.filter.LinearFilter;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Twist2d;
-import edu.wpi.first.math.kinematics.ChassisSpeeds;
-import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
-import edu.wpi.first.math.kinematics.SwerveModulePosition;
-import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.math.kinematics.*;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
@@ -21,26 +18,27 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
 public class SwerveDrive extends SubsystemBase {
-    public static final Lock odometryLock = new ReentrantLock();
     private static SwerveDrive INSTANCE = null;
-    private final GyroIO gyro;
     private final SwerveModule[] modules = new SwerveModule[4]; // FL, FR, RL, RR
-    private final LinearFilter accelFilter = LinearFilter.movingAverage(15);
+    @AutoLogOutput
+    private final SwerveModulePosition[] modulePositions = new SwerveModulePosition[4];
+    private final GyroIO gyro;
     private final SwerveDriveKinematics kinematics =
             new SwerveDriveKinematics(
                     SwerveConstants.WHEEL_POSITIONS[0],
                     SwerveConstants.WHEEL_POSITIONS[1],
                     SwerveConstants.WHEEL_POSITIONS[2],
                     SwerveConstants.WHEEL_POSITIONS[3]);
+
     private final Derivative acceleration = new Derivative();
-    private final Derivative odometryVelocity = new Derivative();
-    private double odometryDistance = 0;
-    @AutoLogOutput
-    private final SwerveModulePosition[] modulePositions = new SwerveModulePosition[4];
-    private final SwerveDriveInputsAutoLogged loggerInputs = new SwerveDriveInputsAutoLogged();
+    private final LinearFilter accelFilter = LinearFilter.movingAverage(15);
+
+    public static final Lock odometryLock = new ReentrantLock();
     @AutoLogOutput
     private Pose2d botPose = new Pose2d();
-    private Rotation2d lastGyroRotation = new Rotation2d();
+    private final SwerveDrivePoseEstimator poseEstimator;
+
+    private final SwerveDriveInputsAutoLogged loggerInputs = new SwerveDriveInputsAutoLogged();
 
     private SwerveDrive(
             boolean isReal,
@@ -85,6 +83,8 @@ public class SwerveDrive extends SubsystemBase {
             gyro = new GyroIOSim();
         }
         updateModulePositions();
+
+        poseEstimator = new SwerveDrivePoseEstimator(kinematics, getRawYaw(), modulePositions, botPose);
     }
 
     public static SwerveDrive getInstance() {
@@ -162,8 +162,8 @@ public class SwerveDrive extends SubsystemBase {
         }
     }
 
-    public Pose2d getBotPose() {
-        return botPose;
+    public SwerveModulePosition[] getModulePositions() {
+        return modulePositions;
     }
 
     public SwerveDriveKinematics getKinematics() {
@@ -178,8 +178,33 @@ public class SwerveDrive extends SubsystemBase {
         return loggerInputs.currentSpeeds;
     }
 
+    public void updateHighFreqPose() {
+        int deltaCount = Integer.MAX_VALUE;
+        for (int i = 0; i < 4; i++) {
+            deltaCount = Math.min(deltaCount, modules[i].getHighFreqAngles().length);
+            deltaCount = Math.min(deltaCount, modules[i].getHighFreqDriveDistances().length);
+        }
+        for (int deltaIndex = 0; deltaIndex < deltaCount; deltaIndex++) {
+            // Read wheel positions
+            SwerveModulePosition[] highFreqModulePositions = new SwerveModulePosition[4];
+            for (int moduleIndex = 0; moduleIndex < 4; moduleIndex++) {
+                highFreqModulePositions[moduleIndex] = new SwerveModulePosition(
+                        modules[moduleIndex].getHighFreqDriveDistances()[deltaIndex],
+                        Rotation2d.fromRadians(modules[moduleIndex].getHighFreqAngles()[deltaIndex])
+                );
+            }
+            poseEstimator.update(getRawYaw(), highFreqModulePositions);
+            botPose = poseEstimator.getEstimatedPosition();
+        }
+    }
+
+    public Pose2d getBotPose() {
+        return botPose;
+    }
+
     public void resetPose(Pose2d pose) {
         botPose = pose;
+        poseEstimator.resetPosition(getRawYaw(), modulePositions, pose);
     }
 
     public void resetPose() {
@@ -215,9 +240,6 @@ public class SwerveDrive extends SubsystemBase {
         modules[3].setModuleState(new SwerveModuleState(0, Rotation2d.fromDegrees(225)));
     }
 
-    public SwerveModulePosition[] getModulePositions() {
-        return modulePositions;
-    }
 
     public void updateOffsets(double[] offsets) {
         for (int i = 0; i < modules.length; i++) {
@@ -271,33 +293,6 @@ public class SwerveDrive extends SubsystemBase {
         drive(chassisSpeeds, fieldOriented);
     }
 
-    public void updateHighFreqOdometry() {
-        int deltaCount = Integer.MAX_VALUE;
-        for (int i = 0; i < 4; i++) {
-            deltaCount = Math.min(deltaCount, modules[i].getHighFreqAngles().length);
-            deltaCount = Math.min(deltaCount, modules[i].getHighFreqDriveDistanceDeltas().length);
-        }
-        for (int deltaIndex = 0; deltaIndex < deltaCount; deltaIndex++) {
-            // Read wheel deltas from each module
-            SwerveModulePosition[] wheelDeltas = new SwerveModulePosition[4];
-            for (int moduleIndex = 0; moduleIndex < 4; moduleIndex++) {
-                wheelDeltas[moduleIndex] = new SwerveModulePosition(
-                        modules[moduleIndex].getHighFreqDriveDistanceDeltas()[deltaIndex],
-                        Rotation2d.fromRadians(modules[moduleIndex].getHighFreqAngles()[deltaIndex])
-                );
-            }
-            var twist = kinematics.toTwist2d(wheelDeltas);
-            twist.dtheta = 0;  //make the angle reading 0 because we want to update it only with the gyro
-            botPose = botPose.exp(twist);
-        }
-        var dThetaTwist = new Twist2d();
-        dThetaTwist.dtheta = getRawYaw().minus(lastGyroRotation).getRadians();
-        botPose = botPose.exp(dThetaTwist);
-    }
-
-        botPose = pose;
-    }
-
     public void periodic() {
         odometryLock.lock();
         for (SwerveModule module : modules) {
@@ -305,7 +300,7 @@ public class SwerveDrive extends SubsystemBase {
         }
         odometryLock.unlock();
 
-        updateHighFreqOdometry();
+        updateHighFreqPose();
 
         for (int i = 0; i < modules.length; i++) {
             loggerInputs.absolutePositions[i] = modules[i].getPosition();
@@ -329,11 +324,6 @@ public class SwerveDrive extends SubsystemBase {
         acceleration.update(loggerInputs.linearVelocity);
         loggerInputs.acceleration = accelFilter.calculate(acceleration.get());
 
-        odometryDistance =
-                Math.hypot(botPose.getX(), botPose.getY());
-        odometryVelocity.update(odometryDistance, Timer.getFPGATimestamp());
-//        System.out.println(odometryVelocity.get());
-
         loggerInputs.supplyCurrent =
                 modules[0].getSupplyCurrent()
                         + modules[1].getSupplyCurrent()
@@ -346,7 +336,6 @@ public class SwerveDrive extends SubsystemBase {
                         + modules[2].getStatorCurrent()
                         + modules[3].getStatorCurrent();
 
-        lastGyroRotation = getRawYaw();
         loggerInputs.rawYaw = new Rotation2d(gyro.getRawYaw());
         loggerInputs.yaw = new Rotation2d(gyro.getYaw());
         loggerInputs.pitch = new Rotation2d(gyro.getPitch());

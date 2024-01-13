@@ -109,6 +109,10 @@ public class SwerveModule extends SubsystemBase {
         return deltas;
     }
 
+    public double[] getHighFreqDriveDistances(){
+        return loggerInputs.highFreqDistances;
+    }
+
     public double[] getHighFreqAngles() {
         return loggerInputs.highFreqAngles;
     }
