@@ -65,17 +65,21 @@ public class ModuleIOReal implements ModuleIO {
         angleMotor.setNeutralMode(NeutralModeValue.Brake);
 
         var drivePositionSignal = driveMotor.getPosition();
+        var driveVelocitySignal = driveMotor.getVelocity();
         distanceQueue = PhoenixOdometryThread
                 .getInstance()
-                .registerSignal(driveMotor, drivePositionSignal);
+                .registerSignal(driveMotor, drivePositionSignal, driveVelocitySignal);
 
         var anglePositionSignal = angleMotor.getPosition();
+        var angleVelocitySignal = angleMotor.getVelocity();
         angleQueue = PhoenixOdometryThread
                 .getInstance()
-                .registerSignal(angleMotor, anglePositionSignal);
+                .registerSignal(angleMotor, anglePositionSignal, angleVelocitySignal);
 
         BaseStatusSignal.setUpdateFrequencyForAll(
-                SwerveConstants.ODOMETRY_FREQUENCY, drivePositionSignal, anglePositionSignal);
+                SwerveConstants.ODOMETRY_FREQUENCY,
+                drivePositionSignal, anglePositionSignal,
+                driveVelocitySignal, angleVelocitySignal);
     }
 
     @Override
