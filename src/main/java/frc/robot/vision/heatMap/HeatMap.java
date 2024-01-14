@@ -58,9 +58,7 @@ public class HeatMap {
                 (grid.getFirst() * squareLength) * 0.5,
                 (grid.getSecond() * squareLength) * 0.5,
                 height,
-                new Rotation3d(
-                        0, pitch, 0
-                ));
+                new Rotation3d(0, pitch, 0));
     }
 
     public boolean hasPassed(Pair<Integer, Integer> currentGrid) {
