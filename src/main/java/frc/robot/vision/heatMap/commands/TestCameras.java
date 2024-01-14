@@ -1,17 +1,23 @@
 package frc.robot.vision.heatMap.commands;
 
+import com.opencsv.CSVWriter;
 import edu.wpi.first.math.Pair;
 import edu.wpi.first.math.geometry.Pose3d;
-import edu.wpi.first.util.struct.Struct;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import frc.robot.vision.SimVisionSystem;
 import frc.robot.vision.VisionModule;
 import frc.robot.vision.heatMap.HeatMap;
-import org.littletonrobotics.junction.Logger;
+import frc.robot.vision.heatMap.HeatMapConstants;
 
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.Set;
+import java.util.stream.IntStream;
+import lib.Utils;
+import org.littletonrobotics.junction.Logger;
 
 public class TestCameras extends Command {
     private SimVisionSystem visionSim = SimVisionSystem.getInstance();
