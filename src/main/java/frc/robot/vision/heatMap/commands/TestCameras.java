@@ -20,7 +20,7 @@ import lib.Utils;
 import org.littletonrobotics.junction.Logger;
 
 public class TestCameras extends Command {
-    private SimVisionSystem visionSim = SimVisionSystem.getInstance();
+    private final SimVisionSystem visionSim = SimVisionSystem.getInstance();
     private VisionModule[] visionModules;
     private HeatMap heatMap;
     private HeatMapField heatMapField = new HeatMapField(heatMap.getFieldArr());
