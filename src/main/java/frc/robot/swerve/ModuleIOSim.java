@@ -20,7 +20,6 @@ public class ModuleIOSim implements ModuleIO {
 
     private final PIDController angleController;
     private final PIDController velocityController;
-    private final Integral moduleDistance = new Integral();
     private double currentVelocity = 0;
     private double velocitySetpoint = 0;
     private Rotation2d currentAngle = new Rotation2d();
@@ -64,8 +63,7 @@ public class ModuleIOSim implements ModuleIO {
         inputs.angle = Rotation2d.fromRotations(angleMotor.getRotorPosition());
         currentAngle = inputs.angle;
 
-        moduleDistance.update(inputs.driveMotorVelocity);
-        inputs.moduleDistance = moduleDistance.get();
+        inputs.moduleDistance = Units.rpsToMetersPerSecond(driveMotor.getRotorPosition(), SwerveConstants.WHEEL_DIAMETER/2);
         inputs.moduleState = getModuleState();
     }
 
