@@ -2,6 +2,7 @@ package frc.robot.vision;
 
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
+import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
 import frc.robot.swerve.SwerveDrive;
 import org.photonvision.simulation.PhotonCameraSim;
@@ -41,6 +42,15 @@ public class SimVisionSystem {
     public void update() {
         visionSim.update(SwerveDrive.getInstance().getBotPose());
         visionSim.getDebugField();
-        //        Logger.recordOutput("VisionSimField2d", visionSim.getDebugField());
+    }
+
+    public void adjustCameraPose(VisionModule visionModule, double height, double pitch) {
+        visionSim.adjustCamera(
+                visionModule.io.getCameraSim(),
+                new Transform3d(
+                        visionSim.getCameraPose(visionModule.io.getCameraSim()).get().getX(),
+                        visionSim.getCameraPose(visionModule.io.getCameraSim()).get().getY(),
+                        height,
+                        new Rotation3d(0, pitch, 0)));
     }
 }
