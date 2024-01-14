@@ -2,6 +2,7 @@ package frc.robot.vision;
 
 import edu.wpi.first.math.geometry.Transform3d;
 import org.littletonrobotics.junction.AutoLog;
+import org.photonvision.simulation.PhotonCameraSim;
 
 public interface VisionIO {
 
@@ -14,6 +15,8 @@ public interface VisionIO {
     Transform3d getCameraToRobot();
 
     String getName();
+
+    PhotonCameraSim getCameraSim();
 
     @AutoLog
     class VisionInputs {
