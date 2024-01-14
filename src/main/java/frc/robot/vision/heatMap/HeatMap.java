@@ -33,8 +33,8 @@ public class HeatMap {
         return INSTANCE;
     }
 
-    public static HeatMap getInstance(){
-        if (INSTANCE == null){
+    public static HeatMap getInstance() {
+        if (INSTANCE == null) {
             INSTANCE = new HeatMap();
         }
         return INSTANCE;
@@ -53,7 +53,7 @@ public class HeatMap {
         return roundedGridPair;
     }
 
-    public Pose3d gridToPose(Pair<Integer, Integer> grid, int pitch, int height){
+    public Pose3d gridToPose(Pair<Integer, Integer> grid, double pitch, double height) {
         return new Pose3d(
                 (grid.getFirst() * squareLength) * 0.5,
                 (grid.getSecond() * squareLength) * 0.5,
