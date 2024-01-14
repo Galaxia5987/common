@@ -157,6 +157,9 @@ gradle-app.setting
 .project
 .settings/
 bin/
+.idea
+.xml
+.bck
 
 # Simulation GUI and other tools window save file
 *-window.json
@@ -164,4 +167,4 @@ bin/
 main/java/frc/robot/common/
 
 BuildConstants.java
-/.idea
+*.xml

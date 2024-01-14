@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import lib.Utils;
 import lib.math.differential.Derivative;
+import org.littletonrobotics.junction.AutoLogOutput;
 import org.littletonrobotics.junction.Logger;
 
 public class SwerveDrive extends SubsystemBase {
@@ -18,15 +19,14 @@ public class SwerveDrive extends SubsystemBase {
     private final LinearFilter accelFilter = LinearFilter.movingAverage(15);
     private final SwerveDriveKinematics kinematics =
             new SwerveDriveKinematics(
-                    SwerveConstants.wheelPositions[0],
-                    SwerveConstants.wheelPositions[1],
-                    SwerveConstants.wheelPositions[2],
-                    SwerveConstants.wheelPositions[3]);
+                    SwerveConstants.WHEEL_POSITIONS[0],
+                    SwerveConstants.WHEEL_POSITIONS[1],
+                    SwerveConstants.WHEEL_POSITIONS[2],
+                    SwerveConstants.WHEEL_POSITIONS[3]);
     private final SwerveDriveOdometry odometry;
     private final Derivative acceleration = new Derivative();
     private final SwerveModulePosition[] modulePositions = new SwerveModulePosition[4];
     private final SwerveDriveInputsAutoLogged loggerInputs = new SwerveDriveInputsAutoLogged();
-    private final SwerveModuleState[] currentModuleStates = new SwerveModuleState[4];
 
     private SwerveDrive(
             boolean isReal,
@@ -45,17 +45,16 @@ public class SwerveDrive extends SubsystemBase {
                                     driveIds[i],
                                     angleIds[i],
                                     encoderIds[i],
-                                    SwerveConstants.motionMagicConfigs[i],
-                                    i + 1);
+                                    SwerveConstants.DRIVE_MOTOR_CONFIGS,
+                                    SwerveConstants.ANGLE_MOTOR_CONFIGS);
                 } else {
                     io =
-                            new ModuleIOSparkMax(
+                            new ModuleIOReal(
                                     driveIds[i],
                                     angleIds[i],
                                     encoderIds[i],
-                                    drivesInverted[i],
-                                    anglesInverted[i],
-                                    SwerveConstants.motionMagicConfigs[i]);
+                                    SwerveConstants.DRIVE_MOTOR_CONFIGS,
+                                    SwerveConstants.ANGLE_MOTOR_CONFIGS);
                 }
 
                 modules[i] = new SwerveModule(io, i + 1);
@@ -118,6 +117,7 @@ public class SwerveDrive extends SubsystemBase {
      *
      * @return Yaw angle reading from gyro. [rad]
      */
+    @AutoLogOutput
     public double getRawYaw() {
         return loggerInputs.rawYaw;
     }
@@ -127,10 +127,12 @@ public class SwerveDrive extends SubsystemBase {
      *
      * @return Yaw angle with offset. [rad]
      */
+    @AutoLogOutput
     public double getYaw() {
         return loggerInputs.yaw;
     }
 
+    @AutoLogOutput
     public double getPitch() {
         return loggerInputs.pitch;
     }
@@ -141,7 +143,7 @@ public class SwerveDrive extends SubsystemBase {
      * @param desiredModuleStates The desired module states to set the modules to.
      */
     public void setModuleStates(SwerveModuleState[] desiredModuleStates) {
-        loggerInputs.desiredModuleStates = Utils.swerveModuleStatesToArray(desiredModuleStates);
+        loggerInputs.desiredModuleStates = desiredModuleStates;
     }
 
     public void updateModulePositions() {
@@ -150,6 +152,7 @@ public class SwerveDrive extends SubsystemBase {
         }
     }
 
+    @AutoLogOutput
     public Pose2d getBotPose() {
         return Utils.arrayToPose2d(loggerInputs.botPose);
     }
@@ -158,10 +161,12 @@ public class SwerveDrive extends SubsystemBase {
         return kinematics;
     }
 
+    @AutoLogOutput
     public double getVelocity() {
         return loggerInputs.linearVelocity;
     }
 
+    @AutoLogOutput
     public ChassisSpeeds getCurrentSpeeds() {
         return Utils.arrayToChassisSpeeds(loggerInputs.currentSpeeds);
     }
@@ -203,6 +208,7 @@ public class SwerveDrive extends SubsystemBase {
         modules[3].setModuleState(new SwerveModuleState(0, Rotation2d.fromDegrees(225)));
     }
 
+    @AutoLogOutput
     public SwerveModulePosition[] getModulePositions() {
         return modulePositions;
     }
@@ -231,7 +237,7 @@ public class SwerveDrive extends SubsystemBase {
 
         if (new ChassisSpeeds(0, 0, 0).equals(chassisSpeeds)) {
             for (SwerveModule module : modules) {
-                module.neutralOutput();
+                module.stopMotor();
             }
         }
 
@@ -268,20 +274,18 @@ public class SwerveDrive extends SubsystemBase {
         loggerInputs.botPose[2] = odometry.getPoseMeters().getRotation().getRadians();
 
         for (int i = 0; i < modules.length; i++) {
-            currentModuleStates[i] = modules[i].getModuleState();
             loggerInputs.absolutePositions[i] = modules[i].getPosition();
+            loggerInputs.currentModuleStates[i] = modules[i].getModuleState();
         }
-
-        Logger.recordOutput("SwerveDrive/currentModuleSates", currentModuleStates);
 
         for (int i = 0; i < 3; i++) {
             loggerInputs.currentSpeeds[i] =
                     Utils.chassisSpeedsToArray(
                             kinematics.toChassisSpeeds(
-                                    currentModuleStates[0],
-                                    currentModuleStates[1],
-                                    currentModuleStates[2],
-                                    currentModuleStates[3]))[i];
+                                    loggerInputs.currentModuleStates[0],
+                                    loggerInputs.currentModuleStates[1],
+                                    loggerInputs.currentModuleStates[2],
+                                    loggerInputs.currentModuleStates[3]))[i];
         }
 
         loggerInputs.linearVelocity =
@@ -308,11 +312,9 @@ public class SwerveDrive extends SubsystemBase {
         gyro.updateInputs(loggerInputs);
 
         SwerveDriveKinematics.desaturateWheelSpeeds(
-                Utils.arrayToSwerveModuleStates(loggerInputs.desiredModuleStates),
-                SwerveConstants.MAX_X_Y_VELOCITY); // TODO: may not work
+                loggerInputs.desiredModuleStates, SwerveConstants.MAX_X_Y_VELOCITY);
         for (int i = 0; i < modules.length; i++) {
-            modules[i].setModuleState(
-                    Utils.arrayToSwerveModuleStates(loggerInputs.desiredModuleStates)[i]);
+            modules[i].setModuleState(loggerInputs.desiredModuleStates[i]);
         }
 
         Logger.processInputs("SwerveDrive", loggerInputs);

@@ -1,6 +1,5 @@
 package frc.robot.swerve;
 
-import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.Timer;
@@ -18,7 +17,6 @@ public class SwerveModule extends SubsystemBase {
     private final int number;
     private final BooleanTrigger encoderTrigger = new BooleanTrigger();
     private final Timer timer = new Timer();
-    private SwerveModuleState currentModuleState = new SwerveModuleState();
 
     public SwerveModule(ModuleIO io, int number) {
         this.io = io;
@@ -34,7 +32,7 @@ public class SwerveModule extends SubsystemBase {
      * @return The state of a module.
      */
     public SwerveModuleState getModuleState() {
-        return currentModuleState;
+        return io.getModuleState();
     }
 
     /**
@@ -94,8 +92,8 @@ public class SwerveModule extends SubsystemBase {
         io.updateOffset(offset);
     }
 
-    public void neutralOutput() {
-        io.neutralOutput();
+    public void stopMotor() {
+        io.stop();
     }
 
     public boolean encoderConnected() {
@@ -111,8 +109,6 @@ public class SwerveModule extends SubsystemBase {
         currentModuleState = new SwerveModuleState(io.getVelocity(), io.getAngle());
 
         io.updateInputs(loggerInputs);
-
-        Logger.recordOutput("SwerveDrive/currentModuleState" + number, currentModuleState);
 
         Logger.processInputs("module_" + number, loggerInputs);
 

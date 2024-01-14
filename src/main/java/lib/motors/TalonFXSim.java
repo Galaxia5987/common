@@ -69,11 +69,11 @@ public class TalonFXSim extends SimMotor {
         this.setControl(new VoltageOut(voltageRequest + request.FeedForward));
     }
 
-    public double getVelocity() {
+    public double getRotorVelocity() {
         return Units.rpmToRps(motorSim.getAngularVelocityRPM());
     }
 
-    public double getPosition() {
+    public double getRotorPosition() {
         return motorSim.getAngularPositionRotations();
     }
 

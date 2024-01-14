@@ -16,16 +16,16 @@ public interface ModuleIO {
 
     void setVelocity(double velocity);
 
-    default SwerveModulePosition getModulePosition() {
-        return null;
-    }
+    SwerveModuleState getModuleState();
+
+    SwerveModulePosition getModulePosition();
+
+    void stop();
 
     default void updateOffset(double offset) {}
 
-    default void neutralOutput() {}
-
     default boolean encoderConnected() {
-        return false;
+        return true;
     }
 
     default Command checkModule() {
