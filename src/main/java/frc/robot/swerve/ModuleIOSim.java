@@ -4,6 +4,8 @@ import com.ctre.phoenix6.controls.PositionVoltage;
 import com.ctre.phoenix6.controls.VelocityVoltage;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.system.plant.DCMotor;
+import edu.wpi.first.wpilibj.simulation.FlywheelSim;
 import lib.math.AngleUtil;
 import lib.math.differential.Integral;
 import lib.motors.TalonFXSim;
@@ -75,8 +77,7 @@ public class ModuleIOSim implements ModuleIO {
     public void setAngle(Rotation2d angle) {
         angleSetpoint = angle.getRadians();
         angleMotorAppliedVoltage =
-                angleFeedback.calculate(
-                        MathUtil.angleModulus(currentAngle.get()), angle.getRadians());
+                angleFeedback.calculate(MathUtil.angleModulus(currentAngle.get()), angle.getRadians());
         angleMotor.setInputVoltage(angleMotorAppliedVoltage);
     }
 

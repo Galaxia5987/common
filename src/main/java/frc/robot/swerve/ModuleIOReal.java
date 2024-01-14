@@ -93,9 +93,7 @@ public class ModuleIOReal implements ModuleIO {
 
     @Override
     public Rotation2d getAngle() {
-        return AngleUtil.normalize(
-                Rotation2d.fromRadians(
-                        ticksPerRad.toUnits(angleMotor.getSelectedSensorPosition())));
+        return AngleUtil.normalize(Rotation2d.fromRadians(ticksPerRad.toUnits(angleMotor.getSelectedSensorPosition())));
     }
 
     @Override
@@ -137,7 +135,8 @@ public class ModuleIOReal implements ModuleIO {
     @Override
     public SwerveModulePosition getModulePosition() {
         return new SwerveModulePosition(
-                ticksPerMeter.toUnits(driveMotor.getSelectedSensorPosition()), getAngle());
+                ticksPerMeter.toUnits(driveMotor.getSelectedSensorPosition()),
+                getAngle());
     }
 
     @Override
@@ -162,6 +161,7 @@ public class ModuleIOReal implements ModuleIO {
                 () -> {
                     driveMotor.set(TalonFXControlMode.PercentOutput, 0.8);
                     angleMotor.set(TalonFXControlMode.PercentOutput, 0.2);
-                });
+                }
+        );
     }
 }

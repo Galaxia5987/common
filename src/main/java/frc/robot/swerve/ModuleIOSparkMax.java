@@ -9,6 +9,8 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.RobotController;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import lib.math.AngleUtil;
 import lib.math.differential.Integral;
 import lib.units.Units;
@@ -28,8 +30,8 @@ public class ModuleIOSparkMax implements ModuleIO {
     private final Integral driveStatorChargeUsedCoulomb = new Integral();
     private final Integral angleSupplyChargeUsedCoulomb = new Integral();
     private final Integral angleStatorChargeUsedCoulomb = new Integral();
-    private double angleSetpoint;
-    private double currentAngle;
+    private Rotation2d angleSetpoint;
+    private Rotation2d currentAngle;
     private double angleMotorPosition;
     private double moduleDistance;
     private double driveMotorSetpoint;
@@ -104,7 +106,7 @@ public class ModuleIOSparkMax implements ModuleIO {
         angleMotorPosition = inputs.angleMotorPosition;
         inputs.angleMotorVelocity = Units.rpmToRps(angleEncoder.getVelocity());
 
-        inputs.angle = AngleUtil.normalize(angleEncoder.getPosition() * 2 * Math.PI);
+        inputs.angle = Rotation2d.fromRadians(AngleUtil.normalize(angleEncoder.getPosition() * 2 * Math.PI));
         currentAngle = inputs.angle;
 
         inputs.angleSetpoint = angleSetpoint;
@@ -114,14 +116,14 @@ public class ModuleIOSparkMax implements ModuleIO {
     }
 
     @Override
-    public double getAngle() {
+    public Rotation2d getAngle() {
         return currentAngle;
     }
 
     @Override
-    public void setAngle(double angle) {
+    public void setAngle(Rotation2d angle) {
         angleSetpoint = AngleUtil.normalize(angle);
-        Rotation2d error = new Rotation2d(angle).minus(new Rotation2d(currentAngle));
+        Rotation2d error = angle.minus(currentAngle);
         anglePIDController.setReference(
                 angleMotorPosition + error.getRotations(), CANSparkMax.ControlType.kPosition);
     }
@@ -134,7 +136,7 @@ public class ModuleIOSparkMax implements ModuleIO {
 
     @Override
     public void setVelocity(double velocity) {
-        var angleError = new Rotation2d(angleSetpoint).minus(new Rotation2d(currentAngle));
+        var angleError = angleSetpoint.minus(currentAngle);
         velocity *= angleError.getCos();
         driveMotorSetpoint = velocity;
         drivePIDController.setReference(
@@ -143,7 +145,7 @@ public class ModuleIOSparkMax implements ModuleIO {
 
     @Override
     public SwerveModulePosition getModulePosition() {
-        return new SwerveModulePosition(moduleDistance, new Rotation2d(getAngle()));
+        return new SwerveModulePosition(moduleDistance, getAngle());
     }
 
     @Override
@@ -163,9 +165,13 @@ public class ModuleIOSparkMax implements ModuleIO {
     }
 
     @Override
-    public void checkModule() {
-        driveMotor.set(0.8);
-        angleMotor.set(0.2);
+    public Command checkModule() {
+        return Commands.run(
+                () -> {
+                    driveMotor.set(0.8);
+                    angleMotor.set(0.2);
+                }
+        );
     }
 
     private double getEncoderAngle() {

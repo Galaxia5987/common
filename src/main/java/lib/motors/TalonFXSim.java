@@ -63,7 +63,7 @@ public class TalonFXSim extends SimMotor {
     }
 
     public void setControl(MotionMagicVoltage request) {
-        voltageRequest =
+        voltageRequest = 
                 profiledController.calculate(
                         motorSim.getAngularPositionRotations(), request.Position);
         this.setControl(new VoltageOut(voltageRequest + request.FeedForward));
