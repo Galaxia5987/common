@@ -38,12 +38,17 @@ public class TestCameras extends Command {
     }
 
     @Override
-    public void initialize() {
-    }
-
-    @Override
     public void execute() {
         for (VisionModule visionModule: visionModules) {
+        double estimatedModuleTime =
+                HeatMapConstants.iterationTime
+                        * (HeatMapConstants.heightMaximum - HeatMapConstants.heightMinimumRange)
+                        * gridsToCheck.length
+                        * (360 / HeatMapConstants.robotAngleJumps);
+        double totalEstimatedTime = estimatedModuleTime * visionModules.length;
+        Logger.recordOutput("TotalEstimatedTime", totalEstimatedTime);
+
+        for (VisionModule visionModule : visionModules) {
             heatMap = HeatMap.getInstance(visionModule);
             heatMapField = new HeatMapField(heatMap.getFieldArr());
             Logger.recordOutput("EstimatedModuleTime", estimatedModuleTime);
