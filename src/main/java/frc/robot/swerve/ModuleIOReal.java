@@ -16,7 +16,6 @@ import lib.math.AngleUtil;
 import lib.math.differential.Integral;
 import lib.units.Units;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Queue;
 
@@ -182,8 +181,8 @@ public class ModuleIOReal implements ModuleIO {
     }
 
     @Override
-    public void updateOffset(double offset) {
-        angleMotor.setPosition(encoder.getAbsolutePosition() - offset);
+    public void updateOffset(Rotation2d offset) {
+        angleMotor.setPosition(encoder.getAbsolutePosition() - offset.getRotations());
     }
 
     @Override
