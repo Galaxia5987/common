@@ -27,8 +27,11 @@ public class TestCameras extends Command {
 
     private Pose3d robotPose;
 
-    private double robotAngels[] = {0, 0, 0, 0, 0, 0, 0, 0};
-    private Pair<Integer, Integer> gridsToCheck[] = ;//TODO: define grids to check
+    private final Pair[] gridsToCheck =
+            IntStream.rangeClosed(1, 8)
+                    .boxed()
+                    .flatMap(i -> IntStream.rangeClosed(1, 4).mapToObj(j -> new Pair<>(i, j)))
+                    .toArray(Pair[]::new);
 
     public TestCameras(VisionModule... visionModules) {
         this.visionModules = visionModules;
@@ -42,18 +45,34 @@ public class TestCameras extends Command {
     public void execute() {
         for (VisionModule visionModule: visionModules) {
             heatMap = HeatMap.getInstance(visionModule);
-            for (int height = -heightRange; height < heightRange; height += heightRange) {
-                for (int pitch = 0; pitch < pitchRange; pitch += pitchJumps) {
-                    for (Pair<Integer, Integer> grid: gridsToCheck) {
-                        for (int angle = 0; angle < 360; angle += robotAngleJumps) {
-                            robotPose = heatMap.gridToPose(grid, pitch, height);
-                            heatMap.update(robotPose);
-                        }
-                    }
-                    heatMapField.setFieldArr(heatMap.getFieldArr());
-                    //save heatmap
-                    Logger.recordOutput("heatMap " + height + " " + pitch, Arrays.stream(heatMapField.getFieldArr()).);
             heatMapField = new HeatMapField(heatMap.getFieldArr());
+            Logger.recordOutput("EstimatedModuleTime", estimatedModuleTime);
+            for (int height = HeatMapConstants.heightMinimumRange;
+                    height < HeatMapConstants.heightMaximum;
+                    height += HeatMapConstants.heightJumps) {
+                double optimalPitch = Utils.calcPitchByHeight(height);
+                visionSim.adjustCameraPose(visionModule, height, optimalPitch);
+
+                for (Pair grid : gridsToCheck) {
+                    for (int angle = 0; angle < 360; angle += HeatMapConstants.robotAngleJumps) {
+                        robotPose = heatMap.gridToPose(grid, optimalPitch, height);
+                        heatMap.update(robotPose);
+                    }
+                }
+                heatMapField.setFieldArr(heatMap.getFieldArr());
+
+                // save heatMap to .csv file
+                String csvFilePath = "HeatMap_" + height + "_" + optimalPitch;
+                try (CSVWriter csvWriter = new CSVWriter(new FileWriter(csvFilePath))) {
+                    Arrays.stream(heatMapField.getFieldArr())
+                            .map(
+                                    row ->
+                                            Arrays.stream(row)
+                                                    .mapToObj(String::valueOf)
+                                                    .toArray(String[]::new))
+                            .forEach(csvWriter::writeNext);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
                 }
             }
         }
