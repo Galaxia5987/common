@@ -1,17 +1,19 @@
 package frc.robot.swerve;
 
+import edu.wpi.first.math.geometry.Rotation2d;
+
 public interface GyroIO {
     void updateInputs(SwerveDriveInputs inputs);
 
-    double getYaw();
+    Rotation2d getYaw();
 
-    default double getRawYaw() {
-        return 0;
+    default Rotation2d getRawYaw() {
+        return new Rotation2d();
     }
 
-    default double getPitch() {
-        return 0;
+    default Rotation2d getPitch() {
+        return new Rotation2d();
     }
 
-    void resetGyro(double angle);
+    void resetGyro(Rotation2d angle);
 }

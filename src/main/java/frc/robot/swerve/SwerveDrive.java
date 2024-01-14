@@ -118,7 +118,8 @@ public class SwerveDrive extends SubsystemBase {
      * @param angle The desired angle. [rad]
      */
     public void resetGyro(double angle) {
-        gyro.resetGyro(angle);
+        Rotation2d angleR2d = new Rotation2d(angle);
+        gyro.resetGyro(angleR2d);
     }
 
     public void resetGyro() {
@@ -336,9 +337,9 @@ public class SwerveDrive extends SubsystemBase {
                         + modules[2].getStatorCurrent()
                         + modules[3].getStatorCurrent();
 
-        loggerInputs.rawYaw = new Rotation2d(gyro.getRawYaw());
-        loggerInputs.yaw = new Rotation2d(gyro.getYaw());
-        loggerInputs.pitch = new Rotation2d(gyro.getPitch());
+        loggerInputs.rawYaw = gyro.getRawYaw();
+        loggerInputs.yaw = gyro.getYaw();
+        loggerInputs.pitch = gyro.getPitch();
         gyro.updateInputs(loggerInputs);
 
         SwerveDriveKinematics.desaturateWheelSpeeds(
