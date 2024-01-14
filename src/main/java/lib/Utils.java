@@ -106,4 +106,27 @@ public class Utils {
             double totalAverageAmbiguity, double currentAverageAmbiguity, int n) {
         return (n + 1.0) / ((n / totalAverageAmbiguity) + (1.0 / currentAverageAmbiguity));
     }
+
+    public static double calcPitchByHeight(double height) {
+        double[] heights = {20, 50, 80};
+        double[] pitches = {41.92, 37.462, 31.568};
+
+        if (height > heights[heights.length - 1]) {
+            return pitches[pitches.length - 1];
+        } else if (height < 0) {
+            return 0;
+        }
+
+        int index = 0;
+        while (index < heights.length - 1 && height > heights[index + 1]) {
+            index++;
+        }
+
+        double x1 = heights[index];
+        double x2 = heights[index + 1];
+        double y1 = pitches[index];
+        double y2 = pitches[index + 1];
+
+        return y1 + (height - x1) * (y2 - y1) / (x2 - x1);
+    }
 }
