@@ -71,7 +71,8 @@ public class HeatMap {
 
         return passed;
     }
-    public double[][] getFieldArr(){
+
+    public double[][] getFieldArr() {
         return fieldArr;
     }
 

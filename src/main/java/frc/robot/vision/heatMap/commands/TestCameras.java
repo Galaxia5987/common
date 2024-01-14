@@ -9,8 +9,6 @@ import frc.robot.vision.SimVisionSystem;
 import frc.robot.vision.VisionModule;
 import frc.robot.vision.heatMap.HeatMap;
 import frc.robot.vision.heatMap.HeatMapConstants;
-
-import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Arrays;
