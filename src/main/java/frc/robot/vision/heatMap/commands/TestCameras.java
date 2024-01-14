@@ -39,7 +39,6 @@ public class TestCameras extends Command {
 
     @Override
     public void execute() {
-        for (VisionModule visionModule: visionModules) {
         double estimatedModuleTime =
                 HeatMapConstants.iterationTime
                         * (HeatMapConstants.heightMaximum - HeatMapConstants.heightMinimumRange)
@@ -79,6 +78,7 @@ public class TestCameras extends Command {
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
+                System.out.println("CSV file has been created successfully.");
             }
         }
     }
