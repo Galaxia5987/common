@@ -23,13 +23,7 @@ public class TestCameras extends Command {
     private final SimVisionSystem visionSim = SimVisionSystem.getInstance();
     private VisionModule[] visionModules;
     private HeatMap heatMap;
-    private HeatMapField heatMapField = new HeatMapField(heatMap.getFieldArr());
-
-    private int heightRange = 0;
-    private int heightJumps = 0;
-    private int pitchRange = 0;
-    private int pitchJumps = 0;
-    private int robotAngleJumps = 0;
+    private HeatMapField heatMapField;
 
     private Pose3d robotPose;
 
@@ -59,6 +53,7 @@ public class TestCameras extends Command {
                     heatMapField.setFieldArr(heatMap.getFieldArr());
                     //save heatmap
                     Logger.recordOutput("heatMap " + height + " " + pitch, Arrays.stream(heatMapField.getFieldArr()).);
+            heatMapField = new HeatMapField(heatMap.getFieldArr());
                 }
             }
         }
