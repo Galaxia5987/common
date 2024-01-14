@@ -157,9 +157,6 @@ public class ModuleIOReal implements ModuleIO {
 
     @Override
     public void setVelocity(double velocity) {
-        var angleError = angleSetpoint.minus(currentAngle);
-        velocity *= angleError.getCos();
-
         driveMotorVelocitySetpoint = velocity;
 
         velocityControlRequest

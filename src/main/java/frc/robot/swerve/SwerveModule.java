@@ -28,6 +28,12 @@ public class SwerveModule extends SubsystemBase {
         timer.reset();
     }
 
+    public void setVelocity(double velocity){
+        var angleError = loggerInputs.angleSetpoint.minus(loggerInputs.angle);
+        velocity *= angleError.getCos();
+        io.setVelocity(velocity);
+    }
+
     /**
      * Gets the state of a module.
      *
@@ -44,7 +50,7 @@ public class SwerveModule extends SubsystemBase {
      */
     public void setModuleState(SwerveModuleState moduleState) {
         moduleState = SwerveModuleState.optimize(moduleState, loggerInputs.angle);
-        io.setVelocity(moduleState.speedMetersPerSecond);
+        setVelocity(moduleState.speedMetersPerSecond);
         io.setAngle(moduleState.angle);
     }
 
