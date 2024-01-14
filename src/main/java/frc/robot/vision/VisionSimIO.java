@@ -54,6 +54,10 @@ public class VisionSimIO implements VisionIO {
         return photonCamera.getName();
     }
 
+    public PhotonCameraSim getCameraSim() {
+        return cameraSim;
+    }
+
     @Override
     public void updateInputs(VisionInputs inputs) {
         var pose = SwerveDrive.getInstance().getBotPose();

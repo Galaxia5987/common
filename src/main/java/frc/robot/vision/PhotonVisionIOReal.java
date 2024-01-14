@@ -4,6 +4,7 @@ import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.geometry.Transform3d;
 import org.photonvision.PhotonCamera;
 import org.photonvision.PhotonPoseEstimator;
+import org.photonvision.simulation.PhotonCameraSim;
 
 public class PhotonVisionIOReal implements VisionIO {
 
@@ -99,5 +100,10 @@ public class PhotonVisionIOReal implements VisionIO {
     @Override
     public String getName() {
         return camera.getName();
+    }
+
+    @Override
+    public PhotonCameraSim getCameraSim() {
+        return null;
     }
 }
