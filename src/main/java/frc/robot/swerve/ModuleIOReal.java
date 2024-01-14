@@ -10,6 +10,8 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import lib.math.AngleUtil;
 import lib.math.differential.Integral;
 import lib.units.Units;
@@ -81,9 +83,9 @@ public class ModuleIOReal implements ModuleIO {
         inputs.angleMotorVelocity = angleMotor.getVelocity().getValue();
 
         inputs.angle = getAngle();
-        currentAngle = inputs.angle;
+        currentAngle = inputs.angle.getRadians();
 
-        inputs.angleSetpoint = angleSetpoint;
+        inputs.angleSetpoint = Rotation2d.fromRadians(angleSetpoint);
 
         inputs.moduleDistance = getModulePosition().distanceMeters;
         inputs.moduleState = getModuleState();
@@ -91,18 +93,18 @@ public class ModuleIOReal implements ModuleIO {
 
     @Override
     public Rotation2d getAngle() {
-        return AngleUtil.normalize(Rotation2d.fromRotations(angleMotor.getPosition().getValue()));
+        return AngleUtil.normalize(
+                Rotation2d.fromRadians(
+                        ticksPerRad.toUnits(angleMotor.getSelectedSensorPosition())));
     }
 
     @Override
     public void setAngle(Rotation2d angle) {
-        angle = AngleUtil.normalize(angle);
-        angleSetpoint = angle;
-        Rotation2d error = angle.minus(currentAngle);
-        angleControlRequest
-                .withPosition(angleMotor.getPosition().getValue() + error.getRotations())
-                .withEnableFOC(true);
-        angleMotor.setControl(angleControlRequest);
+        angleSetpoint = AngleUtil.normalize(angle.getRadians());
+        Rotation2d error = angle.minus(new Rotation2d(currentAngle));
+        angleMotor.set(
+                TalonFXControlMode.MotionMagic,
+                angleMotorPosition + ticksPerRad.toTicks(error.getRadians()));
     }
 
     @Override
@@ -135,9 +137,7 @@ public class ModuleIOReal implements ModuleIO {
     @Override
     public SwerveModulePosition getModulePosition() {
         return new SwerveModulePosition(
-                Units.rpsToMetersPerSecond(
-                        driveMotor.getPosition().getValue(), SwerveConstants.WHEEL_DIAMETER / 2),
-                getAngle());
+                ticksPerMeter.toUnits(driveMotor.getSelectedSensorPosition()), getAngle());
     }
 
     @Override
@@ -157,8 +157,11 @@ public class ModuleIOReal implements ModuleIO {
     }
 
     @Override
-    public void checkModule() {
-        driveMotor.set(0.8);
-        angleMotor.set(0.2);
+    public Command checkModule() {
+        return Commands.run(
+                () -> {
+                    driveMotor.set(TalonFXControlMode.PercentOutput, 0.8);
+                    angleMotor.set(TalonFXControlMode.PercentOutput, 0.2);
+                });
     }
 }

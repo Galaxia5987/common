@@ -5,7 +5,7 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.*;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.RunCommand;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import lib.Utils;
 import lib.math.differential.Derivative;
@@ -187,14 +187,12 @@ public class SwerveDrive extends SubsystemBase {
         return connected;
     }
 
-    public Command checkModule(int moduleIndex) {
-        return new RunCommand(() -> modules[moduleIndex].checkModule(), this);
-    }
-
-    public void checkSwerve() {
-        for (int i = 0; i < 4; i++) {
-            checkModule(i);
+    public Command checkSwerve() {
+        Command command = Commands.none();
+        for (SwerveModule module : modules) {
+            command = command.alongWith(module.checkModule());
         }
+        return command;
     }
 
     public void stop() {

@@ -1,7 +1,6 @@
 package frc.robot.swerve;
 
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.kinematics.SwerveModuleState;
 import org.littletonrobotics.junction.AutoLog;
 
 @AutoLog
@@ -27,5 +26,4 @@ public class SwerveModuleInputs {
     public double angleMotorAppliedVoltage = 0;
 
     public double moduleDistance = 0;
-    public SwerveModuleState moduleState = new SwerveModuleState();
 }

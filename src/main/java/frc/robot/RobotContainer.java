@@ -12,7 +12,6 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.swerve.SwerveDrive;
 import frc.robot.swerve.commands.XboxDrive;
 import frc.robot.vision.Vision;
-import frc.robot.vision.VisionConstants;
 import frc.robot.vision.VisionModule;
 import frc.robot.vision.VisionSimIO;
 import org.photonvision.PhotonCamera;
@@ -26,46 +25,57 @@ public class RobotContainer {
                     new VisionModule[] {
                         new VisionModule(
                                 new VisionSimIO(
-                                        new PhotonCamera(
-                                                NetworkTableInstance.getDefault(), "1"),
-                                        new Transform3d(new Translation3d(Math.sqrt(2)/2, Math.sqrt(2)/2, 0.5), new Rotation3d(0,0,45)))),
-                            new VisionModule(
-                                    new VisionSimIO(
-                                            new PhotonCamera(
-                                                    NetworkTableInstance.getDefault(), "2"),
-                                            new Transform3d(new Translation3d(0, 1, 0.5), new Rotation3d(0,0,90)))),
-                            new VisionModule(
-                                    new VisionSimIO(
-                                            new PhotonCamera(
-                                                    NetworkTableInstance.getDefault(), "3"),
-                                            new Transform3d(new Translation3d(-Math.sqrt(2)/2, Math.sqrt(2)/2, 0.5), new Rotation3d(0,0,135)))),
-                            new VisionModule(
-                                    new VisionSimIO(
-                                            new PhotonCamera(
-                                                    NetworkTableInstance.getDefault(), "4"),
-                                            new Transform3d(new Translation3d(-1, 0, 0.5), new Rotation3d(0,0,180)))),
-                            new VisionModule(
-                                    new VisionSimIO(
-                                            new PhotonCamera(
-                                                    NetworkTableInstance.getDefault(), "5"),
-                                            new Transform3d(new Translation3d(-Math.sqrt(2)/2, -Math.sqrt(2)/2, 0.5), new Rotation3d(0,0,225)))),
-                            new VisionModule(
-                                    new VisionSimIO(
-                                            new PhotonCamera(
-                                                    NetworkTableInstance.getDefault(), "6"),
-                                            new Transform3d(new Translation3d(0, -1, 0.5), new Rotation3d(0,0,270)))),
-                            new VisionModule(
-                                    new VisionSimIO(
-                                            new PhotonCamera(
-                                                    NetworkTableInstance.getDefault(), "7"),
-                                            new Transform3d(new Translation3d(-Math.sqrt(2)/2, -Math.sqrt(2)/2, 0.5), new Rotation3d(0,0,315)))),
-                            new VisionModule(
-                                    new VisionSimIO(
-                                            new PhotonCamera(
-                                                    NetworkTableInstance.getDefault(), "8"),
-                                            new Transform3d(new Translation3d(1, 0, 0.5), new Rotation3d(0,0,360))))
-                    }
-                    );
+                                        new PhotonCamera(NetworkTableInstance.getDefault(), "1"),
+                                        new Transform3d(
+                                                new Translation3d(
+                                                        Math.sqrt(2) / 2, Math.sqrt(2) / 2, 0.5),
+                                                new Rotation3d(0, 0, 45)))),
+                        new VisionModule(
+                                new VisionSimIO(
+                                        new PhotonCamera(NetworkTableInstance.getDefault(), "2"),
+                                        new Transform3d(
+                                                new Translation3d(0, 1, 0.5),
+                                                new Rotation3d(0, 0, 90)))),
+                        new VisionModule(
+                                new VisionSimIO(
+                                        new PhotonCamera(NetworkTableInstance.getDefault(), "3"),
+                                        new Transform3d(
+                                                new Translation3d(
+                                                        -Math.sqrt(2) / 2, Math.sqrt(2) / 2, 0.5),
+                                                new Rotation3d(0, 0, 135)))),
+                        new VisionModule(
+                                new VisionSimIO(
+                                        new PhotonCamera(NetworkTableInstance.getDefault(), "4"),
+                                        new Transform3d(
+                                                new Translation3d(-1, 0, 0.5),
+                                                new Rotation3d(0, 0, 180)))),
+                        new VisionModule(
+                                new VisionSimIO(
+                                        new PhotonCamera(NetworkTableInstance.getDefault(), "5"),
+                                        new Transform3d(
+                                                new Translation3d(
+                                                        -Math.sqrt(2) / 2, -Math.sqrt(2) / 2, 0.5),
+                                                new Rotation3d(0, 0, 225)))),
+                        new VisionModule(
+                                new VisionSimIO(
+                                        new PhotonCamera(NetworkTableInstance.getDefault(), "6"),
+                                        new Transform3d(
+                                                new Translation3d(0, -1, 0.5),
+                                                new Rotation3d(0, 0, 270)))),
+                        new VisionModule(
+                                new VisionSimIO(
+                                        new PhotonCamera(NetworkTableInstance.getDefault(), "7"),
+                                        new Transform3d(
+                                                new Translation3d(
+                                                        -Math.sqrt(2) / 2, -Math.sqrt(2) / 2, 0.5),
+                                                new Rotation3d(0, 0, 315)))),
+                        new VisionModule(
+                                new VisionSimIO(
+                                        new PhotonCamera(NetworkTableInstance.getDefault(), "8"),
+                                        new Transform3d(
+                                                new Translation3d(1, 0, 0.5),
+                                                new Rotation3d(0, 0, 360))))
+                    });
     private final XboxController xboxController = new XboxController(0);
     private final Joystick leftJoystick = new Joystick(1);
     private final Joystick rightJoystick = new Joystick(2);

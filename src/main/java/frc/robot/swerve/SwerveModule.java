@@ -3,6 +3,7 @@ package frc.robot.swerve;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import lib.math.differential.BooleanTrigger;
 import org.littletonrobotics.junction.Logger;
@@ -98,12 +99,14 @@ public class SwerveModule extends SubsystemBase {
         return io.encoderConnected();
     }
 
-    public void checkModule() {
-        io.checkModule();
+    public Command checkModule() {
+        return io.checkModule().withName("CheckModule_" + number);
     }
 
     @Override
     public void periodic() {
+        currentModuleState = new SwerveModuleState(io.getVelocity(), io.getAngle());
+
         io.updateInputs(loggerInputs);
 
         Logger.processInputs("module_" + number, loggerInputs);

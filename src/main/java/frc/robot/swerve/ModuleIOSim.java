@@ -4,9 +4,7 @@ import com.ctre.phoenix6.controls.PositionVoltage;
 import com.ctre.phoenix6.controls.VelocityVoltage;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.kinematics.SwerveModulePosition;
-import edu.wpi.first.math.kinematics.SwerveModuleState;
-import edu.wpi.first.wpilibj.Timer;
+import lib.math.AngleUtil;
 import lib.math.differential.Integral;
 import lib.motors.TalonFXSim;
 import lib.units.Units;
@@ -58,11 +56,10 @@ public class ModuleIOSim implements ModuleIO {
         currentVelocity = inputs.driveMotorVelocity;
         inputs.driveMotorVelocitySetpoint = velocitySetpoint;
 
-        inputs.angleMotorAppliedVoltage = angleMotor.getAppliedVoltage();
-        inputs.angleMotorVelocity = angleMotor.getRotorVelocity();
-        inputs.angleSetpoint = angleSetpoint;
-        inputs.angle = Rotation2d.fromRotations(angleMotor.getRotorPosition());
-        currentAngle = inputs.angle;
+        inputs.angleMotorAppliedVoltage = angleMotorAppliedVoltage;
+        inputs.angleMotorVelocity = angleMotor.getAngularVelocityRadPerSec();
+        inputs.angleSetpoint = Rotation2d.fromRadians(angleSetpoint);
+        inputs.angle = Rotation2d.fromRadians(AngleUtil.normalize(currentAngle.get()));
 
         moduleDistance.update(inputs.driveMotorVelocity);
         inputs.moduleDistance = moduleDistance.get();
@@ -71,13 +68,16 @@ public class ModuleIOSim implements ModuleIO {
 
     @Override
     public Rotation2d getAngle() {
-        return currentAngle;
+        return Rotation2d.fromRadians(currentAngle.get());
     }
 
     @Override
     public void setAngle(Rotation2d angle) {
-        angleSetpoint = angle;
-        angleMotor.setControl(angleControl.withPosition(angle.getRotations()));
+        angleSetpoint = angle.getRadians();
+        angleMotorAppliedVoltage =
+                angleFeedback.calculate(
+                        MathUtil.angleModulus(currentAngle.get()), angle.getRadians());
+        angleMotor.setInputVoltage(angleMotorAppliedVoltage);
     }
 
     @Override
