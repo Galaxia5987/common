@@ -27,6 +27,5 @@ public interface ModuleIO {
         return true;
     }
 
-    default void checkModule() {
-    }
+    void checkModule();
 }

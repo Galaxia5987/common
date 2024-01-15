@@ -111,4 +111,10 @@ public class ModuleIOSim implements ModuleIO {
         angleControl.withVelocity(0);
         angleMotor.setControl(angleControl);
     }
+
+    @Override
+    public void checkModule() {
+        driveControl.withVelocity(0.8*SwerveConstants.MAX_X_Y_VELOCITY);
+        angleControl.withVelocity(0.2*SwerveConstants.MAX_OMEGA_VELOCITY);
+    }
 }
