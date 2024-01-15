@@ -1,4 +1,4 @@
-package frc.robot.vision.heatMap.commands;
+package frc.robot.vision.heatMap;
 
 public class HeatMapField {
     private double[][] fieldArr;
