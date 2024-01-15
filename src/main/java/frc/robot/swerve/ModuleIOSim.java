@@ -89,6 +89,11 @@ public class ModuleIOSim implements ModuleIO {
                 Units.metersToRotations(velocity, SwerveConstants.WHEEL_DIAMETER / 2));
         driveMotor.setControl(driveControlRequest);
     }
+
+    @Override
+    public void setAngleVelocity(double velocity) {
+        angleControlRequest.withVelocity(velocity);
+        angleMotor.setControl(angleControlRequest);
     }
 
     @Override

@@ -168,6 +168,12 @@ public class ModuleIOTalonFX implements ModuleIO {
     }
 
     @Override
+    public void setAngleVelocity(double velocity) {
+        angleControlRequest.withVelocity(velocity);
+        angleMotor.setControl(angleControlRequest);
+    }
+
+    @Override
     public SwerveModuleState getModuleState() {
         return new SwerveModuleState(getVelocity(), getAngle());
     }

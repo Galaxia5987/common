@@ -15,6 +15,8 @@ public interface ModuleIO {
 
     void setVelocity(double velocity);
 
+    void setAngleVelocity(double velocity);
+
     SwerveModuleState getModuleState();
 
     SwerveModulePosition getModulePosition();
