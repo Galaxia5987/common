@@ -14,8 +14,8 @@ public class ModuleIOSim implements ModuleIO {
     private final TalonFXSim driveMotor;
     private final TalonFXSim angleMotor;
 
-    private VelocityVoltage driveControl = new VelocityVoltage(0).withEnableFOC(true);
-    private PositionVoltage angleControl = new PositionVoltage(0).withEnableFOC(true);
+    private VelocityVoltage driveControlRequest = new VelocityVoltage(0).withEnableFOC(true);
+    private PositionVoltage angleControlRequest = new PositionVoltage(0).withEnableFOC(true);
 
     private final PIDController angleController;
     private final PIDController velocityController;
@@ -74,7 +74,7 @@ public class ModuleIOSim implements ModuleIO {
     @Override
     public void setAngle(Rotation2d angle) {
         angleSetpoint = angle;
-        angleMotor.setControl(angleControl.withPosition(angle.getRotations()));
+        angleMotor.setControl(angleControlRequest.withPosition(angle.getRotations()));
     }
 
     @Override
@@ -85,9 +85,10 @@ public class ModuleIOSim implements ModuleIO {
     @Override
     public void setVelocity(double velocity) {
         velocitySetpoint = velocity;
-        driveControl.withVelocity(
+        driveControlRequest.withVelocity(
                 Units.metersToRotations(velocity, SwerveConstants.WHEEL_DIAMETER / 2));
-        driveMotor.setControl(driveControl);
+        driveMotor.setControl(driveControlRequest);
+    }
     }
 
     @Override
@@ -105,16 +106,10 @@ public class ModuleIOSim implements ModuleIO {
 
     @Override
     public void stop() {
-        driveControl.withVelocity(0);
-        driveMotor.setControl(driveControl);
+        driveControlRequest.withVelocity(0);
+        driveMotor.setControl(driveControlRequest);
 
-        angleControl.withVelocity(0);
-        angleMotor.setControl(angleControl);
-    }
-
-    @Override
-    public void checkModule() {
-        driveControl.withVelocity(0.8*SwerveConstants.MAX_X_Y_VELOCITY);
-        angleControl.withVelocity(0.2*SwerveConstants.MAX_OMEGA_VELOCITY);
+        angleControlRequest.withVelocity(0);
+        angleMotor.setControl(angleControlRequest);
     }
 }
