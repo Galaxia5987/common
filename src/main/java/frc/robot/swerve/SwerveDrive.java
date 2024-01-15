@@ -53,7 +53,7 @@ public class SwerveDrive extends SubsystemBase {
                 ModuleIO io;
                 if (!isNeo) {
                     io =
-                            new ModuleIOReal(
+                            new ModuleIOTalonFX(
                                     driveIds[i],
                                     angleIds[i],
                                     encoderIds[i],
@@ -61,7 +61,7 @@ public class SwerveDrive extends SubsystemBase {
                                     SwerveConstants.ANGLE_MOTOR_CONFIGS);
                 } else {
                     io =
-                            new ModuleIOReal(
+                            new ModuleIOTalonFX(
                                     driveIds[i],
                                     angleIds[i],
                                     encoderIds[i],

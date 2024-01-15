@@ -19,7 +19,7 @@ import lib.units.Units;
 import java.util.List;
 import java.util.Queue;
 
-public class ModuleIOReal implements ModuleIO {
+public class ModuleIOTalonFX implements ModuleIO {
 
     private final TalonFX driveMotor;
     private final TalonFX angleMotor;
@@ -39,7 +39,7 @@ public class ModuleIOReal implements ModuleIO {
     private final Queue<Double> distanceQueue;
     private final Queue<Double> angleQueue;
 
-    public ModuleIOReal(
+    public ModuleIOTalonFX(
             int driveMotorID,
             int angleMotorID,
             int encoderID,
@@ -143,7 +143,7 @@ public class ModuleIOReal implements ModuleIO {
         Rotation2d error = angle.minus(currentAngle);
         angleControlRequest
                 .withPosition(angleMotor.getPosition().getValue() + error.getRotations())
-                .withFeedForward(SwerveConstants.kF)
+                .withFeedForward(SwerveConstants.kF.get())
                 .withEnableFOC(true);
         angleMotor.setControl(angleControlRequest);
     }
