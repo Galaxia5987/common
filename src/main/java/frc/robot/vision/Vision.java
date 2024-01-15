@@ -44,6 +44,10 @@ public class Vision extends SubsystemBase {
         return Utils.averageAmbiguity(ambiguityList);
     }
 
+    public VisionModule[] getVisionModules() {
+        return modules;
+    }
+
     @Override
     public void periodic() {
         List<Double> totalAverageAmbiguties = new ArrayList<>();
