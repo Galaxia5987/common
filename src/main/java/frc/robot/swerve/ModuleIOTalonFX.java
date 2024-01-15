@@ -201,10 +201,4 @@ public class ModuleIOTalonFX implements ModuleIO {
     public boolean encoderConnected() {
         return encoder.isConnected();
     }
-
-    @Override
-    public void checkModule() {
-        driveMotor.set(0.8);
-        angleMotor.set(0.2);
-    }
 }

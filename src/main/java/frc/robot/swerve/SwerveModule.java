@@ -110,7 +110,8 @@ public class SwerveModule extends SubsystemBase {
     }
 
     public void checkModule() {
-        io.checkModule();
+        io.setVelocity(0.8*SwerveConstants.MAX_X_Y_VELOCITY);
+        io.setAngleVelocity(0.2*SwerveConstants.MAX_OMEGA_VELOCITY);
     }
 
     public double[] getHighFreqDriveDistanceDeltas() {

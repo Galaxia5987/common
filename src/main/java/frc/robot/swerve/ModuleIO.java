@@ -28,6 +28,4 @@ public interface ModuleIO {
     default boolean encoderConnected() {
         return true;
     }
-
-    void checkModule();
 }
