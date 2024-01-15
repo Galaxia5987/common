@@ -30,8 +30,8 @@ public class TestCameras extends Command {
                     .flatMap(i -> IntStream.rangeClosed(1, 4).mapToObj(j -> new Pair<>(i, j)))
                     .toArray(Pair[]::new);
 
-    public TestCameras(VisionModule... visionModules) {
-        this.visionModules = visionModules;
+    public TestCameras(Vision vision) {
+        this.visionModules = vision.getVisionModules();
     }
 
     @Override
