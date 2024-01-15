@@ -38,7 +38,7 @@ public class TestCameras extends Command {
     public void execute() {
         double estimatedModuleTime =
                 HeatMapConstants.iterationTime
-                        * (HeatMapConstants.heightMaximum - HeatMapConstants.heightMinimumRange)
+                        * (HeatMapConstants.heightMaximum - HeatMapConstants.heightMinimumRange) / HeatMapConstants.heightJumps
                         * gridsToCheck.length
                         * (360 / HeatMapConstants.robotAngleJumps);
         double totalEstimatedTime = estimatedModuleTime * visionModules.length;
