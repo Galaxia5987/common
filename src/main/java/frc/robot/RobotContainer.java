@@ -19,12 +19,6 @@ public class RobotContainer {
     private static RobotContainer INSTANCE = null;
 
     private final SwerveDrive drive = SwerveDrive.getInstance();
-    private TestCameras testCameras =
-            new TestCameras(
-                    new VisionModule(
-                            new VisionSimIO(
-                                    new PhotonCamera(NetworkTableInstance.getDefault(), "camera1"),
-                                    VisionConstants.ROBOT_TO_CAM[0])));
     private final Vision vision =
             Vision.getInstance(
                     new VisionModule[] {
@@ -34,6 +28,7 @@ public class RobotContainer {
                                                 NetworkTableInstance.getDefault(), "camera1"),
                                         VisionConstants.ROBOT_TO_CAM[0]))
                     });
+    private TestCameras testCameras = new TestCameras(vision);
     private final XboxController xboxController = new XboxController(0);
     private final Joystick leftJoystick = new Joystick(1);
     private final Joystick rightJoystick = new Joystick(2);
