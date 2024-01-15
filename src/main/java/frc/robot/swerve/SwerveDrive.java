@@ -263,16 +263,14 @@ public class SwerveDrive extends SubsystemBase {
                         getYaw());
 
         if (new ChassisSpeeds(0, 0, 0).equals(chassisSpeeds)) {
-            for (SwerveModule module : modules) {
-                module.stop();
-            }
+            Arrays.stream(modules).forEach(SwerveModule::stop);
+            return;
         }
 
         if (fieldOriented) {
-            setModuleStates(kinematics.toSwerveModuleStates(fieldOrientedChassisSpeeds));
-        } else {
-            setModuleStates(kinematics.toSwerveModuleStates(chassisSpeeds));
+            chassisSpeeds = fieldOrientedChassisSpeeds;
         }
+        setModuleStates(kinematics.toSwerveModuleStates(chassisSpeeds));
     }
 
     /**
