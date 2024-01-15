@@ -52,6 +52,7 @@ public class TestCameras extends Command {
                     height += HeatMapConstants.heightJumps) {
                 double optimalPitch = Utils.calcPitchByHeight(height);
                 visionSim.adjustCameraPose(visionModule, height, optimalPitch);
+                heatMap.resetHeatMap();
 
                 for (Pair grid : gridsToCheck) {
                     for (int angle = 0; angle < 360; angle += HeatMapConstants.robotAngleJumps) {

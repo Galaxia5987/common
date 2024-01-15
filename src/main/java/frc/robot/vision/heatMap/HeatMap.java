@@ -21,7 +21,6 @@ public class HeatMap {
             new int[(int) (xLength / squareLength)][(int) (yLength / squareLength)];
     private double[][] fieldArr =
             new double[(int) (xLength / squareLength)][(int) (yLength / squareLength)];
-    private Pair<Integer, Integer> lastGrid;
 
     private HeatMap() {}
 
@@ -61,6 +60,12 @@ public class HeatMap {
                 new Rotation3d(0, pitch, 0));
     }
 
+    public void resetHeatMap(){
+        int[][] entryCounter =
+                new int[(int) (xLength / squareLength)][(int) (yLength / squareLength)];
+        double[][] fieldArr =
+                new double[(int) (xLength / squareLength)][(int) (yLength / squareLength)];
+    }
     public double[][] getFieldArr() {
         return fieldArr;
     }
