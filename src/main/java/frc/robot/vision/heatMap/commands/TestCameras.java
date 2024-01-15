@@ -34,6 +34,9 @@ public class TestCameras extends Command {
         this.visionModules = vision.getVisionModules();
     }
 
+    // TODO: change this to an array for each param(5 arrays)
+    //  and then every execute iterate over a combination and in the next one move to the next combination
+    //  you need 5 boolean flags that says when something is finished
     @Override
     public void execute() {
         double estimatedModuleTime =
