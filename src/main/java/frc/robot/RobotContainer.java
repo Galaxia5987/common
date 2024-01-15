@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.robot.swerve.SwerveDrive;
 import frc.robot.swerve.commands.XboxDrive;
+import frc.robot.vision.Vision;
 import frc.robot.vision.VisionConstants;
 import frc.robot.vision.VisionModule;
 import frc.robot.vision.VisionSimIO;
@@ -24,6 +25,15 @@ public class RobotContainer {
                             new VisionSimIO(
                                     new PhotonCamera(NetworkTableInstance.getDefault(), "camera1"),
                                     VisionConstants.ROBOT_TO_CAM[0])));
+    private final Vision vision =
+            Vision.getInstance(
+                    new VisionModule[] {
+                        new VisionModule(
+                                new VisionSimIO(
+                                        new PhotonCamera(
+                                                NetworkTableInstance.getDefault(), "camera1"),
+                                        VisionConstants.ROBOT_TO_CAM[0]))
+                    });
     private final XboxController xboxController = new XboxController(0);
     private final Joystick leftJoystick = new Joystick(1);
     private final Joystick rightJoystick = new Joystick(2);
