@@ -6,6 +6,7 @@ import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import frc.robot.vision.SimVisionSystem;
+import frc.robot.vision.Vision;
 import frc.robot.vision.VisionModule;
 import frc.robot.vision.heatMap.HeatMap;
 import frc.robot.vision.heatMap.HeatMapConstants;
@@ -14,8 +15,6 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.Set;
 import java.util.stream.IntStream;
-
-import frc.robot.vision.heatMap.HeatMapField;
 import lib.Utils;
 import org.littletonrobotics.junction.Logger;
 
@@ -23,8 +22,6 @@ public class TestCameras extends Command {
     private final SimVisionSystem visionSim = SimVisionSystem.getInstance();
     private VisionModule[] visionModules;
     private HeatMap heatMap;
-    private HeatMapField heatMapField;
-
     private Pose3d robotPose;
 
     private final Pair[] gridsToCheck =
@@ -49,7 +46,6 @@ public class TestCameras extends Command {
 
         for (VisionModule visionModule : visionModules) {
             heatMap = HeatMap.getInstance(visionModule);
-            heatMapField = new HeatMapField(heatMap.getFieldArr());
             Logger.recordOutput("EstimatedModuleTime", estimatedModuleTime);
             for (int height = HeatMapConstants.heightMinimumRange;
                     height < HeatMapConstants.heightMaximum;
@@ -63,12 +59,11 @@ public class TestCameras extends Command {
                         heatMap.update(robotPose);
                     }
                 }
-                heatMapField.setFieldArr(heatMap.getFieldArr());
 
                 // save heatMap to .csv file
                 String csvFilePath = "HeatMap_" + height + "_" + optimalPitch;
                 try (CSVWriter csvWriter = new CSVWriter(new FileWriter(csvFilePath))) {
-                    Arrays.stream(heatMapField.getFieldArr())
+                    Arrays.stream(heatMap.getFieldArr())
                             .map(
                                     row ->
                                             Arrays.stream(row)
