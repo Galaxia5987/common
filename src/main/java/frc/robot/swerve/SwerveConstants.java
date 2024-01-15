@@ -2,6 +2,7 @@ package frc.robot.swerve;
 
 import com.ctre.phoenix6.configs.*;
 import edu.wpi.first.math.geometry.Translation2d;
+import lib.webconstants.LoggedTunableNumber;
 
 public class SwerveConstants {
     public static final double[] OFFSETS = {
@@ -21,16 +22,21 @@ public class SwerveConstants {
 
     public static final double NEUTRAL_DEADBAND = 0.03;
     public static final double XBOX_DEADBAND = 0.15;
-    public static final double STEERING_MULTIPLIER = 0.6;
+    public static final LoggedTunableNumber STEERING_MULTIPLIER = new LoggedTunableNumber("Steering multiplier", 0.6);
 
     public static final Slot0Configs DRIVE_PID_GAINS =
-            new Slot0Configs().withKP(0.0).withKI(0.0).withKD(0.0).withKV(0.6).withKS(0.6);
+            new Slot0Configs()
+                    .withKP(new LoggedTunableNumber("PID/driveKP",0.0).get())
+                    .withKI(new LoggedTunableNumber("PID/driveKI",0.0).get())
+                    .withKD(new LoggedTunableNumber("PID/driveKD",0.0).get())
+                    .withKV(new LoggedTunableNumber("PID/driveKV",0.6).get())
+                    .withKS(new LoggedTunableNumber("PID/driveKS",0.6).get());
     public static final Slot0Configs ANGLE_PID_GAINS =
             new Slot0Configs()
-                    .withKP(28.0)
-                    .withKI(0.0)
-                    .withKD(0.0);
-    public static final double kF = 0.28;
+                    .withKP(new LoggedTunableNumber("PID/angleKP",28.0).get())
+                    .withKI(new LoggedTunableNumber("PID/angleKI",0.0).get())
+                    .withKD(new LoggedTunableNumber("PID/angleKD",0.0).get());
+    public static final LoggedTunableNumber kF = new LoggedTunableNumber("PID/angleKF",0.28);
 
     public static final VoltageConfigs VOLTAGE_CONFIGS =
             new VoltageConfigs()
