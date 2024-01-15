@@ -14,6 +14,8 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.Set;
 import java.util.stream.IntStream;
+
+import frc.robot.vision.heatMap.HeatMapField;
 import lib.Utils;
 import org.littletonrobotics.junction.Logger;
 

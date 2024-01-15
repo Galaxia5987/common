@@ -1,4 +1,4 @@
-package frc.robot.vision.heatMap.commands;
+package frc.robot.vision.heatMap;
 
 import edu.wpi.first.util.struct.Struct;
 import java.nio.ByteBuffer;
