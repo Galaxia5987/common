@@ -61,32 +61,20 @@ public class HeatMap {
                 new Rotation3d(0, pitch, 0));
     }
 
-    public boolean hasPassed(Pair<Integer, Integer> currentGrid) {
-        boolean passed = currentGrid.equals(lastGrid);
-
-        if (passed) {
-            entryCounter[currentGrid.getFirst()][currentGrid.getSecond()] += 1;
-        }
-        lastGrid = currentGrid;
-
-        return passed;
-    }
-
     public double[][] getFieldArr() {
         return fieldArr;
     }
 
     public void update(Pose3d robotPose) {
-        Pair<Integer, Integer> gridPose = poseToGrid(robotPose);
-        if (hasPassed(gridPose)) {
-            double totalAverageAmbiguity = fieldArr[gridPose.getFirst()][gridPose.getSecond()];
-            double currentAverageAmbiguity = visionModule.inputs.averageAmbiguity;
+        Pair<Integer, Integer> currentGrid = poseToGrid(robotPose);
+        entryCounter[currentGrid.getFirst()][currentGrid.getSecond()] += 1;
+        double totalAverageAmbiguity = fieldArr[currentGrid.getFirst()][currentGrid.getSecond()];
+        double currentAverageAmbiguity = visionModule.inputs.averageAmbiguity;
 
-            fieldArr[gridPose.getFirst()][gridPose.getSecond()] =
-                    Utils.continuousAverageAmbiguity(
-                            totalAverageAmbiguity,
-                            currentAverageAmbiguity,
-                            entryCounter[gridPose.getFirst()][gridPose.getSecond()]);
-        }
+        fieldArr[currentGrid.getFirst()][currentGrid.getSecond()] =
+                Utils.continuousAverageAmbiguity(
+                        totalAverageAmbiguity,
+                        currentAverageAmbiguity,
+                        entryCounter[currentGrid.getFirst()][currentGrid.getSecond()]);
     }
 }
