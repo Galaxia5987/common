@@ -7,6 +7,7 @@ import com.revrobotics.SparkMaxPIDController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
+import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -59,7 +60,8 @@ public class ModuleIOSparkMax implements ModuleIO {
 
         driveMotor.enableVoltageCompensation(SwerveConstants.VOLT_COMP_SATURATION);
         driveMotor.setIdleMode(CANSparkMax.IdleMode.kBrake);
-        driveMotor.setSmartCurrentLimit(SwerveConstants.DRIVE_CURRENT_LIMIT);
+        driveMotor.setSmartCurrentLimit(
+                (int) SwerveConstants.CURRENT_LIMITS_CONFIGS.StatorCurrentLimit);
         driveMotor.setInverted(driveInverted);
         driveEncoder.setPositionConversionFactor(SwerveConstants.DRIVE_REDUCTION);
         driveEncoder.setVelocityConversionFactor(SwerveConstants.DRIVE_REDUCTION);
@@ -71,7 +73,8 @@ public class ModuleIOSparkMax implements ModuleIO {
 
         angleMotor.enableVoltageCompensation(SwerveConstants.VOLT_COMP_SATURATION);
         angleMotor.setIdleMode(CANSparkMax.IdleMode.kBrake);
-        angleMotor.setSmartCurrentLimit(SwerveConstants.ANGLE_CURRENT_LIMIT);
+        angleMotor.setSmartCurrentLimit(
+                (int) SwerveConstants.CURRENT_LIMITS_CONFIGS.StatorCurrentLimit);
         angleMotor.setInverted(angleInverted);
         anglePIDController.setP(motionMagicConfigs[0]);
         anglePIDController.setI(motionMagicConfigs[1]);
@@ -106,12 +109,15 @@ public class ModuleIOSparkMax implements ModuleIO {
         angleMotorPosition = inputs.angleMotorPosition;
         inputs.angleMotorVelocity = Units.rpmToRps(angleEncoder.getVelocity());
 
-        inputs.angle = Rotation2d.fromRadians(AngleUtil.normalize(angleEncoder.getPosition() * 2 * Math.PI));
+        inputs.angle =
+                Rotation2d.fromRadians(
+                        AngleUtil.normalize(angleEncoder.getPosition() * 2 * Math.PI));
         currentAngle = inputs.angle;
 
         inputs.angleSetpoint = angleSetpoint;
 
-        inputs.moduleDistance = inputs.driveMotorPosition * SwerveConstants.WHEEL_CIRCUMFERENCE;
+        inputs.moduleDistance =
+                inputs.driveMotorPosition * SwerveConstants.WHEEL_DIAMETER * Math.PI;
         moduleDistance = inputs.moduleDistance;
     }
 
@@ -144,6 +150,11 @@ public class ModuleIOSparkMax implements ModuleIO {
     }
 
     @Override
+    public SwerveModuleState getModuleState() {
+        return new SwerveModuleState(getVelocity(), currentAngle);
+    }
+
+    @Override
     public SwerveModulePosition getModulePosition() {
         return new SwerveModulePosition(moduleDistance, getAngle());
     }
@@ -170,8 +181,7 @@ public class ModuleIOSparkMax implements ModuleIO {
                 () -> {
                     driveMotor.set(0.8);
                     angleMotor.set(0.2);
-                }
-        );
+                });
     }
 
     private double getEncoderAngle() {

@@ -52,8 +52,7 @@ public class SwerveModule extends SubsystemBase {
      * @return Position of the module.
      */
     public SwerveModulePosition getModulePosition() {
-        return new SwerveModulePosition(
-                loggerInputs.moduleDistance, loggerInputs.angle);
+        return new SwerveModulePosition(loggerInputs.moduleDistance, loggerInputs.angle);
     }
 
     /**
@@ -106,8 +105,6 @@ public class SwerveModule extends SubsystemBase {
 
     @Override
     public void periodic() {
-        currentModuleState = new SwerveModuleState(io.getVelocity(), io.getAngle());
-
         io.updateInputs(loggerInputs);
 
         Logger.processInputs("module_" + number, loggerInputs);

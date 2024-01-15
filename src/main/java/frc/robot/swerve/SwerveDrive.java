@@ -40,21 +40,9 @@ public class SwerveDrive extends SubsystemBase {
             for (int i = 0; i < modules.length; i++) {
                 ModuleIO io;
                 if (!isNeo) {
-                    io =
-                            new ModuleIOReal(
-                                    driveIds[i],
-                                    angleIds[i],
-                                    encoderIds[i],
-                                    SwerveConstants.DRIVE_MOTOR_CONFIGS,
-                                    SwerveConstants.ANGLE_MOTOR_CONFIGS);
+                    io = new ModuleIOSim();
                 } else {
-                    io =
-                            new ModuleIOReal(
-                                    driveIds[i],
-                                    angleIds[i],
-                                    encoderIds[i],
-                                    SwerveConstants.DRIVE_MOTOR_CONFIGS,
-                                    SwerveConstants.ANGLE_MOTOR_CONFIGS);
+                    io = new ModuleIOSim();
                 }
 
                 modules[i] = new SwerveModule(io, i + 1);

@@ -4,8 +4,9 @@ import com.ctre.phoenix6.controls.PositionVoltage;
 import com.ctre.phoenix6.controls.VelocityVoltage;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.system.plant.DCMotor;
-import edu.wpi.first.wpilibj.simulation.FlywheelSim;
+import edu.wpi.first.math.kinematics.SwerveModulePosition;
+import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.wpilibj.Timer;
 import lib.math.AngleUtil;
 import lib.math.differential.Integral;
 import lib.motors.TalonFXSim;
@@ -58,27 +59,24 @@ public class ModuleIOSim implements ModuleIO {
         currentVelocity = inputs.driveMotorVelocity;
         inputs.driveMotorVelocitySetpoint = velocitySetpoint;
 
-        inputs.angleMotorAppliedVoltage = angleMotorAppliedVoltage;
-        inputs.angleMotorVelocity = angleMotor.getAngularVelocityRadPerSec();
-        inputs.angleSetpoint = Rotation2d.fromRadians(angleSetpoint);
-        inputs.angle = Rotation2d.fromRadians(AngleUtil.normalize(currentAngle.get()));
+        inputs.angleMotorAppliedVoltage = angleMotor.getAppliedVoltage();
+        inputs.angleMotorVelocity = angleMotor.getRotorVelocity();
+        inputs.angleSetpoint = angleSetpoint;
+        inputs.angle = AngleUtil.normalize(currentAngle);
 
         moduleDistance.update(inputs.driveMotorVelocity);
         inputs.moduleDistance = moduleDistance.get();
-        inputs.moduleState = getModuleState();
     }
 
     @Override
     public Rotation2d getAngle() {
-        return Rotation2d.fromRadians(currentAngle.get());
+        return currentAngle;
     }
 
     @Override
     public void setAngle(Rotation2d angle) {
-        angleSetpoint = angle.getRadians();
-        angleMotorAppliedVoltage =
-                angleFeedback.calculate(MathUtil.angleModulus(currentAngle.get()), angle.getRadians());
-        angleMotor.setInputVoltage(angleMotorAppliedVoltage);
+        angleSetpoint = angle;
+        angleMotor.setControl(angleControl.withPosition(angle.getRotations()));
     }
 
     @Override
