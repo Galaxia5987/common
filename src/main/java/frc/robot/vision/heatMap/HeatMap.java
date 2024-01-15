@@ -83,7 +83,7 @@ public class HeatMap {
             double currentAverageAmbiguity = visionModule.inputs.averageAmbiguity;
 
             fieldArr[gridPose.getFirst()][gridPose.getSecond()] =
-                    Utils.continousAverageAmbiguity(
+                    Utils.continuousAverageAmbiguity(
                             totalAverageAmbiguity,
                             currentAverageAmbiguity,
                             entryCounter[gridPose.getFirst()][gridPose.getSecond()]);
