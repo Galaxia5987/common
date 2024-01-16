@@ -16,7 +16,6 @@ import lib.PhoenixOdometryThread;
 import lib.math.AngleUtil;
 import lib.math.differential.Integral;
 import lib.units.Units;
-import lib.webconstants.LoggedTunableNumber;
 
 import java.util.List;
 import java.util.Queue;
@@ -141,15 +140,6 @@ public class ModuleIOTalonFX implements ModuleIO {
         angleQueue.clear();
 
         if (hasPIDChanged(SwerveConstants.PID_VALUES)) updateSlot0Configs();
-    }
-
-    @Override
-    public boolean hasPIDChanged(LoggedTunableNumber[] PIDValues) {
-        boolean hasChanged = false;
-        for (int i = 0; i < PIDValues.length; i++) {
-            if (PIDValues[i].hasChanged(hashCode())) hasChanged=true;
-        }
-        return hasChanged;
     }
 
     @Override
