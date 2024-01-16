@@ -5,6 +5,7 @@ import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import lib.math.differential.BooleanTrigger;
 import org.littletonrobotics.junction.Logger;
@@ -109,9 +110,8 @@ public class SwerveModule extends SubsystemBase {
         return io.encoderConnected();
     }
 
-    public void checkModule() {
-        io.setVelocity(0.8* SwerveConstantsTalonFX.MAX_X_Y_VELOCITY);
-        io.setAngleVelocity(0.2* SwerveConstantsTalonFX.MAX_OMEGA_VELOCITY);
+    public Command checkModule() {
+        return io.checkModule();
     }
 
     public double[] getHighFreqDriveDistanceDeltas() {

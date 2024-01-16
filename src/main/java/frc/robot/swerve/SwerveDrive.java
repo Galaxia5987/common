@@ -14,8 +14,10 @@ import org.littletonrobotics.junction.AutoLogOutput;
 import org.littletonrobotics.junction.Logger;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
+import java.util.stream.Stream;
 
 public class SwerveDrive extends SubsystemBase {
     private static SwerveDrive INSTANCE = null;
@@ -220,8 +222,8 @@ public class SwerveDrive extends SubsystemBase {
     }
 
     public Command checkSwerve() {
-        var command = Arrays.stream(modules).map((module) -> Commands.run(module::checkModule))
-                .reduce(Commands.none(), Commands::parallel).withName("checkSwerve");
+        var command = Stream.of(modules).map(SwerveModule::checkModule)
+                .reduce(Commands.none(), Commands::parallel).withName("Check Swerve");
         command.addRequirements(this);
         return command;
     }

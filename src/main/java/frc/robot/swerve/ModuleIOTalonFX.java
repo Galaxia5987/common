@@ -11,6 +11,8 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import lib.PhoenixOdometryThread;
 import lib.math.AngleUtil;
 import lib.math.differential.Integral;
@@ -87,6 +89,15 @@ public class ModuleIOTalonFX implements ModuleIO {
                 SwerveConstantsTalonFX.ODOMETRY_FREQUENCY,
                 drivePositionSignal, anglePositionSignal,
                 driveVelocitySignal, angleVelocitySignal);
+    }
+
+    @Override
+    public Command checkModule() {
+        return Commands.run(
+                () -> {
+                    driveMotor.set(0.8);
+                    angleMotor.set(0.2);
+                });
     }
 
     @Override
