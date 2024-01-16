@@ -23,7 +23,7 @@ public interface ModuleIO {
 
     void stop();
 
-    default void updateOffset(double offset) {}
+    default void updateOffset(Rotation2d offset) {}
 
     default boolean encoderConnected() {
         return true;

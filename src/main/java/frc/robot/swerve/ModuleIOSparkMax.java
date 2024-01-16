@@ -160,8 +160,8 @@ public class ModuleIOSparkMax implements ModuleIO {
     }
 
     @Override
-    public void updateOffset(double offset) {
-        angleEncoder.setPosition(getEncoderAngle() - offset);
+    public void updateOffset(Rotation2d offset) {
+        angleEncoder.setPosition(getEncoderAngle() - offset.getRotations());
     }
 
     @Override

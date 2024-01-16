@@ -1,5 +1,6 @@
 package frc.robot.swerve;
 
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.Timer;
@@ -88,7 +89,7 @@ public class SwerveModule extends SubsystemBase {
      * @param offset The offset to update the angle motor's position. [sensor ticks]
      */
     public void updateOffset(double offset) {
-        io.updateOffset(offset);
+        io.updateOffset(Rotation2d.fromRotations(offset));
     }
 
     public void stopMotor() {
