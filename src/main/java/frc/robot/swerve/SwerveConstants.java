@@ -24,19 +24,18 @@ public class SwerveConstants {
     public static final double XBOX_DEADBAND = 0.15;
     public static final LoggedTunableNumber STEERING_MULTIPLIER = new LoggedTunableNumber("Steering multiplier", 0.6);
 
-    public static final Slot0Configs DRIVE_PID_GAINS =
-            new Slot0Configs()
-                    .withKP(new LoggedTunableNumber("Swerve Drive/PID/driveKP",0.0).get())
-                    .withKI(new LoggedTunableNumber("Swerve Drive/PID/driveKI",0.0).get())
-                    .withKD(new LoggedTunableNumber("Swerve Drive/PID/driveKD",0.0).get())
-                    .withKV(new LoggedTunableNumber("Swerve Drive/PID/driveKV",0.6).get())
-                    .withKS(new LoggedTunableNumber("Swerve Drive/PID/driveKS",0.6).get());
-    public static final Slot0Configs ANGLE_PID_GAINS =
-            new Slot0Configs()
-                    .withKP(new LoggedTunableNumber("Swerve Drive/PID/angleKP",28.0).get())
-                    .withKI(new LoggedTunableNumber("Swerve Drive/PID/angleKI",0.0).get())
-                    .withKD(new LoggedTunableNumber("Swerve Drive/PID/angleKD",0.0).get());
-    public static final LoggedTunableNumber kF = new LoggedTunableNumber("Swerve Drive/PID/angleKF",0.28);
+    public static final LoggedTunableNumber DRIVE_KP = new LoggedTunableNumber("Swerve Drive/PID/driveKP",0.0);
+    public static final LoggedTunableNumber DRIVE_KI = new LoggedTunableNumber("Swerve Drive/PID/driveKI",0.0);
+    public static final LoggedTunableNumber DRIVE_KD = new LoggedTunableNumber("Swerve Drive/PID/driveKD",0.0);
+    public static final LoggedTunableNumber DRIVE_KV = new LoggedTunableNumber("Swerve Drive/PID/driveKV",0.6);
+    public static final LoggedTunableNumber DRIVE_KS = new LoggedTunableNumber("Swerve Drive/PID/driveKS",0.6);
+
+    public static final LoggedTunableNumber ANGLE_KP = new LoggedTunableNumber("Swerve Drive/PID/angleKP",28.0);
+    public static final LoggedTunableNumber ANGLE_KI = new LoggedTunableNumber("Swerve Drive/PID/angleKI",0.0);
+    public static final LoggedTunableNumber ANGLE_KD = new LoggedTunableNumber("Swerve Drive/PID/angleKD",0.0);
+    public static final LoggedTunableNumber ANGLE_KS = new LoggedTunableNumber("Swerve Drive/PID/angleKS",0.28);
+
+    public static final LoggedTunableNumber[] PID_VALUES = new LoggedTunableNumber[]{DRIVE_KP, DRIVE_KI, DRIVE_KD, DRIVE_KV, DRIVE_KS, ANGLE_KP, ANGLE_KI, ANGLE_KD, ANGLE_KS};
 
     public static final VoltageConfigs VOLTAGE_CONFIGS =
             new VoltageConfigs()
@@ -55,13 +54,11 @@ public class SwerveConstants {
 
     public static final TalonFXConfiguration DRIVE_MOTOR_CONFIGS =
             new TalonFXConfiguration()
-                    .withSlot0(DRIVE_PID_GAINS)
                     .withVoltage(VOLTAGE_CONFIGS)
                     .withCurrentLimits(CURRENT_LIMITS_CONFIGS)
                     .withFeedback(FEEDBACK_CONFIGS_DRIVE);
     public static final TalonFXConfiguration ANGLE_MOTOR_CONFIGS =
             new TalonFXConfiguration()
-                    .withSlot0(ANGLE_PID_GAINS)
                     .withVoltage(VOLTAGE_CONFIGS)
                     .withCurrentLimits(CURRENT_LIMITS_CONFIGS)
                     .withFeedback(FEEDBACK_CONFIGS_ANGLE)
@@ -73,6 +70,8 @@ public class SwerveConstants {
     public static final LoggedTunableNumber SIM_ANGLE_KP = new LoggedTunableNumber("Swerve Drive/PID/sim angleKP", 8);
     public static final LoggedTunableNumber SIM_ANGLE_KI = new LoggedTunableNumber("Swerve Drive/PID/sim angleKI", 0);
     public static final LoggedTunableNumber SIM_ANGLE_KD = new LoggedTunableNumber("Swerve Drive/PID/sim angleKD", 0);
+
+    public static final LoggedTunableNumber[] SIM_PID_VALUES = new LoggedTunableNumber[]{SIM_DRIVE_KP,SIM_DRIVE_KI,SIM_DRIVE_KD,SIM_ANGLE_KP,SIM_ANGLE_KI,SIM_ANGLE_KD};
 
     public static final double MAX_X_Y_VELOCITY =
             6000.0
