@@ -25,10 +25,10 @@ public class SwerveDrive extends SubsystemBase {
     private final GyroIO gyro;
     private final SwerveDriveKinematics kinematics =
             new SwerveDriveKinematics(
-                    SwerveConstants.WHEEL_POSITIONS[0],
-                    SwerveConstants.WHEEL_POSITIONS[1],
-                    SwerveConstants.WHEEL_POSITIONS[2],
-                    SwerveConstants.WHEEL_POSITIONS[3]);
+                    SwerveConstantsTalonFX.WHEEL_POSITIONS[0],
+                    SwerveConstantsTalonFX.WHEEL_POSITIONS[1],
+                    SwerveConstantsTalonFX.WHEEL_POSITIONS[2],
+                    SwerveConstantsTalonFX.WHEEL_POSITIONS[3]);
 
     private final Derivative acceleration = new Derivative();
     private final LinearFilter accelFilter = LinearFilter.movingAverage(15);
@@ -57,16 +57,16 @@ public class SwerveDrive extends SubsystemBase {
                                     driveIds[i],
                                     angleIds[i],
                                     encoderIds[i],
-                                    SwerveConstants.DRIVE_MOTOR_CONFIGS,
-                                    SwerveConstants.ANGLE_MOTOR_CONFIGS);
+                                    SwerveConstantsTalonFX.DRIVE_MOTOR_CONFIGS,
+                                    SwerveConstantsTalonFX.ANGLE_MOTOR_CONFIGS);
                 } else {
                     io =
                             new ModuleIOTalonFX(
                                     driveIds[i],
                                     angleIds[i],
                                     encoderIds[i],
-                                    SwerveConstants.DRIVE_MOTOR_CONFIGS,
-                                    SwerveConstants.ANGLE_MOTOR_CONFIGS);
+                                    SwerveConstantsTalonFX.DRIVE_MOTOR_CONFIGS,
+                                    SwerveConstantsTalonFX.ANGLE_MOTOR_CONFIGS);
                 }
 
                 modules[i] = new SwerveModule(io, i + 1);
@@ -283,9 +283,9 @@ public class SwerveDrive extends SubsystemBase {
     public void drive(double xOutput, double yOutput, double omegaOutput, boolean fieldOriented) {
         ChassisSpeeds chassisSpeeds =
                 new ChassisSpeeds(
-                        SwerveConstants.MAX_X_Y_VELOCITY * xOutput,
-                        SwerveConstants.MAX_X_Y_VELOCITY * yOutput,
-                        SwerveConstants.MAX_OMEGA_VELOCITY * omegaOutput); // removed angleFF
+                        SwerveConstantsTalonFX.MAX_X_Y_VELOCITY * xOutput,
+                        SwerveConstantsTalonFX.MAX_X_Y_VELOCITY * yOutput,
+                        SwerveConstantsTalonFX.MAX_OMEGA_VELOCITY * omegaOutput); // removed angleFF
 
         drive(chassisSpeeds, fieldOriented);
     }
@@ -340,7 +340,7 @@ public class SwerveDrive extends SubsystemBase {
 
         SwerveDriveKinematics.desaturateWheelSpeeds(
                 loggerInputs.desiredModuleStates,
-                SwerveConstants.MAX_X_Y_VELOCITY);
+                SwerveConstantsTalonFX.MAX_X_Y_VELOCITY);
         for (int i = 0; i < modules.length; i++) {
             modules[i].setModuleState(loggerInputs.desiredModuleStates[i]);
         }

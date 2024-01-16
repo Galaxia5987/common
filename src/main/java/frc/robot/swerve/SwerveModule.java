@@ -110,8 +110,8 @@ public class SwerveModule extends SubsystemBase {
     }
 
     public void checkModule() {
-        io.setVelocity(0.8*SwerveConstants.MAX_X_Y_VELOCITY);
-        io.setAngleVelocity(0.2*SwerveConstants.MAX_OMEGA_VELOCITY);
+        io.setVelocity(0.8* SwerveConstantsTalonFX.MAX_X_Y_VELOCITY);
+        io.setAngleVelocity(0.2* SwerveConstantsTalonFX.MAX_OMEGA_VELOCITY);
     }
 
     public double[] getHighFreqDriveDistanceDeltas() {
@@ -142,7 +142,7 @@ public class SwerveModule extends SubsystemBase {
         }
 
         if (timer.hasElapsed(1)) {
-            io.updateOffset(new Rotation2d(Units.rotationsToRadians(SwerveConstants.OFFSETS[number - 1])));
+            io.updateOffset(new Rotation2d(Units.rotationsToRadians(SwerveConstantsTalonFX.OFFSETS[number - 1])));
             timer.reset();
         }
     }

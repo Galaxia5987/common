@@ -28,24 +28,24 @@ public class ModuleIOSim implements ModuleIO {
         driveMotor =
                 new TalonFXSim(
                         1,
-                        1 / SwerveConstants.DRIVE_REDUCTION,
-                        SwerveConstants.DRIVE_MOTOR_MOMENT_OF_INERTIA);
+                        1 / SwerveConstantsTalonFX.DRIVE_REDUCTION,
+                        SwerveConstantsTalonFX.DRIVE_MOTOR_MOMENT_OF_INERTIA);
 
         angleMotor =
                 new TalonFXSim(
                         1,
-                        1 / SwerveConstants.ANGLE_REDUCTION,
-                        SwerveConstants.ANGLE_MOTOR_MOMENT_OF_INERTIA);
+                        1 / SwerveConstantsTalonFX.ANGLE_REDUCTION,
+                        SwerveConstantsTalonFX.ANGLE_MOTOR_MOMENT_OF_INERTIA);
 
         velocityController = new PIDController(
-                SwerveConstants.DRIVE_KP.get(),
-                SwerveConstants.DRIVE_KI.get(),
-                SwerveConstants.DRIVE_KD.get(),
+                SwerveConstantsTalonFX.DRIVE_KP.get(),
+                SwerveConstantsTalonFX.DRIVE_KI.get(),
+                SwerveConstantsTalonFX.DRIVE_KD.get(),
                 0.02);
         angleController = new PIDController(
-                SwerveConstants.ANGLE_KP.get(),
-                SwerveConstants.ANGLE_KI.get(),
-                SwerveConstants.ANGLE_KD.get(),
+                SwerveConstantsTalonFX.ANGLE_KP.get(),
+                SwerveConstantsTalonFX.ANGLE_KI.get(),
+                SwerveConstantsTalonFX.ANGLE_KD.get(),
                 0.02);
 
         driveMotor.setController(velocityController);
@@ -60,7 +60,7 @@ public class ModuleIOSim implements ModuleIO {
         inputs.driveMotorAppliedVoltage = driveMotor.getAppliedVoltage();
         inputs.driveMotorVelocity =
                 Units.rpsToMetersPerSecond(
-                        driveMotor.getRotorVelocity(), SwerveConstants.WHEEL_DIAMETER / 2);
+                        driveMotor.getRotorVelocity(), SwerveConstantsTalonFX.WHEEL_DIAMETER / 2);
         currentVelocity = inputs.driveMotorVelocity;
         inputs.driveMotorVelocitySetpoint = velocitySetpoint;
 
@@ -70,22 +70,22 @@ public class ModuleIOSim implements ModuleIO {
         inputs.angle = Rotation2d.fromRotations(angleMotor.getRotorPosition());
         currentAngle = inputs.angle;
 
-        inputs.moduleDistance = Units.rpsToMetersPerSecond(driveMotor.getRotorPosition(), SwerveConstants.WHEEL_DIAMETER/2);
+        inputs.moduleDistance = Units.rpsToMetersPerSecond(driveMotor.getRotorPosition(), SwerveConstantsTalonFX.WHEEL_DIAMETER/2);
         inputs.moduleState = getModuleState();
 
-        if (hasPIDChanged(SwerveConstants.PID_VALUES)) updateSlot0Configs();
+        if (hasPIDChanged(SwerveConstantsTalonFX.PID_VALUES)) updateSlot0Configs();
     }
 
     @Override
     public void updateSlot0Configs() {
         velocityController.setPID(
-                SwerveConstants.DRIVE_KP.get(),
-                SwerveConstants.DRIVE_KI.get(),
-                SwerveConstants.DRIVE_KD.get());
+                SwerveConstantsTalonFX.DRIVE_KP.get(),
+                SwerveConstantsTalonFX.DRIVE_KI.get(),
+                SwerveConstantsTalonFX.DRIVE_KD.get());
         angleController.setPID(
-                SwerveConstants.ANGLE_KP.get(),
-                SwerveConstants.ANGLE_KI.get(),
-                SwerveConstants.ANGLE_KD.get());
+                SwerveConstantsTalonFX.ANGLE_KP.get(),
+                SwerveConstantsTalonFX.ANGLE_KI.get(),
+                SwerveConstantsTalonFX.ANGLE_KD.get());
     }
 
     @Override
@@ -108,7 +108,7 @@ public class ModuleIOSim implements ModuleIO {
     public void setVelocity(double velocity) {
         velocitySetpoint = velocity;
         driveControlRequest.withVelocity(
-                Units.metersToRotations(velocity, SwerveConstants.WHEEL_DIAMETER / 2));
+                Units.metersToRotations(velocity, SwerveConstantsTalonFX.WHEEL_DIAMETER / 2));
         driveMotor.setControl(driveControlRequest);
     }
 
@@ -127,7 +127,7 @@ public class ModuleIOSim implements ModuleIO {
     public SwerveModulePosition getModulePosition() {
         return new SwerveModulePosition(
                 Units.rpsToMetersPerSecond(
-                        driveMotor.getRotorPosition(), SwerveConstants.WHEEL_DIAMETER / 2),
+                        driveMotor.getRotorPosition(), SwerveConstantsTalonFX.WHEEL_DIAMETER / 2),
                 currentAngle);
     }
 

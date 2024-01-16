@@ -4,7 +4,7 @@ import com.ctre.phoenix6.configs.*;
 import edu.wpi.first.math.geometry.Translation2d;
 import lib.webconstants.LoggedTunableNumber;
 
-public class SwerveConstants {
+public class SwerveConstantsTalonFX {
     public static final double[] OFFSETS = {
             0.5665233141630829,0.26218280655457016,0.004864650121616253,0.5487426137185654
     };
