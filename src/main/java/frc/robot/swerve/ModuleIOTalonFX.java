@@ -25,6 +25,9 @@ public class ModuleIOTalonFX implements ModuleIO {
     private final TalonFX angleMotor;
     private final DutyCycleEncoder encoder;
 
+    private final TalonFXConfiguration driveConfig;
+    private final TalonFXConfiguration angleConfig;
+
     private final Integral driveSupplyChargeUsedCoulomb = new Integral();
     private final Integral driveStatorChargeUsedCoulomb = new Integral();
     private final Integral angleSupplyChargeUsedCoulomb = new Integral();
@@ -51,12 +54,15 @@ public class ModuleIOTalonFX implements ModuleIO {
 
         this.encoder = new DutyCycleEncoder(encoderID);
 
-        driveConfig.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
+        this.driveConfig = driveConfig;
+        this.angleConfig = angleConfig;
+
+        this.driveConfig.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
         driveMotor.getConfigurator().apply(driveConfig);
         driveMotor.setPosition(0);
 
-        angleConfig.ClosedLoopGeneral.ContinuousWrap = true;
-        angleConfig.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
+        this.angleConfig.ClosedLoopGeneral.ContinuousWrap = true;
+        this.angleConfig.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
         angleMotor.getConfigurator().apply(angleConfig);
         angleMotor.setPosition(0);
 
@@ -129,6 +135,9 @@ public class ModuleIOTalonFX implements ModuleIO {
             inputs.highFreqAngles[i] = Units.rpsToRadsPerSec(angleList.get(i));
         }
         angleQueue.clear();
+
+        driveMotor.getConfigurator().apply(driveConfig.Slot0);
+        angleMotor.getConfigurator().apply(angleConfig.Slot0);
     }
 
     @Override
