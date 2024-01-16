@@ -39,7 +39,7 @@ public class ModuleIOSparkMax implements ModuleIO {
 
     private final SimpleMotorFeedforward feedforward =
             new SimpleMotorFeedforward(
-                    SwerveConstants.DRIVE_kS, SwerveConstants.DRIVE_kV, SwerveConstants.DRIVE_kA);
+                    SwerveConstantsNeo.DRIVE_kS, SwerveConstantsNeo.DRIVE_kV, SwerveConstantsNeo.DRIVE_kA);
 
     public ModuleIOSparkMax(
             int driveMotorID,
@@ -58,30 +58,30 @@ public class ModuleIOSparkMax implements ModuleIO {
         drivePIDController = driveMotor.getPIDController();
         driveEncoder = driveMotor.getEncoder();
 
-        driveMotor.enableVoltageCompensation(SwerveConstants.VOLT_COMP_SATURATION);
+        driveMotor.enableVoltageCompensation(SwerveConstantsNeo.VOLT_COMP_SATURATION);
         driveMotor.setIdleMode(CANSparkMax.IdleMode.kBrake);
         driveMotor.setSmartCurrentLimit(
-                (int) SwerveConstants.CURRENT_LIMITS_CONFIGS.StatorCurrentLimit);
+                (int) SwerveConstantsNeo.CURRENT_LIMITS_CONFIGS.StatorCurrentLimit);
         driveMotor.setInverted(driveInverted);
-        driveEncoder.setPositionConversionFactor(SwerveConstants.DRIVE_REDUCTION);
-        driveEncoder.setVelocityConversionFactor(SwerveConstants.DRIVE_REDUCTION);
+        driveEncoder.setPositionConversionFactor(SwerveConstantsNeo.DRIVE_REDUCTION);
+        driveEncoder.setVelocityConversionFactor(SwerveConstantsNeo.DRIVE_REDUCTION);
         driveMotor.burnFlash();
 
         angleMotor.restoreFactoryDefaults();
         anglePIDController = angleMotor.getPIDController();
         angleEncoder = angleMotor.getEncoder();
 
-        angleMotor.enableVoltageCompensation(SwerveConstants.VOLT_COMP_SATURATION);
+        angleMotor.enableVoltageCompensation(SwerveConstantsNeo.VOLT_COMP_SATURATION);
         angleMotor.setIdleMode(CANSparkMax.IdleMode.kBrake);
         angleMotor.setSmartCurrentLimit(
-                (int) SwerveConstants.CURRENT_LIMITS_CONFIGS.StatorCurrentLimit);
+                (int) SwerveConstantsNeo.CURRENT_LIMITS_CONFIGS.StatorCurrentLimit);
         angleMotor.setInverted(angleInverted);
         anglePIDController.setP(motionMagicConfigs[0]);
         anglePIDController.setI(motionMagicConfigs[1]);
         anglePIDController.setD(motionMagicConfigs[2]);
         anglePIDController.setFF(motionMagicConfigs[3]);
-        angleEncoder.setPositionConversionFactor(SwerveConstants.ANGLE_REDUCTION);
-        angleEncoder.setVelocityConversionFactor(SwerveConstants.ANGLE_REDUCTION);
+        angleEncoder.setPositionConversionFactor(SwerveConstantsNeo.ANGLE_REDUCTION);
+        angleEncoder.setVelocityConversionFactor(SwerveConstantsNeo.ANGLE_REDUCTION);
         angleMotor.burnFlash();
     }
 
@@ -117,7 +117,7 @@ public class ModuleIOSparkMax implements ModuleIO {
         inputs.angleSetpoint = angleSetpoint;
 
         inputs.moduleDistance =
-                inputs.driveMotorPosition * SwerveConstants.WHEEL_DIAMETER * Math.PI;
+                inputs.driveMotorPosition * SwerveConstantsNeo.WHEEL_DIAMETER * Math.PI;
         moduleDistance = inputs.moduleDistance;
     }
 
@@ -137,7 +137,7 @@ public class ModuleIOSparkMax implements ModuleIO {
     @Override
     public double getVelocity() {
         return Units.rpmToRadsPerSec(driveEncoder.getVelocity())
-                * (SwerveConstants.WHEEL_DIAMETER / 2);
+                * (SwerveConstantsNeo.WHEEL_DIAMETER / 2);
     }
 
     @Override

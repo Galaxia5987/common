@@ -3,7 +3,7 @@ package frc.robot.swerve;
 import com.ctre.phoenix6.configs.*;
 import edu.wpi.first.math.geometry.Translation2d;
 
-public class SwerveConstants {
+public class SwerveConstantsNeo {
     public static final double[] OFFSETS = {
         0.568_219_064_205_476_6,
         0.262_061_806_551_545_15,

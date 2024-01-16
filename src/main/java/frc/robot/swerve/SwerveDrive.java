@@ -19,10 +19,10 @@ public class SwerveDrive extends SubsystemBase {
     private final LinearFilter accelFilter = LinearFilter.movingAverage(15);
     private final SwerveDriveKinematics kinematics =
             new SwerveDriveKinematics(
-                    SwerveConstants.WHEEL_POSITIONS[0],
-                    SwerveConstants.WHEEL_POSITIONS[1],
-                    SwerveConstants.WHEEL_POSITIONS[2],
-                    SwerveConstants.WHEEL_POSITIONS[3]);
+                    SwerveConstantsNeo.WHEEL_POSITIONS[0],
+                    SwerveConstantsNeo.WHEEL_POSITIONS[1],
+                    SwerveConstantsNeo.WHEEL_POSITIONS[2],
+                    SwerveConstantsNeo.WHEEL_POSITIONS[3]);
     private final SwerveDriveOdometry odometry;
     private final Derivative acceleration = new Derivative();
     private final SwerveModulePosition[] modulePositions = new SwerveModulePosition[4];
@@ -246,9 +246,9 @@ public class SwerveDrive extends SubsystemBase {
     public void drive(double xOutput, double yOutput, double omegaOutput, boolean fieldOriented) {
         ChassisSpeeds chassisSpeeds =
                 new ChassisSpeeds(
-                        SwerveConstants.MAX_X_Y_VELOCITY * xOutput,
-                        SwerveConstants.MAX_X_Y_VELOCITY * yOutput,
-                        SwerveConstants.MAX_OMEGA_VELOCITY * omegaOutput); // removed angleFF
+                        SwerveConstantsNeo.MAX_X_Y_VELOCITY * xOutput,
+                        SwerveConstantsNeo.MAX_X_Y_VELOCITY * yOutput,
+                        SwerveConstantsNeo.MAX_OMEGA_VELOCITY * omegaOutput); // removed angleFF
 
         drive(chassisSpeeds, fieldOriented);
     }
@@ -300,7 +300,7 @@ public class SwerveDrive extends SubsystemBase {
         gyro.updateInputs(loggerInputs);
 
         SwerveDriveKinematics.desaturateWheelSpeeds(
-                loggerInputs.desiredModuleStates, SwerveConstants.MAX_X_Y_VELOCITY);
+                loggerInputs.desiredModuleStates, SwerveConstantsNeo.MAX_X_Y_VELOCITY);
         for (int i = 0; i < modules.length; i++) {
             modules[i].setModuleState(loggerInputs.desiredModuleStates[i]);
         }
