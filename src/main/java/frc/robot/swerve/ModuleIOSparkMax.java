@@ -39,7 +39,9 @@ public class ModuleIOSparkMax implements ModuleIO {
 
     private final SimpleMotorFeedforward feedforward =
             new SimpleMotorFeedforward(
-                    SwerveConstantsNeo.DRIVE_kS, SwerveConstantsNeo.DRIVE_kV, SwerveConstantsNeo.DRIVE_kA);
+                    SwerveConstantsNeo.DRIVE_kS,
+                    SwerveConstantsNeo.DRIVE_kV,
+                    SwerveConstantsNeo.DRIVE_kA);
 
     public ModuleIOSparkMax(
             int driveMotorID,

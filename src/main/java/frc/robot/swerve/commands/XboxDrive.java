@@ -19,8 +19,10 @@ public class XboxDrive extends Command {
     @Override
     public void execute() {
         swerveDrive.drive(
-                MathUtil.applyDeadband(-xboxController.getLeftY(), SwerveConstantsNeo.XBOX_DEADBAND),
-                MathUtil.applyDeadband(-xboxController.getLeftX(), SwerveConstantsNeo.XBOX_DEADBAND),
+                MathUtil.applyDeadband(
+                        -xboxController.getLeftY(), SwerveConstantsNeo.XBOX_DEADBAND),
+                MathUtil.applyDeadband(
+                        -xboxController.getLeftX(), SwerveConstantsNeo.XBOX_DEADBAND),
                 MathUtil.applyDeadband(
                         -xboxController.getRightX() * SwerveConstantsNeo.STEERING_MULTIPLIER,
                         SwerveConstantsNeo.XBOX_DEADBAND),
