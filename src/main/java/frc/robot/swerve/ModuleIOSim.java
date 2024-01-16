@@ -37,8 +37,16 @@ public class ModuleIOSim implements ModuleIO {
                         1 / SwerveConstants.ANGLE_REDUCTION,
                         SwerveConstants.ANGLE_MOTOR_MOMENT_OF_INERTIA);
 
-        angleController = new PIDController(8, 0, 0, 0.02);
-        velocityController = new PIDController(3.5, 0, 0.00, 0.02);
+        velocityController = new PIDController(
+                SwerveConstants.SIM_DRIVE_KP.get(),
+                SwerveConstants.SIM_DRIVE_KI.get(),
+                SwerveConstants.SIM_DRIVE_KD.get(),
+                0.02);
+        angleController = new PIDController(
+                SwerveConstants.SIM_ANGLE_KP.get(),
+                SwerveConstants.SIM_ANGLE_KI.get(),
+                SwerveConstants.SIM_ANGLE_KD.get(),
+                0.02);
 
         driveMotor.setController(velocityController);
         angleMotor.setController(angleController);
@@ -64,6 +72,15 @@ public class ModuleIOSim implements ModuleIO {
 
         inputs.moduleDistance = Units.rpsToMetersPerSecond(driveMotor.getRotorPosition(), SwerveConstants.WHEEL_DIAMETER/2);
         inputs.moduleState = getModuleState();
+
+        velocityController.setPID(
+                SwerveConstants.SIM_DRIVE_KP.get(),
+                SwerveConstants.SIM_DRIVE_KI.get(),
+                SwerveConstants.SIM_DRIVE_KD.get());
+        angleController.setPID(
+                SwerveConstants.SIM_ANGLE_KP.get(),
+                SwerveConstants.SIM_ANGLE_KI.get(),
+                SwerveConstants.SIM_ANGLE_KD.get());
     }
 
     @Override
