@@ -26,17 +26,17 @@ public class SwerveConstants {
 
     public static final Slot0Configs DRIVE_PID_GAINS =
             new Slot0Configs()
-                    .withKP(new LoggedTunableNumber("PID/driveKP",0.0).get())
-                    .withKI(new LoggedTunableNumber("PID/driveKI",0.0).get())
-                    .withKD(new LoggedTunableNumber("PID/driveKD",0.0).get())
-                    .withKV(new LoggedTunableNumber("PID/driveKV",0.6).get())
-                    .withKS(new LoggedTunableNumber("PID/driveKS",0.6).get());
+                    .withKP(new LoggedTunableNumber("Swerve Drive/PID/driveKP",0.0).get())
+                    .withKI(new LoggedTunableNumber("Swerve Drive/PID/driveKI",0.0).get())
+                    .withKD(new LoggedTunableNumber("Swerve Drive/PID/driveKD",0.0).get())
+                    .withKV(new LoggedTunableNumber("Swerve Drive/PID/driveKV",0.6).get())
+                    .withKS(new LoggedTunableNumber("Swerve Drive/PID/driveKS",0.6).get());
     public static final Slot0Configs ANGLE_PID_GAINS =
             new Slot0Configs()
-                    .withKP(new LoggedTunableNumber("PID/angleKP",28.0).get())
-                    .withKI(new LoggedTunableNumber("PID/angleKI",0.0).get())
-                    .withKD(new LoggedTunableNumber("PID/angleKD",0.0).get());
-    public static final LoggedTunableNumber kF = new LoggedTunableNumber("PID/angleKF",0.28);
+                    .withKP(new LoggedTunableNumber("Swerve Drive/PID/angleKP",28.0).get())
+                    .withKI(new LoggedTunableNumber("Swerve Drive/PID/angleKI",0.0).get())
+                    .withKD(new LoggedTunableNumber("Swerve Drive/PID/angleKD",0.0).get());
+    public static final LoggedTunableNumber kF = new LoggedTunableNumber("Swerve Drive/PID/angleKF",0.28);
 
     public static final VoltageConfigs VOLTAGE_CONFIGS =
             new VoltageConfigs()
