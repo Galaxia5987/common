@@ -1,7 +1,6 @@
 package frc.robot.swerve;
 
 import com.ctre.phoenix6.BaseStatusSignal;
-import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.PositionVoltage;
 import com.ctre.phoenix6.controls.VelocityVoltage;
@@ -144,13 +143,13 @@ public class ModuleIOTalonFX implements ModuleIO {
 
     @Override
     public void updateSlot0Configs() {
-        driveConfig.Slot0 = new Slot0Configs()
+        driveConfig.Slot0
                 .withKP(SwerveConstants.DRIVE_KP.get())
                 .withKI(SwerveConstants.DRIVE_KI.get())
                 .withKD(SwerveConstants.DRIVE_KD.get())
                 .withKV(SwerveConstants.DRIVE_KV.get())
                 .withKS(SwerveConstants.DRIVE_KS.get());
-        angleConfig.Slot0 = new Slot0Configs()
+        angleConfig.Slot0
                 .withKP(SwerveConstants.ANGLE_KP.get())
                 .withKI(SwerveConstants.ANGLE_KI.get())
                 .withKD(SwerveConstants.ANGLE_KD.get())
