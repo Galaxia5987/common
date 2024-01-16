@@ -77,11 +77,11 @@ public class ModuleIOSim implements ModuleIO {
                         driveMotor.getRotorPosition(), SwerveConstantsTalonFX.WHEEL_DIAMETER / 2);
         inputs.moduleState = getModuleState();
 
-        if (hasPIDChanged(SwerveConstantsTalonFX.PID_VALUES)) updateSlot0Configs();
+        if (hasPIDChanged(SwerveConstantsTalonFX.PID_VALUES)) updatePID();
     }
 
     @Override
-    public void updateSlot0Configs() {
+    public void updatePID() {
         velocityController.setPID(
                 SwerveConstantsTalonFX.DRIVE_KP.get(),
                 SwerveConstantsTalonFX.DRIVE_KI.get(),

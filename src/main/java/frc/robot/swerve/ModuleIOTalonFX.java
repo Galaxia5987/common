@@ -58,7 +58,7 @@ public class ModuleIOTalonFX implements ModuleIO {
         this.driveConfig = driveConfig;
         this.angleConfig = angleConfig;
 
-        updateSlot0Configs();
+        updatePID();
 
         this.driveConfig.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
         driveMotor.getConfigurator().apply(driveConfig);
@@ -150,11 +150,11 @@ public class ModuleIOTalonFX implements ModuleIO {
         }
         angleQueue.clear();
 
-        if (hasPIDChanged(SwerveConstantsTalonFX.PID_VALUES)) updateSlot0Configs();
+        if (hasPIDChanged(SwerveConstantsTalonFX.PID_VALUES)) updatePID();
     }
 
     @Override
-    public void updateSlot0Configs() {
+    public void updatePID() {
         driveConfig
                 .Slot0
                 .withKP(SwerveConstantsTalonFX.DRIVE_KP.get())

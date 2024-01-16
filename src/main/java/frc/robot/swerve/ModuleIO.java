@@ -26,7 +26,7 @@ public interface ModuleIO {
 
     void stop();
 
-    void updateSlot0Configs();
+    void updatePID();
 
     default boolean hasPIDChanged(LoggedTunableNumber[] PIDValues) {
         boolean hasChanged = false;
