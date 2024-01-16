@@ -67,6 +67,13 @@ public class SwerveConstants {
                     .withFeedback(FEEDBACK_CONFIGS_ANGLE)
                     .withMotorOutput(MOTOR_OUTPUT_CONFIGS);
 
+    public static final LoggedTunableNumber SIM_DRIVE_KP = new LoggedTunableNumber("Swerve Drive/PID/sim driveKP", 3.5);
+    public static final LoggedTunableNumber SIM_DRIVE_KI = new LoggedTunableNumber("Swerve Drive/PID/sim driveKI", 0);
+    public static final LoggedTunableNumber SIM_DRIVE_KD = new LoggedTunableNumber("Swerve Drive/PID/sim driveKD", 0);
+    public static final LoggedTunableNumber SIM_ANGLE_KP = new LoggedTunableNumber("Swerve Drive/PID/sim angleKP", 8);
+    public static final LoggedTunableNumber SIM_ANGLE_KI = new LoggedTunableNumber("Swerve Drive/PID/sim angleKI", 0);
+    public static final LoggedTunableNumber SIM_ANGLE_KD = new LoggedTunableNumber("Swerve Drive/PID/sim angleKD", 0);
+
     public static final double MAX_X_Y_VELOCITY =
             6000.0
                     / 60.0
