@@ -22,55 +22,8 @@ public class SwerveConstants {
     public static final double DRIVE_MOTOR_MOMENT_OF_INERTIA = 0.025;
     public static final double ANGLE_MOTOR_MOMENT_OF_INERTIA = 0.004;
 
-    public static final double NEUTRAL_DEADBAND = 0.05;
     public static final double XBOX_DEADBAND = 0.15;
     public static final double STEERING_MULTIPLIER = 0.6;
-
-    public static final Slot0Configs DRIVE_PID_GAINS =
-            new Slot0Configs().withKP(0.0).withKI(0.0).withKD(0.0).withKV(0.6).withKS(0.6);
-    public static final Slot0Configs ANGLE_PID_GAINS =
-            new Slot0Configs()
-                    .withKP(50.0)
-                    .withKI(0.0)
-                    .withKD(0.0)
-                    .withKV(2.0)
-                    .withKS(0.0)
-                    .withKA(0.0);
-    public static final MotionMagicConfigs MOTION_MAGIC_CONFIGS =
-            new MotionMagicConfigs()
-                    .withMotionMagicCruiseVelocity(10.0)
-                    .withMotionMagicAcceleration(30.0)
-                    .withMotionMagicJerk(100.0);
-
-    public static final VoltageConfigs VOLTAGE_CONFIGS =
-            new VoltageConfigs()
-                    .withPeakForwardVoltage(VOLT_COMP_SATURATION)
-                    .withPeakReverseVoltage(VOLT_COMP_SATURATION);
-    public static final FeedbackConfigs FEEDBACK_CONFIGS_DRIVE =
-            new FeedbackConfigs()
-                    .withRotorToSensorRatio(1)
-                    .withSensorToMechanismRatio(1 / DRIVE_REDUCTION);
-    public static final FeedbackConfigs FEEDBACK_CONFIGS_ANGLE =
-            new FeedbackConfigs()
-                    .withRotorToSensorRatio(1)
-                    .withSensorToMechanismRatio(1 / ANGLE_REDUCTION);
-    public static final MotorOutputConfigs MOTOR_OUTPUT_CONFIGS =
-            new MotorOutputConfigs().withDutyCycleNeutralDeadband(NEUTRAL_DEADBAND);
-
-    public static final TalonFXConfiguration DRIVE_MOTOR_CONFIGS =
-            new TalonFXConfiguration()
-                    .withSlot0(DRIVE_PID_GAINS)
-                    .withVoltage(VOLTAGE_CONFIGS)
-                    .withCurrentLimits(CURRENT_LIMITS_CONFIGS)
-                    .withFeedback(FEEDBACK_CONFIGS_DRIVE);
-    public static final TalonFXConfiguration ANGLE_MOTOR_CONFIGS =
-            new TalonFXConfiguration()
-                    .withSlot0(ANGLE_PID_GAINS)
-                    .withMotionMagic(MOTION_MAGIC_CONFIGS)
-                    .withVoltage(VOLTAGE_CONFIGS)
-                    .withCurrentLimits(CURRENT_LIMITS_CONFIGS)
-                    .withFeedback(FEEDBACK_CONFIGS_ANGLE)
-                    .withMotorOutput(MOTOR_OUTPUT_CONFIGS);
 
     public static final double MAX_X_Y_VELOCITY =
             6380.0
