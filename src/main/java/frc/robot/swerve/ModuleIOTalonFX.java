@@ -1,6 +1,7 @@
 package frc.robot.swerve;
 
 import com.ctre.phoenix6.BaseStatusSignal;
+import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.controls.PositionVoltage;
 import com.ctre.phoenix6.controls.VelocityVoltage;
@@ -15,6 +16,7 @@ import lib.PhoenixOdometryThread;
 import lib.math.AngleUtil;
 import lib.math.differential.Integral;
 import lib.units.Units;
+import lib.webconstants.LoggedTunableNumber;
 
 import java.util.List;
 import java.util.Queue;
@@ -56,6 +58,8 @@ public class ModuleIOTalonFX implements ModuleIO {
 
         this.driveConfig = driveConfig;
         this.angleConfig = angleConfig;
+
+        updateSlot0Configs();
 
         this.driveConfig.MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
         driveMotor.getConfigurator().apply(driveConfig);
@@ -136,6 +140,32 @@ public class ModuleIOTalonFX implements ModuleIO {
         }
         angleQueue.clear();
 
+        if (hasPIDChanged(SwerveConstants.PID_VALUES)) updateSlot0Configs();
+    }
+
+    @Override
+    public boolean hasPIDChanged(LoggedTunableNumber[] PIDValues) {
+        boolean hasChanged = false;
+        for (int i = 0; i < PIDValues.length; i++) {
+            if (PIDValues[i].hasChanged(hashCode())) hasChanged=true;
+        }
+        return hasChanged;
+    }
+
+    @Override
+    public void updateSlot0Configs() {
+        driveConfig.Slot0 = new Slot0Configs()
+                .withKP(SwerveConstants.DRIVE_KP.get())
+                .withKI(SwerveConstants.DRIVE_KI.get())
+                .withKD(SwerveConstants.DRIVE_KD.get())
+                .withKV(SwerveConstants.DRIVE_KV.get())
+                .withKS(SwerveConstants.DRIVE_KS.get());
+        angleConfig.Slot0 = new Slot0Configs()
+                .withKP(SwerveConstants.ANGLE_KP.get())
+                .withKI(SwerveConstants.ANGLE_KI.get())
+                .withKD(SwerveConstants.ANGLE_KD.get())
+                .withKS(SwerveConstants.ANGLE_KS.get());
+
         driveMotor.getConfigurator().apply(driveConfig.Slot0);
         angleMotor.getConfigurator().apply(angleConfig.Slot0);
     }
@@ -152,7 +182,7 @@ public class ModuleIOTalonFX implements ModuleIO {
         Rotation2d error = angle.minus(currentAngle);
         angleControlRequest
                 .withPosition(angleMotor.getPosition().getValue() + error.getRotations())
-                .withFeedForward(SwerveConstants.kF.get())
+                .withFeedForward(SwerveConstants.ANGLE_KS.get())
                 .withEnableFOC(true);
         angleMotor.setControl(angleControlRequest);
     }
