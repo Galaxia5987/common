@@ -69,8 +69,7 @@ public class ModuleIOSim implements ModuleIO {
         inputs.angleMotorAppliedVoltage = angleMotor.getAppliedVoltage();
         inputs.angleMotorVelocity = angleMotor.getRotorVelocity();
         inputs.angleSetpoint = angleSetpoint;
-        inputs.angle = Rotation2d.fromRotations(angleMotor.getRotorPosition());
-        currentAngle = inputs.angle;
+        inputs.angle = AngleUtil.normalize(currentAngle);
 
         inputs.moduleDistance =
                 Units.rpsToMetersPerSecond(

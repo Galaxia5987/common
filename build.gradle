@@ -132,6 +132,11 @@ jar {
     exclude('**/*.java')
     // Exclude tests folder from the JAR
     exclude('**/tests/**')
+//    exclude('frc/robot/Robot.class')
+//    exclude('frc/robot/RobotContainer.class')
+//    exclude('frc/robot/Main.class')
+//    exclude('frc/robot/Constants.class')
+//    exclude('frc/robot/Ports.class')
 }
 
 // Configure jar and deploy tasks
@@ -163,6 +168,13 @@ publishing {
             from components.java
         }
     }
+}
+
+copy {
+    from "."
+    include "pre-commit"
+    into ".git/hooks"
+    fileMode 0777
 }
 
 spotless {

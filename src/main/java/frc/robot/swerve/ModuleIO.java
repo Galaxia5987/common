@@ -27,6 +27,7 @@ public interface ModuleIO {
     void stop();
 
     void updatePID();
+    default void updateOffset(Rotation2d offset) {}
 
     default boolean hasPIDChanged(LoggedTunableNumber[] PIDValues) {
         boolean hasChanged = false;
