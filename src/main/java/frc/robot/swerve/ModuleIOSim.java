@@ -9,7 +9,6 @@ import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.Timer;
 import lib.motors.TalonFXSim;
 import lib.units.Units;
-import lib.webconstants.LoggedTunableNumber;
 
 public class ModuleIOSim implements ModuleIO {
     private final TalonFXSim driveMotor;
@@ -87,15 +86,6 @@ public class ModuleIOSim implements ModuleIO {
                 SwerveConstants.SIM_ANGLE_KP.get(),
                 SwerveConstants.SIM_ANGLE_KI.get(),
                 SwerveConstants.SIM_ANGLE_KD.get());
-    }
-
-    @Override
-    public boolean hasPIDChanged(LoggedTunableNumber[] PIDValues) {
-        boolean hasChanged = false;
-        for (int i = 0; i < PIDValues.length; i++) {
-            if (PIDValues[i].hasChanged(hashCode())) hasChanged=true;
-        }
-        return hasChanged;
     }
 
     @Override
