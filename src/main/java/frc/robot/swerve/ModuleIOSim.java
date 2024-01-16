@@ -38,14 +38,14 @@ public class ModuleIOSim implements ModuleIO {
                         SwerveConstants.ANGLE_MOTOR_MOMENT_OF_INERTIA);
 
         velocityController = new PIDController(
-                SwerveConstants.SIM_DRIVE_KP.get(),
-                SwerveConstants.SIM_DRIVE_KI.get(),
-                SwerveConstants.SIM_DRIVE_KD.get(),
+                SwerveConstants.DRIVE_KP.get(),
+                SwerveConstants.DRIVE_KI.get(),
+                SwerveConstants.DRIVE_KD.get(),
                 0.02);
         angleController = new PIDController(
-                SwerveConstants.SIM_ANGLE_KP.get(),
-                SwerveConstants.SIM_ANGLE_KI.get(),
-                SwerveConstants.SIM_ANGLE_KD.get(),
+                SwerveConstants.ANGLE_KP.get(),
+                SwerveConstants.ANGLE_KI.get(),
+                SwerveConstants.ANGLE_KD.get(),
                 0.02);
 
         driveMotor.setController(velocityController);
@@ -73,19 +73,19 @@ public class ModuleIOSim implements ModuleIO {
         inputs.moduleDistance = Units.rpsToMetersPerSecond(driveMotor.getRotorPosition(), SwerveConstants.WHEEL_DIAMETER/2);
         inputs.moduleState = getModuleState();
 
-        if (hasPIDChanged(SwerveConstants.SIM_PID_VALUES)) updateSlot0Configs();
+        if (hasPIDChanged(SwerveConstants.PID_VALUES)) updateSlot0Configs();
     }
 
     @Override
     public void updateSlot0Configs() {
         velocityController.setPID(
-                SwerveConstants.SIM_DRIVE_KP.get(),
-                SwerveConstants.SIM_DRIVE_KI.get(),
-                SwerveConstants.SIM_DRIVE_KD.get());
+                SwerveConstants.DRIVE_KP.get(),
+                SwerveConstants.DRIVE_KI.get(),
+                SwerveConstants.DRIVE_KD.get());
         angleController.setPID(
-                SwerveConstants.SIM_ANGLE_KP.get(),
-                SwerveConstants.SIM_ANGLE_KI.get(),
-                SwerveConstants.SIM_ANGLE_KD.get());
+                SwerveConstants.ANGLE_KP.get(),
+                SwerveConstants.ANGLE_KI.get(),
+                SwerveConstants.ANGLE_KD.get());
     }
 
     @Override
