@@ -6,7 +6,10 @@ import lib.webconstants.LoggedTunableNumber;
 
 public class SwerveConstantsTalonFX {
     public static final double[] OFFSETS = {
-            0.5665233141630829,0.26218280655457016,0.004864650121616253,0.5487426137185654
+        0.566_523_314_163_082_9,
+        0.262_182_806_554_570_16,
+        0.004_864_650_121_616_253,
+        0.548_742_613_718_565_4
     };
 
     public static final double VOLT_COMP_SATURATION = 12;
@@ -22,23 +25,37 @@ public class SwerveConstantsTalonFX {
 
     public static final double NEUTRAL_DEADBAND = 0.03;
     public static final double XBOX_DEADBAND = 0.15;
-    public static final LoggedTunableNumber STEERING_MULTIPLIER = new LoggedTunableNumber("Steering multiplier", 0.6);
+    public static final LoggedTunableNumber STEERING_MULTIPLIER =
+            new LoggedTunableNumber("Steering multiplier", 0.6);
 
-    public static final LoggedTunableNumber DRIVE_KP = new LoggedTunableNumber("Swerve Drive/PID/driveKP");
-    public static final LoggedTunableNumber DRIVE_KI = new LoggedTunableNumber("Swerve Drive/PID/driveKI");
-    public static final LoggedTunableNumber DRIVE_KD = new LoggedTunableNumber("Swerve Drive/PID/driveKD");
-    public static final LoggedTunableNumber DRIVE_KV = new LoggedTunableNumber("Swerve Drive/PID/driveKV");
-    public static final LoggedTunableNumber DRIVE_KS = new LoggedTunableNumber("Swerve Drive/PID/driveKS");
+    public static final LoggedTunableNumber DRIVE_KP =
+            new LoggedTunableNumber("Swerve Drive/PID/driveKP");
+    public static final LoggedTunableNumber DRIVE_KI =
+            new LoggedTunableNumber("Swerve Drive/PID/driveKI");
+    public static final LoggedTunableNumber DRIVE_KD =
+            new LoggedTunableNumber("Swerve Drive/PID/driveKD");
+    public static final LoggedTunableNumber DRIVE_KV =
+            new LoggedTunableNumber("Swerve Drive/PID/driveKV");
+    public static final LoggedTunableNumber DRIVE_KS =
+            new LoggedTunableNumber("Swerve Drive/PID/driveKS");
 
-    public static final LoggedTunableNumber ANGLE_KP = new LoggedTunableNumber("Swerve Drive/PID/angleKP");
-    public static final LoggedTunableNumber ANGLE_KI = new LoggedTunableNumber("Swerve Drive/PID/angleKI");
-    public static final LoggedTunableNumber ANGLE_KD = new LoggedTunableNumber("Swerve Drive/PID/angleKD");
-    public static final LoggedTunableNumber ANGLE_KS = new LoggedTunableNumber("Swerve Drive/PID/angleKS");
+    public static final LoggedTunableNumber ANGLE_KP =
+            new LoggedTunableNumber("Swerve Drive/PID/angleKP");
+    public static final LoggedTunableNumber ANGLE_KI =
+            new LoggedTunableNumber("Swerve Drive/PID/angleKI");
+    public static final LoggedTunableNumber ANGLE_KD =
+            new LoggedTunableNumber("Swerve Drive/PID/angleKD");
+    public static final LoggedTunableNumber ANGLE_KS =
+            new LoggedTunableNumber("Swerve Drive/PID/angleKS");
 
-    public static final LoggedTunableNumber[] PID_VALUES = new LoggedTunableNumber[]{DRIVE_KP, DRIVE_KI, DRIVE_KD, DRIVE_KV, DRIVE_KS, ANGLE_KP, ANGLE_KI, ANGLE_KD, ANGLE_KS};
+    public static final LoggedTunableNumber[] PID_VALUES =
+            new LoggedTunableNumber[] {
+                DRIVE_KP, DRIVE_KI, DRIVE_KD, DRIVE_KV, DRIVE_KS, ANGLE_KP, ANGLE_KI, ANGLE_KD,
+                ANGLE_KS
+            };
 
-    public static void initConstants(boolean isWCP, boolean isReal){
-        if (!isReal){
+    public static void initConstants(boolean isWCP, boolean isReal) {
+        if (!isReal) {
             DRIVE_KP.initDefault(3.5);
             DRIVE_KI.initDefault(0.0);
             DRIVE_KD.initDefault(0.0);
@@ -46,9 +63,8 @@ public class SwerveConstantsTalonFX {
             ANGLE_KP.initDefault(8.0);
             ANGLE_KI.initDefault(0.0);
             ANGLE_KD.initDefault(0.0);
-        }
-        else{
-            if (isWCP){
+        } else {
+            if (isWCP) {
                 DRIVE_KP.initDefault(0.0);
                 DRIVE_KI.initDefault(0.0);
                 DRIVE_KD.initDefault(0.0);
@@ -59,8 +75,7 @@ public class SwerveConstantsTalonFX {
                 ANGLE_KI.initDefault(0.0);
                 ANGLE_KD.initDefault(0.0);
                 ANGLE_KS.initDefault(0.28);
-            }
-            else{
+            } else {
                 DRIVE_KP.initDefault(0.0006);
                 DRIVE_KI.initDefault(0.0);
                 DRIVE_KD.initDefault(10);
@@ -70,7 +85,7 @@ public class SwerveConstantsTalonFX {
                 ANGLE_KP.initDefault(3.5);
                 ANGLE_KI.initDefault(0.0);
                 ANGLE_KD.initDefault(0.0);
-                ANGLE_KS.initDefault(0.00065);
+                ANGLE_KS.initDefault(0.000_65);
             }
         }
     }

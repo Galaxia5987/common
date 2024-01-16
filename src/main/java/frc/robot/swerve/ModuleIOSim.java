@@ -37,16 +37,18 @@ public class ModuleIOSim implements ModuleIO {
                         1 / SwerveConstantsTalonFX.ANGLE_REDUCTION,
                         SwerveConstantsTalonFX.ANGLE_MOTOR_MOMENT_OF_INERTIA);
 
-        velocityController = new PIDController(
-                SwerveConstantsTalonFX.DRIVE_KP.get(),
-                SwerveConstantsTalonFX.DRIVE_KI.get(),
-                SwerveConstantsTalonFX.DRIVE_KD.get(),
-                0.02);
-        angleController = new PIDController(
-                SwerveConstantsTalonFX.ANGLE_KP.get(),
-                SwerveConstantsTalonFX.ANGLE_KI.get(),
-                SwerveConstantsTalonFX.ANGLE_KD.get(),
-                0.02);
+        velocityController =
+                new PIDController(
+                        SwerveConstantsTalonFX.DRIVE_KP.get(),
+                        SwerveConstantsTalonFX.DRIVE_KI.get(),
+                        SwerveConstantsTalonFX.DRIVE_KD.get(),
+                        0.02);
+        angleController =
+                new PIDController(
+                        SwerveConstantsTalonFX.ANGLE_KP.get(),
+                        SwerveConstantsTalonFX.ANGLE_KI.get(),
+                        SwerveConstantsTalonFX.ANGLE_KD.get(),
+                        0.02);
 
         driveMotor.setController(velocityController);
         angleMotor.setController(angleController);
@@ -70,7 +72,9 @@ public class ModuleIOSim implements ModuleIO {
         inputs.angle = Rotation2d.fromRotations(angleMotor.getRotorPosition());
         currentAngle = inputs.angle;
 
-        inputs.moduleDistance = Units.rpsToMetersPerSecond(driveMotor.getRotorPosition(), SwerveConstantsTalonFX.WHEEL_DIAMETER/2);
+        inputs.moduleDistance =
+                Units.rpsToMetersPerSecond(
+                        driveMotor.getRotorPosition(), SwerveConstantsTalonFX.WHEEL_DIAMETER / 2);
         inputs.moduleState = getModuleState();
 
         if (hasPIDChanged(SwerveConstantsTalonFX.PID_VALUES)) updateSlot0Configs();

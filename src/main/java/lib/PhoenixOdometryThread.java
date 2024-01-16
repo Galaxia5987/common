@@ -8,7 +8,6 @@ import com.ctre.phoenix6.StatusSignal;
 import com.ctre.phoenix6.hardware.ParentDevice;
 import frc.robot.swerve.SwerveConstantsTalonFX;
 import frc.robot.swerve.SwerveDrive;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Queue;
@@ -47,7 +46,8 @@ public class PhoenixOdometryThread extends Thread {
         start();
     }
 
-    public Queue<Double> registerSignal(ParentDevice device, StatusSignal<Double> signal, StatusSignal<Double> signalSlope) {
+    public Queue<Double> registerSignal(
+            ParentDevice device, StatusSignal<Double> signal, StatusSignal<Double> signalSlope) {
         Queue<Double> queue = new ArrayBlockingQueue<>(100);
         signalsLock.lock();
         SwerveDrive.odometryLock.lock();
@@ -67,10 +67,13 @@ public class PhoenixOdometryThread extends Thread {
 
     @Override
     public void run() {
-        List<StatusSignal<Double>> all = new ArrayList<>() {{
-            addAll(signals);
-            addAll(signalSlopes);
-        }};
+        List<StatusSignal<Double>> all =
+                new ArrayList<>() {
+                    {
+                        addAll(signals);
+                        addAll(signalSlopes);
+                    }
+                };
         BaseStatusSignal[] allArr = all.toArray(new BaseStatusSignal[0]);
 
         while (true) {
@@ -78,8 +81,8 @@ public class PhoenixOdometryThread extends Thread {
             signalsLock.lock();
             try {
                 if (isCANFD) {
-                    BaseStatusSignal.waitForAll(2.0 / SwerveConstantsTalonFX.ODOMETRY_FREQUENCY,
-                            allArr);
+                    BaseStatusSignal.waitForAll(
+                            2.0 / SwerveConstantsTalonFX.ODOMETRY_FREQUENCY, allArr);
                 } else {
                     // "waitForAll" does not support blocking on multiple
                     // signals with a bus that is not CAN FD, regardless
@@ -101,9 +104,9 @@ public class PhoenixOdometryThread extends Thread {
             SwerveDrive.odometryLock.lock();
             try {
                 for (int i = 0; i < signals.size(); i++) {
-                    double value = BaseStatusSignal.getLatencyCompensatedValue(
-                            signals.get(i), signalSlopes.get(i)
-                    );
+                    double value =
+                            BaseStatusSignal.getLatencyCompensatedValue(
+                                    signals.get(i), signalSlopes.get(i));
                     queues.get(i).offer(value);
                 }
             } finally {

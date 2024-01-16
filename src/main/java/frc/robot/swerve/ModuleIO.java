@@ -28,7 +28,7 @@ public interface ModuleIO {
 
     void updateSlot0Configs();
 
-    default boolean hasPIDChanged(LoggedTunableNumber[] PIDValues){
+    default boolean hasPIDChanged(LoggedTunableNumber[] PIDValues) {
         boolean hasChanged = false;
         for (LoggedTunableNumber value : PIDValues) {
             if (value.hasChanged(hashCode())) hasChanged = true;

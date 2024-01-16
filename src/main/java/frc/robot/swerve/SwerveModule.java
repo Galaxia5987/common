@@ -31,7 +31,7 @@ public class SwerveModule extends SubsystemBase {
         timer.reset();
     }
 
-    public void setVelocity(double velocity){
+    public void setVelocity(double velocity) {
         var angleError = loggerInputs.angleSetpoint.minus(loggerInputs.angle);
         velocity *= angleError.getCos();
         io.setVelocity(velocity);
@@ -118,7 +118,7 @@ public class SwerveModule extends SubsystemBase {
         return deltas;
     }
 
-    public double[] getHighFreqDriveDistances(){
+    public double[] getHighFreqDriveDistances() {
         return loggerInputs.highFreqDistances;
     }
 
@@ -126,7 +126,7 @@ public class SwerveModule extends SubsystemBase {
         return loggerInputs.highFreqAngles;
     }
 
-    public void updateInputs(){
+    public void updateInputs() {
         io.updateInputs(loggerInputs);
         Logger.processInputs("module_" + number, loggerInputs);
     }
@@ -142,7 +142,9 @@ public class SwerveModule extends SubsystemBase {
         }
 
         if (timer.hasElapsed(1)) {
-            io.updateOffset(new Rotation2d(Units.rotationsToRadians(SwerveConstantsTalonFX.OFFSETS[number - 1])));
+            io.updateOffset(
+                    new Rotation2d(
+                            Units.rotationsToRadians(SwerveConstantsTalonFX.OFFSETS[number - 1])));
             timer.reset();
         }
     }
