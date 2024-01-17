@@ -58,12 +58,8 @@ public class TestCameras extends Command {
         visionSim.setUseSwerve(false);
     }
 
-                for (Pair grid : gridsToCheck) {
-                    for (int angle = 0; angle < 360; angle += HeatMapConstants.robotAngleJumps) {
-                        robotPose = heatMap.gridToPose(grid, optimalPitch, height);
-                        heatMap.update(robotPose);
-                    }
-                }
+    @Override
+    public void execute() {
         double optimalPitch = Utils.calcPitchByHeight(heightArr[heightIndex]);
 
                 // save heatMap to .csv file
