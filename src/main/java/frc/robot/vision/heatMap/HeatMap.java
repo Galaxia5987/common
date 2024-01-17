@@ -69,6 +69,8 @@ public class HeatMap {
                 new int[(int) (xLength / squareLength)][(int) (yLength / squareLength)];
         double[][] fieldArr =
                 new double[(int) (xLength / squareLength)][(int) (yLength / squareLength)];
+        entryCounter = new int[(int) (xLength / squareLength)][(int) (yLength / squareLength)];
+        fieldArr = new double[(int) (xLength / squareLength)][(int) (yLength / squareLength)];
     }
     public double[][] getFieldArr() {
         return fieldArr;
