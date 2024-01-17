@@ -3,7 +3,6 @@ package frc.robot.vision;
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.geometry.Transform3d;
-import frc.robot.swerve.SwerveDrive;
 import java.util.List;
 import java.util.stream.Collectors;
 import lib.Utils;
@@ -17,7 +16,7 @@ import org.photonvision.targeting.PhotonTrackedTarget;
 public class VisionSimIO implements VisionIO {
     private final PhotonCamera photonCamera;
     private final PhotonCameraSim cameraSim;
-    private final Transform3d robotToCam;
+    private Transform3d robotToCam;
     private SimVisionSystem simVisionSystem;
     private Result result;
     private AprilTagFieldLayout tagFieldLayout;
