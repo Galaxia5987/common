@@ -52,7 +52,6 @@ public class ModuleIOSparkMax implements ModuleIO {
 
         this.encoder = new DutyCycleEncoder(encoderID);
 
-        updatePID();
 
         driveMotor.restoreFactoryDefaults();
         drivePIDController = driveMotor.getPIDController();
@@ -68,6 +67,7 @@ public class ModuleIOSparkMax implements ModuleIO {
 
         angleMotor.restoreFactoryDefaults();
         anglePIDController = angleMotor.getPIDController();
+        updatePID();
         angleEncoder = angleMotor.getEncoder();
 
         angleMotor.enableVoltageCompensation(SwerveConstants.VOLT_COMP_SATURATION);
