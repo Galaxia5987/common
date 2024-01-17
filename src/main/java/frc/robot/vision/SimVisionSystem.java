@@ -35,6 +35,5 @@ public class SimVisionSystem {
 
     public void update() {
         visionSim.update(SwerveDrive.getInstance().getBotPose());
-        //        Logger.recordOutput("VisionSimField2d", visionSim.getDebugField());
     }
 }
