@@ -66,24 +66,48 @@ public class TestCameras extends Command {
     public void execute() {
         double optimalPitch = Utils.calcPitchByHeight(heightArr[heightIndex]);
 
-                // save heatMap to .csv file
-                String csvFilePath = "HeatMap_" + height + "_" + optimalPitch;
-                try (CSVWriter csvWriter = new CSVWriter(new FileWriter(csvFilePath))) {
-                    Arrays.stream(heatMap.getFieldArr())
-                            .map(
-                                    row ->
-                                            Arrays.stream(row)
-                                                    .mapToObj(String::valueOf)
-                                                    .toArray(String[]::new))
-                            .forEach(csvWriter::writeNext);
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
-                System.out.println("CSV file has been created successfully.");
-        HeatMap heatMap = HeatMap.getInstance(visionModules[visionModuleIndex]);
         HeatMap heatMap = HeatMap.getInstance(visionModules[visionModuleIndex]);
         visionSim.adjustCameraPose(
                 visionModules[visionModuleIndex], heightArr[heightIndex], optimalPitch);
+        Pose3d robotPose =
+                heatMap.gridToPose(
+                        gridsToCheck[gridsToCheckIndex],
+                        optimalPitch,
+                        heightArr[heightIndex],
+                        angleArr[angleArrIndex]);
+        visionSim.setRobotPose(robotPose.toPose2d());
+        heatMap.update(robotPose);
+        angleArrIndex++;
+        Logger.recordOutput("TestCamerasBotPose", robotPose.toPose2d());
+
+        if (angleArr.length == angleArrIndex + 1) {
+            angleArrIndex = 0;
+            gridsToCheckIndex++;
+        }
+        if (gridsToCheck.length == gridsToCheckIndex + 1) {
+            gridsToCheckIndex = 0;
+            heightIndex++;
+
+            // save heatMap to .csv file
+            String csvFilePath = "HeatMap_" + heightArr[heightIndex] + "_" + optimalPitch + "__" + visionModuleIndex + ".csv";
+            try (CSVWriter csvWriter = new CSVWriter(new FileWriter(csvFilePath))) {
+                Arrays.stream(heatMap.getFieldArr())
+                        .map(
+                                row ->
+                                        Arrays.stream(row)
+                                                .mapToObj(String::valueOf)
+                                                .toArray(String[]::new))
+                        .forEach(csvWriter::writeNext);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+            System.out.println("CSV file has been created successfully.");
+            heatMap.resetHeatMap();
+        }
+        if (heightArr.length == heightIndex + 1) {
+            heightIndex = 0;
+            if (visionModules.length != visionModuleIndex + 1){
+                visionModuleIndex++;
             }
         }
     }
