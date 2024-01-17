@@ -47,22 +47,16 @@ public class TestCameras extends Command {
                         * (HeatMapConstants.heightMaximum - HeatMapConstants.heightMinimumRange)
                         / HeatMapConstants.heightJumps
                         * gridsToCheck.length
-                        * (360 / HeatMapConstants.robotAngleJumps);
-        double totalEstimatedTime = estimatedModuleTime * visionModules.length;
                         * (2 * Math.PI / Math.toRadians(HeatMapConstants.robotAngleJumps))
                         * visionModules.length;
         Logger.recordOutput("TotalEstimatedTime", totalEstimatedTime);
     }
 
-        for (VisionModule visionModule : visionModules) {
-            heatMap = HeatMap.getInstance(visionModule);
-            Logger.recordOutput("EstimatedModuleTime", estimatedModuleTime);
-            for (int height = HeatMapConstants.heightMinimumRange;
-                    height < HeatMapConstants.heightMaximum;
-                    height += HeatMapConstants.heightJumps) {
-                double optimalPitch = Utils.calcPitchByHeight(height);
-                visionSim.adjustCameraPose(visionModule, height, optimalPitch);
-                heatMap.resetHeatMap();
+    @Override
+    public void initialize() {
+        visionSim.setRobotPose(new Pose2d(new Translation2d(0, 0), new Rotation2d()));
+        visionSim.setUseSwerve(false);
+    }
 
                 for (Pair grid : gridsToCheck) {
                     for (int angle = 0; angle < 360; angle += HeatMapConstants.robotAngleJumps) {
