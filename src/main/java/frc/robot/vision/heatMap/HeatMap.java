@@ -50,8 +50,8 @@ public class HeatMap {
         // Round the grid coordinates to the nearest integers using Math.ceil
         Pair<Integer, Integer> roundedGridPair =
                 new Pair<>(
-                        ((int) Math.ceil(gridPair.getFirst())),
-                        ((int) Math.ceil(gridPair.getSecond())));
+                        ((int) Math.floor(gridPair.getFirst()) - 1),
+                        ((int) Math.floor(gridPair.getSecond())) - 1);
         return roundedGridPair;
     }
 
