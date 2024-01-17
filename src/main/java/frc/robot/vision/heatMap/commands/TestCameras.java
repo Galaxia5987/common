@@ -42,20 +42,17 @@ public class TestCameras extends Command {
 
     public TestCameras(Vision vision) {
         this.visionModules = vision.getVisionModules();
-    }
-
-    // TODO: change this to an array for each param(5 arrays)
-    //  and then every execute iterate over a combination and in the next one move to the next combination
-    //  you need 5 boolean flags that says when something is finished
-    @Override
-    public void execute() {
-        double estimatedModuleTime =
+        double totalEstimatedTime =
                 HeatMapConstants.iterationTime
-                        * (HeatMapConstants.heightMaximum - HeatMapConstants.heightMinimumRange) / HeatMapConstants.heightJumps
+                        * (HeatMapConstants.heightMaximum - HeatMapConstants.heightMinimumRange)
+                        / HeatMapConstants.heightJumps
                         * gridsToCheck.length
                         * (360 / HeatMapConstants.robotAngleJumps);
         double totalEstimatedTime = estimatedModuleTime * visionModules.length;
+                        * (2 * Math.PI / Math.toRadians(HeatMapConstants.robotAngleJumps))
+                        * visionModules.length;
         Logger.recordOutput("TotalEstimatedTime", totalEstimatedTime);
+    }
 
         for (VisionModule visionModule : visionModules) {
             heatMap = HeatMap.getInstance(visionModule);
