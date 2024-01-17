@@ -3,10 +3,8 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 
 def plot_heatmap(csv_file):
-    # Read the CSV file into a DataFrame
     df = pd.read_csv(csv_file, index_col=0)
 
-    # Create a heatmap using seaborn
     plt.figure(figsize=(10, 8))
     sns.heatmap(df, cmap="YlGnBu", annot=True, fmt=".2f", linewidths=.5)
     plt.title('Vision HeatMap')

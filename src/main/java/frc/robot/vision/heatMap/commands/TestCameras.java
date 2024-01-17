@@ -26,18 +26,38 @@ public class TestCameras extends Command {
     private final SimVisionSystem visionSim = SimVisionSystem.getInstance();
 
     private final VisionModule[] visionModules;
-    private final double[] heightArr = DoubleStream.iterate(HeatMapConstants.heightMinimumRange, n -> n + HeatMapConstants.heightJumps)
-            .limit((long) Math.ceil((HeatMapConstants.heightMaximum - HeatMapConstants.heightMinimumRange) / HeatMapConstants.heightJumps) + 1)
-            .toArray();
+    private final double[] heightArr =
+            DoubleStream.iterate(
+                            HeatMapConstants.heightMinimumRange,
+                            n -> n + HeatMapConstants.heightJumps)
+                    .limit(
+                            (long)
+                                            Math.ceil(
+                                                    (HeatMapConstants.heightMaximum
+                                                                    - HeatMapConstants
+                                                                            .heightMinimumRange)
+                                                            / HeatMapConstants.heightJumps)
+                                    + 1)
+                    .toArray();
     private final Pair[] gridsToCheck =
-            IntStream.rangeClosed(1, (int) (HeatMapConstants.xLength / HeatMapConstants.squareLength))
+            IntStream.rangeClosed(
+                            1, (int) (HeatMapConstants.xLength / HeatMapConstants.squareLength))
                     .boxed()
-                    .flatMap(i -> IntStream.rangeClosed(1, (int) (HeatMapConstants.yLength / HeatMapConstants.squareLength)).mapToObj(j -> new Pair<>(i, j)))
+                    .flatMap(
+                            i ->
+                                    IntStream.rangeClosed(
+                                                    1,
+                                                    (int)
+                                                            (HeatMapConstants.yLength
+                                                                    / HeatMapConstants
+                                                                            .squareLength))
+                                            .mapToObj(j -> new Pair<>(i, j)))
                     .toArray(Pair[]::new);
-    private final double[] angleArr = IntStream.rangeClosed(0, 360)
-            .filter(i -> i % HeatMapConstants.robotAngleJumps == 0)
-            .mapToDouble(Math::toRadians)
-            .toArray();
+    private final double[] angleArr =
+            IntStream.rangeClosed(0, 360)
+                    .filter(i -> i % HeatMapConstants.robotAngleJumps == 0)
+                    .mapToDouble(Math::toRadians)
+                    .toArray();
 
     private int visionModuleIndex = 0;
     private int heightIndex = 0;
@@ -89,7 +109,14 @@ public class TestCameras extends Command {
             heightIndex++;
 
             // save heatMap to .csv file
-            String csvFilePath = "HeatMap_" + heightArr[heightIndex] + "_" + optimalPitch + "__" + visionModuleIndex + ".csv";
+            String csvFilePath =
+                    "HeatMap_"
+                            + heightArr[heightIndex]
+                            + "_"
+                            + optimalPitch
+                            + "__"
+                            + visionModuleIndex
+                            + ".csv";
             try (CSVWriter csvWriter = new CSVWriter(new FileWriter(csvFilePath))) {
                 Arrays.stream(heatMap.getFieldArr())
                         .map(
@@ -106,7 +133,7 @@ public class TestCameras extends Command {
         }
         if (heightArr.length == heightIndex + 1) {
             heightIndex = 0;
-            if (visionModules.length != visionModuleIndex + 1){
+            if (visionModules.length != visionModuleIndex + 1) {
                 visionModuleIndex++;
             }
         }

@@ -1,13 +1,13 @@
 package frc.robot.vision.heatMap;
 
+import static frc.robot.vision.heatMap.HeatMapConstants.*;
+
 import edu.wpi.first.math.Pair;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation3d;
 import frc.robot.vision.VisionModule;
-import lib.Utils;
 import java.util.Arrays;
-
-import static frc.robot.vision.heatMap.HeatMapConstants.*;
+import lib.Utils;
 
 public class HeatMap {
     // 8m x 4m

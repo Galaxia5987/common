@@ -9,6 +9,7 @@ public interface VisionIO {
     void setPipeLine(int pipeLineIndex);
 
     void updateInputs(VisionInputs inputs);
+
     void setCameraPose(Transform3d robotToCam);
 
     Result getLatestResult();

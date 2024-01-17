@@ -41,14 +41,17 @@ public class SimVisionSystem {
         }
         return INSTANCE;
     }
-    public void setUseSwerve(boolean isSwerve){
+
+    public void setUseSwerve(boolean isSwerve) {
         useSwerve = isSwerve;
     }
-    public void setRobotPose(Pose2d robotPose){
+
+    public void setRobotPose(Pose2d robotPose) {
         this.robotPose = robotPose;
     }
-    public Pose2d getRobotPose(){
-        if (useSwerve){
+
+    public Pose2d getRobotPose() {
+        if (useSwerve) {
             return SwerveDrive.getInstance().getBotPose();
         }
         return robotPose;
@@ -60,13 +63,13 @@ public class SimVisionSystem {
     }
 
     public void adjustCameraPose(VisionModule visionModule, double height, double pitch) {
-        Transform3d robotToCam = new Transform3d(
-                visionSim.getCameraPose(visionModule.io.getCameraSim()).get().getX(),
-                visionSim.getCameraPose(visionModule.io.getCameraSim()).get().getY(),
-                height,
-                new Rotation3d(0, pitch, 0));
+        Transform3d robotToCam =
+                new Transform3d(
+                        visionSim.getCameraPose(visionModule.io.getCameraSim()).get().getX(),
+                        visionSim.getCameraPose(visionModule.io.getCameraSim()).get().getY(),
+                        height,
+                        new Rotation3d(0, pitch, 0));
         visionModule.io.setCameraPose(robotToCam);
-        visionSim.adjustCamera(
-                visionModule.io.getCameraSim(), robotToCam);
+        visionSim.adjustCamera(visionModule.io.getCameraSim(), robotToCam);
     }
 }

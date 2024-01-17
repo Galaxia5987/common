@@ -107,7 +107,7 @@ public class Utils {
         return (n + 1.0) / ((n / totalAverageAmbiguity) + (1.0 / currentAverageAmbiguity));
     }
 
-    public static double calcPitchByHeight(double height) { //height in meters
+    public static double calcPitchByHeight(double height) { // height in meters
         double[] heights = {0.20, 0.50, 0.80};
         double[] pitches = {Math.toRadians(41.92), Math.toRadians(37.462), Math.toRadians(31.568)};
 
