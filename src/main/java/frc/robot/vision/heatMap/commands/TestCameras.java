@@ -36,6 +36,7 @@ public class TestCameras extends Command {
             .toArray();
 
     private int visionModuleIndex = 0;
+    private int heightIndex = 0;
 
     public TestCameras(Vision vision) {
         this.visionModules = vision.getVisionModules();
