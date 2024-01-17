@@ -30,6 +30,11 @@ public class TestCameras extends Command {
                     .boxed()
                     .flatMap(i -> IntStream.rangeClosed(1, (int) (HeatMapConstants.yLength / HeatMapConstants.squareLength)).mapToObj(j -> new Pair<>(i, j)))
                     .toArray(Pair[]::new);
+    private final double[] angleArr = IntStream.rangeClosed(0, 360)
+            .filter(i -> i % HeatMapConstants.robotAngleJumps == 0)
+            .mapToDouble(Math::toRadians)
+            .toArray();
+
 
     public TestCameras(Vision vision) {
         this.visionModules = vision.getVisionModules();
