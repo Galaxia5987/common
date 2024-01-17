@@ -136,4 +136,15 @@ public class ModuleIOSim implements ModuleIO {
         angleControlRequest.withVelocity(0);
         angleMotor.setControl(angleControlRequest);
     }
+
+    @Override
+    public Command checkModule() {
+        return Commands.run(
+                () -> {
+                    driveControlRequest.withVelocity(0.8 * SwerveConstants.MAX_X_Y_VELOCITY);
+                    driveMotor.setControl(driveControlRequest);
+                    angleControlRequest.withVelocity(0.2 * SwerveConstants.MAX_X_Y_VELOCITY);
+                    angleMotor.setControl(angleControlRequest);
+                });
+    }
 }
