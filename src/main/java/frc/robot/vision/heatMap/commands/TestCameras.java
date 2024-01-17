@@ -81,6 +81,9 @@ public class TestCameras extends Command {
                 }
                 System.out.println("CSV file has been created successfully.");
         HeatMap heatMap = HeatMap.getInstance(visionModules[visionModuleIndex]);
+        HeatMap heatMap = HeatMap.getInstance(visionModules[visionModuleIndex]);
+        visionSim.adjustCameraPose(
+                visionModules[visionModuleIndex], heightArr[heightIndex], optimalPitch);
             }
         }
     }
