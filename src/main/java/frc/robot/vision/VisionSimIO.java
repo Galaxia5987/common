@@ -63,7 +63,7 @@ public class VisionSimIO implements VisionIO {
 
     @Override
     public void updateInputs(VisionInputs inputs) {
-        var pose = SwerveDrive.getInstance().getBotPose();
+        var pose = SimVisionSystem.getInstance().getRobotPose();
         var pose3d = Utils.pose2dToPose3d(pose);
         PhotonPipelineResult latestResult =
                 cameraSim.process(
