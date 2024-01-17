@@ -37,11 +37,7 @@ public class ModuleIOSparkMax implements ModuleIO {
     private double moduleDistance;
     private double driveMotorSetpoint;
 
-    private SimpleMotorFeedforward feedforward =
-            new SimpleMotorFeedforward(
-                    SwerveConstants.DRIVE_KS.get(),
-                    SwerveConstants.DRIVE_KV.get(),
-                    SwerveConstants.DRIVE_KA.get());
+    private SimpleMotorFeedforward feedforward;
 
     public ModuleIOSparkMax(
             int driveMotorID,
@@ -56,14 +52,15 @@ public class ModuleIOSparkMax implements ModuleIO {
 
         this.encoder = new DutyCycleEncoder(encoderID);
 
+        updatePID();
+
         driveMotor.restoreFactoryDefaults();
         drivePIDController = driveMotor.getPIDController();
         driveEncoder = driveMotor.getEncoder();
 
         driveMotor.enableVoltageCompensation(SwerveConstants.VOLT_COMP_SATURATION);
         driveMotor.setIdleMode(CANSparkMax.IdleMode.kBrake);
-        driveMotor.setSmartCurrentLimit(
-                (int) SwerveConstants.NEO_CURRENT_LIMIT);
+        driveMotor.setSmartCurrentLimit((int) SwerveConstants.NEO_CURRENT_LIMIT);
         driveMotor.setInverted(driveInverted);
         driveEncoder.setPositionConversionFactor(SwerveConstants.DRIVE_REDUCTION);
         driveEncoder.setVelocityConversionFactor(SwerveConstants.DRIVE_REDUCTION);
@@ -75,13 +72,8 @@ public class ModuleIOSparkMax implements ModuleIO {
 
         angleMotor.enableVoltageCompensation(SwerveConstants.VOLT_COMP_SATURATION);
         angleMotor.setIdleMode(CANSparkMax.IdleMode.kBrake);
-        angleMotor.setSmartCurrentLimit(
-                (int) SwerveConstants.NEO_550_CURRENT_LIMIT);
+        angleMotor.setSmartCurrentLimit((int) SwerveConstants.NEO_550_CURRENT_LIMIT);
         angleMotor.setInverted(angleInverted);
-        anglePIDController.setP(motionMagicConfigs[0]);
-        anglePIDController.setI(motionMagicConfigs[1]);
-        anglePIDController.setD(motionMagicConfigs[2]);
-        anglePIDController.setFF(motionMagicConfigs[3]);
         angleEncoder.setPositionConversionFactor(SwerveConstants.ANGLE_REDUCTION);
         angleEncoder.setVelocityConversionFactor(SwerveConstants.ANGLE_REDUCTION);
         angleMotor.burnFlash();
@@ -121,6 +113,21 @@ public class ModuleIOSparkMax implements ModuleIO {
         inputs.moduleDistance =
                 inputs.driveMotorPosition * SwerveConstants.WHEEL_DIAMETER * Math.PI;
         moduleDistance = inputs.moduleDistance;
+
+        if (hasPIDChanged(SwerveConstants.PID_VALUES)) updatePID();
+    }
+
+    @Override
+    public void updatePID() {
+        feedforward =
+                new SimpleMotorFeedforward(
+                        SwerveConstants.DRIVE_KS.get(),
+                        SwerveConstants.DRIVE_KV.get(),
+                        SwerveConstants.DRIVE_KA.get());
+        anglePIDController.setP(SwerveConstants.ANGLE_KP.get());
+        anglePIDController.setI(SwerveConstants.ANGLE_KI.get());
+        anglePIDController.setD(SwerveConstants.ANGLE_KD.get());
+        anglePIDController.setFF(SwerveConstants.ANGLE_KS.get());
     }
 
     @Override
@@ -162,19 +169,9 @@ public class ModuleIOSparkMax implements ModuleIO {
     }
 
     @Override
-    public void updateOffset(Rotation2d offset) {
-        angleEncoder.setPosition(getEncoderAngle() - offset.getRotations());
-    }
-
-    @Override
     public void stop() {
         driveMotor.stopMotor();
         angleMotor.stopMotor();
-    }
-
-    @Override
-    public boolean encoderConnected() {
-        return encoder.isConnected();
     }
 
     @Override
@@ -184,6 +181,16 @@ public class ModuleIOSparkMax implements ModuleIO {
                     driveMotor.set(0.8);
                     angleMotor.set(0.2);
                 });
+    }
+
+    @Override
+    public void updateOffset(Rotation2d offset) {
+        angleEncoder.setPosition(getEncoderAngle() - offset.getRotations());
+    }
+
+    @Override
+    public boolean encoderConnected() {
+        return encoder.isConnected();
     }
 
     private double getEncoderAngle() {

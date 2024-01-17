@@ -82,8 +82,7 @@ public class PhoenixOdometryThread extends Thread {
             signalsLock.lock();
             try {
                 if (isCANFD) {
-                    BaseStatusSignal.waitForAll(
-                            2.0 / SwerveConstants.ODOMETRY_FREQUENCY, allArr);
+                    BaseStatusSignal.waitForAll(2.0 / SwerveConstants.ODOMETRY_FREQUENCY, allArr);
                 } else {
                     // "waitForAll" does not support blocking on multiple
                     // signals with a bus that is not CAN FD, regardless

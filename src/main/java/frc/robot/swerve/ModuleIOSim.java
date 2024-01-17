@@ -7,18 +7,19 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
+import lib.math.AngleUtil;
 import lib.motors.TalonFXSim;
 import lib.units.Units;
 
 public class ModuleIOSim implements ModuleIO {
     private final TalonFXSim driveMotor;
     private final TalonFXSim angleMotor;
-
+    private final PIDController velocityController;
+    private final PIDController angleController;
     private VelocityVoltage driveControlRequest = new VelocityVoltage(0).withEnableFOC(true);
     private PositionVoltage angleControlRequest = new PositionVoltage(0).withEnableFOC(true);
-
-    private final PIDController angleController;
-    private final PIDController velocityController;
     private double currentVelocity = 0;
     private double velocitySetpoint = 0;
     private Rotation2d currentAngle = new Rotation2d();
