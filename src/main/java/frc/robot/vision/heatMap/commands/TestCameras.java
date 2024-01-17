@@ -26,9 +26,9 @@ public class TestCameras extends Command {
             .limit((long) Math.ceil((HeatMapConstants.heightMaximum - HeatMapConstants.heightMinimumRange) / HeatMapConstants.heightJumps) + 1)
             .toArray();
     private final Pair[] gridsToCheck =
-            IntStream.rangeClosed(1, 8)
+            IntStream.rangeClosed(1, (int) (HeatMapConstants.xLength / HeatMapConstants.squareLength))
                     .boxed()
-                    .flatMap(i -> IntStream.rangeClosed(1, 4).mapToObj(j -> new Pair<>(i, j)))
+                    .flatMap(i -> IntStream.rangeClosed(1, (int) (HeatMapConstants.yLength / HeatMapConstants.squareLength)).mapToObj(j -> new Pair<>(i, j)))
                     .toArray(Pair[]::new);
 
     public TestCameras(Vision vision) {
