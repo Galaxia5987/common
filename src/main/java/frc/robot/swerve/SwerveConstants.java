@@ -56,8 +56,8 @@ public class SwerveConstants {
 
     public static final LoggedTunableNumber[] PID_VALUES =
             new LoggedTunableNumber[] {
-                DRIVE_KP, DRIVE_KI, DRIVE_KD, DRIVE_KV, DRIVE_KS, DRIVE_KA, ANGLE_KP, ANGLE_KI, ANGLE_KD,
-                ANGLE_KS
+                DRIVE_KP, DRIVE_KI, DRIVE_KD, DRIVE_KV, DRIVE_KS, DRIVE_KA, ANGLE_KP, ANGLE_KI,
+                ANGLE_KD, ANGLE_KS
             };
 
     public static final VoltageConfigs VOLTAGE_CONFIGS =
@@ -103,7 +103,7 @@ public class SwerveConstants {
                                     + (ROBOT_WIDTH / 2) * (ROBOT_WIDTH / 2));
 
     public static final Translation2d[] WHEEL_POSITIONS = {
-        new Translation2d(ROBOT_LENGTH / 2, ROBOT_WIDTH / 2),  // FL
+        new Translation2d(ROBOT_LENGTH / 2, ROBOT_WIDTH / 2), // FL
         new Translation2d(ROBOT_LENGTH / 2, -ROBOT_WIDTH / 2), // FR
         new Translation2d(-ROBOT_LENGTH / 2, ROBOT_WIDTH / 2), // RL
         new Translation2d(-ROBOT_LENGTH / 2, -ROBOT_WIDTH / 2) // RR

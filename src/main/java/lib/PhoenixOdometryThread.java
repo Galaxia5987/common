@@ -8,7 +8,6 @@ import com.ctre.phoenix6.StatusSignal;
 import com.ctre.phoenix6.hardware.ParentDevice;
 import frc.robot.swerve.SwerveConstants;
 import frc.robot.swerve.SwerveDrive;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Queue;
