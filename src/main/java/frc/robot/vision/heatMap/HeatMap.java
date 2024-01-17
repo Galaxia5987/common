@@ -16,10 +16,6 @@ public class HeatMap {
 
     private static HeatMap INSTANCE = null;
 
-    private final double squareLength = 0.5; // m
-    private final double xLength = 16; // m
-    private final double yLength = 8; // m
-
     private int[][] entryCounter =
             new int[(int) (xLength / squareLength)][(int) (yLength / squareLength)];
     private double[][] fieldArr =
