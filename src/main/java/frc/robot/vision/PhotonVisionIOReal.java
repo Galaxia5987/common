@@ -1,5 +1,6 @@
 package frc.robot.vision;
 
+import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.geometry.Transform3d;
 import org.photonvision.PhotonCamera;
@@ -12,14 +13,14 @@ public class PhotonVisionIOReal implements VisionIO {
     private final Transform3d robotToCamera;
     private Result result;
 
-    public PhotonVisionIOReal(PhotonCamera camera, Transform3d robotToCamera) {
+    public PhotonVisionIOReal(PhotonCamera camera, Transform3d robotToCamera, AprilTagFieldLayout field) {
         this.camera = camera;
         this.robotToCamera = robotToCamera;
         camera.setPipelineIndex(0);
         try {
             estimator =
                     new PhotonPoseEstimator(
-                            AprilTagFields.k2023ChargedUp.loadAprilTagLayoutField(),
+                            field,
                             PhotonPoseEstimator.PoseStrategy.MULTI_TAG_PNP_ON_COPROCESSOR,
                             camera,
                             robotToCamera);
