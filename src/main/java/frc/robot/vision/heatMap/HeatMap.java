@@ -6,6 +6,9 @@ import edu.wpi.first.math.geometry.Rotation3d;
 import frc.robot.vision.VisionModule;
 import lib.Utils;
 
+
+import static frc.robot.vision.heatMap.HeatMapConstants.*;
+
 public class HeatMap {
     // 16m x 8m
     // Square size: 0.5m * 0.5m
