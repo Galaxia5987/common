@@ -44,6 +44,9 @@ public class SimVisionSystem {
     public void setUseSwerve(boolean isSwerve){
         useSwerve = isSwerve;
     }
+    public void setRobotPose(Pose2d robotPose){
+        this.robotPose = robotPose;
+    }
 
     public void update() {
         visionSim.update(SwerveDrive.getInstance().getBotPose());
