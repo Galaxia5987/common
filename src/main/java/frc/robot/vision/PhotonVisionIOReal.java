@@ -10,7 +10,7 @@ public class PhotonVisionIOReal implements VisionIO {
 
     private final PhotonCamera camera;
     private final PhotonPoseEstimator estimator;
-    private final Transform3d robotToCamera;
+    private Transform3d robotToCamera;
     private Result result;
 
     public PhotonVisionIOReal(PhotonCamera camera, Transform3d robotToCamera) {
@@ -85,6 +85,11 @@ public class PhotonVisionIOReal implements VisionIO {
         } else {
             result = null;
         }
+    }
+
+    @Override
+    public void setCameraPose(Transform3d robotToCam) {
+        this.robotToCamera = robotToCam;
     }
 
     @Override
