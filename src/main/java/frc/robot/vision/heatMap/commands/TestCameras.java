@@ -37,6 +37,7 @@ public class TestCameras extends Command {
 
     private int visionModuleIndex = 0;
     private int heightIndex = 0;
+    private int gridsToCheckIndex = 0;
 
     public TestCameras(Vision vision) {
         this.visionModules = vision.getVisionModules();
