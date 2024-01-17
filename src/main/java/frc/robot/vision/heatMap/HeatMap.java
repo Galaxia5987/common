@@ -81,7 +81,7 @@ public class HeatMap {
         Pair<Integer, Integer> currentGrid = poseToGrid(robotPose);
         entryCounter[currentGrid.getFirst()][currentGrid.getSecond()] += 1;
         double totalAverageAmbiguity = fieldArr[currentGrid.getFirst()][currentGrid.getSecond()];
-        double currentAverageAmbiguity = visionModule.inputs.averageAmbiguity;
+        double currentAverageAmbiguity = INSTANCE.visionModule.inputs.averageAmbiguity;
 
         fieldArr[currentGrid.getFirst()][currentGrid.getSecond()] =
                 Utils.continuousAverageAmbiguity(
