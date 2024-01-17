@@ -64,14 +64,15 @@ public class HeatMap {
                 new Rotation3d(0, pitch, angle));
     }
 
-    public void resetHeatMap(){
-        int[][] entryCounter =
-                new int[(int) (xLength / squareLength)][(int) (yLength / squareLength)];
-        double[][] fieldArr =
-                new double[(int) (xLength / squareLength)][(int) (yLength / squareLength)];
+    public void resetHeatMap() {
         entryCounter = new int[(int) (xLength / squareLength)][(int) (yLength / squareLength)];
         fieldArr = new double[(int) (xLength / squareLength)][(int) (yLength / squareLength)];
+
+        for (double[] doubles : fieldArr) {
+            Arrays.fill(doubles, Integer.MAX_VALUE);
+        }
     }
+
     public double[][] getFieldArr() {
         return fieldArr;
     }
