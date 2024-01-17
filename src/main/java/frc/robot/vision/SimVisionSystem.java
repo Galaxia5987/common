@@ -12,6 +12,7 @@ public class SimVisionSystem {
     private static SimVisionSystem INSTANCE;
     private static final VisionSystemSim visionSim = new VisionSystemSim("main");
     private AprilTagFieldLayout tagFieldLayout;
+    private boolean useSwerve = true;
 
     private SimVisionSystem() {
         try {
