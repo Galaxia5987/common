@@ -24,11 +24,12 @@ public class Vision extends SubsystemBase {
     }
 
     public static void initialize(VisionIO... ios) {
-        INSTANCE = new Vision(
-                Arrays.stream(ios).map(
-                        VisionModule::new
-                ).toList().toArray(new VisionModule[0])
-        );
+        INSTANCE =
+                new Vision(
+                        Arrays.stream(ios)
+                                .map(VisionModule::new)
+                                .toList()
+                                .toArray(new VisionModule[0]));
     }
 
     public Result[] getResults() {

@@ -91,10 +91,8 @@ public class VisionSimIO implements VisionIO {
                 inputs.bestTargetAmbiguity = bestTarget.getPoseAmbiguity();
 
                 var cameraToTarget = bestTarget.getBestCameraToTarget();
-                inputs.cameraToTarget = new Pose3d(
-                        cameraToTarget.getTranslation(),
-                        cameraToTarget.getRotation()
-                );
+                inputs.cameraToTarget =
+                        new Pose3d(cameraToTarget.getTranslation(), cameraToTarget.getRotation());
             }
         }
     }

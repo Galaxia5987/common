@@ -52,7 +52,6 @@ public class ModuleIOSparkMax implements ModuleIO {
 
         this.encoder = new DutyCycleEncoder(encoderID);
 
-
         driveMotor.restoreFactoryDefaults();
         drivePIDController = driveMotor.getPIDController();
         driveEncoder = driveMotor.getEncoder();
