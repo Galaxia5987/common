@@ -3,7 +3,7 @@ package frc.robot.swerve.commands;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.Command;
-import frc.robot.swerve.SwerveConstantsNeo;
+import frc.robot.swerve.SwerveConstants;
 import frc.robot.swerve.SwerveDrive;
 
 public class XboxDrive extends Command {
@@ -19,13 +19,11 @@ public class XboxDrive extends Command {
     @Override
     public void execute() {
         swerveDrive.drive(
+                MathUtil.applyDeadband(-xboxController.getLeftY(), SwerveConstants.XBOX_DEADBAND),
+                MathUtil.applyDeadband(-xboxController.getLeftX(), SwerveConstants.XBOX_DEADBAND),
                 MathUtil.applyDeadband(
-                        -xboxController.getLeftY(), SwerveConstantsNeo.XBOX_DEADBAND),
-                MathUtil.applyDeadband(
-                        -xboxController.getLeftX(), SwerveConstantsNeo.XBOX_DEADBAND),
-                MathUtil.applyDeadband(
-                        -xboxController.getRightX() * SwerveConstantsNeo.STEERING_MULTIPLIER,
-                        SwerveConstantsNeo.XBOX_DEADBAND),
+                        -xboxController.getRightX() * SwerveConstants.STEERING_MULTIPLIER.get(),
+                        SwerveConstants.XBOX_DEADBAND),
                 true);
     }
 }

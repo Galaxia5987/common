@@ -4,10 +4,20 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.Commands;
+import lib.webconstants.LoggedTunableNumber;
 
 public interface ModuleIO {
     void updateInputs(SwerveModuleInputs inputs);
+
+    void updatePID();
+
+    default boolean hasPIDChanged(LoggedTunableNumber[] PIDValues) {
+        boolean hasChanged = false;
+        for (LoggedTunableNumber value : PIDValues) {
+            if (value.hasChanged(hashCode())) hasChanged = true;
+        }
+        return hasChanged;
+    }
 
     Rotation2d getAngle();
 
@@ -23,13 +33,11 @@ public interface ModuleIO {
 
     void stop();
 
+    Command checkModule();
+
     default void updateOffset(Rotation2d offset) {}
 
     default boolean encoderConnected() {
         return true;
-    }
-
-    default Command checkModule() {
-        return Commands.none();
     }
 }

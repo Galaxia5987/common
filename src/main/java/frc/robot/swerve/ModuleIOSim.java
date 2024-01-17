@@ -7,21 +7,19 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import lib.math.AngleUtil;
-import lib.math.differential.Integral;
 import lib.motors.TalonFXSim;
 import lib.units.Units;
 
 public class ModuleIOSim implements ModuleIO {
     private final TalonFXSim driveMotor;
     private final TalonFXSim angleMotor;
-
-    private VelocityVoltage driveControl = new VelocityVoltage(0).withEnableFOC(true);
-    private PositionVoltage angleControl = new PositionVoltage(0).withEnableFOC(true);
-
-    private final PIDController angleController;
     private final PIDController velocityController;
-    private final Integral moduleDistance = new Integral();
+    private final PIDController angleController;
+    private VelocityVoltage driveControlRequest = new VelocityVoltage(0).withEnableFOC(true);
+    private PositionVoltage angleControlRequest = new PositionVoltage(0).withEnableFOC(true);
     private double currentVelocity = 0;
     private double velocitySetpoint = 0;
     private Rotation2d currentAngle = new Rotation2d();
@@ -31,17 +29,27 @@ public class ModuleIOSim implements ModuleIO {
         driveMotor =
                 new TalonFXSim(
                         1,
-                        1 / SwerveConstantsNeo.DRIVE_REDUCTION,
-                        SwerveConstantsNeo.DRIVE_MOTOR_MOMENT_OF_INERTIA);
+                        1 / SwerveConstants.DRIVE_REDUCTION,
+                        SwerveConstants.DRIVE_MOTOR_MOMENT_OF_INERTIA);
 
         angleMotor =
                 new TalonFXSim(
                         1,
-                        1 / SwerveConstantsNeo.ANGLE_REDUCTION,
-                        SwerveConstantsNeo.ANGLE_MOTOR_MOMENT_OF_INERTIA);
+                        1 / SwerveConstants.ANGLE_REDUCTION,
+                        SwerveConstants.ANGLE_MOTOR_MOMENT_OF_INERTIA);
 
-        angleController = new PIDController(8, 0, 0, 0.02);
-        velocityController = new PIDController(3.5, 0, 0.00, 0.02);
+        velocityController =
+                new PIDController(
+                        SwerveConstants.DRIVE_KP.get(),
+                        SwerveConstants.DRIVE_KI.get(),
+                        SwerveConstants.DRIVE_KD.get(),
+                        0.02);
+        angleController =
+                new PIDController(
+                        SwerveConstants.ANGLE_KP.get(),
+                        SwerveConstants.ANGLE_KI.get(),
+                        SwerveConstants.ANGLE_KD.get(),
+                        0.02);
 
         driveMotor.setController(velocityController);
         angleMotor.setController(angleController);
@@ -55,7 +63,7 @@ public class ModuleIOSim implements ModuleIO {
         inputs.driveMotorAppliedVoltage = driveMotor.getAppliedVoltage();
         inputs.driveMotorVelocity =
                 Units.rpsToMetersPerSecond(
-                        driveMotor.getRotorVelocity(), SwerveConstantsNeo.WHEEL_DIAMETER / 2);
+                        driveMotor.getRotorVelocity(), SwerveConstants.WHEEL_DIAMETER / 2);
         currentVelocity = inputs.driveMotorVelocity;
         inputs.driveMotorVelocitySetpoint = velocitySetpoint;
 
@@ -64,8 +72,24 @@ public class ModuleIOSim implements ModuleIO {
         inputs.angleSetpoint = angleSetpoint;
         inputs.angle = AngleUtil.normalize(currentAngle);
 
-        moduleDistance.update(inputs.driveMotorVelocity);
-        inputs.moduleDistance = moduleDistance.get();
+        inputs.moduleDistance =
+                Units.rpsToMetersPerSecond(
+                        driveMotor.getRotorPosition(), SwerveConstants.WHEEL_DIAMETER / 2);
+        inputs.moduleState = getModuleState();
+
+        if (hasPIDChanged(SwerveConstants.PID_VALUES)) updatePID();
+    }
+
+    @Override
+    public void updatePID() {
+        velocityController.setPID(
+                SwerveConstants.DRIVE_KP.get(),
+                SwerveConstants.DRIVE_KI.get(),
+                SwerveConstants.DRIVE_KD.get());
+        angleController.setPID(
+                SwerveConstants.ANGLE_KP.get(),
+                SwerveConstants.ANGLE_KI.get(),
+                SwerveConstants.ANGLE_KD.get());
     }
 
     @Override
@@ -76,7 +100,7 @@ public class ModuleIOSim implements ModuleIO {
     @Override
     public void setAngle(Rotation2d angle) {
         angleSetpoint = angle;
-        angleMotor.setControl(angleControl.withPosition(angle.getRotations()));
+        angleMotor.setControl(angleControlRequest.withPosition(angle.getRotations()));
     }
 
     @Override
@@ -86,13 +110,10 @@ public class ModuleIOSim implements ModuleIO {
 
     @Override
     public void setVelocity(double velocity) {
-        var angleError = angleSetpoint.minus(currentAngle);
-        velocity *= angleError.getCos();
-
         velocitySetpoint = velocity;
-        driveControl.withVelocity(
-                Units.metersToRotations(velocity, SwerveConstantsNeo.WHEEL_DIAMETER / 2));
-        driveMotor.setControl(driveControl);
+        driveControlRequest.withVelocity(
+                Units.metersToRotations(velocity, SwerveConstants.WHEEL_DIAMETER / 2));
+        driveMotor.setControl(driveControlRequest);
     }
 
     @Override
@@ -104,16 +125,27 @@ public class ModuleIOSim implements ModuleIO {
     public SwerveModulePosition getModulePosition() {
         return new SwerveModulePosition(
                 Units.rpsToMetersPerSecond(
-                        driveMotor.getRotorPosition(), SwerveConstantsNeo.WHEEL_DIAMETER / 2),
+                        driveMotor.getRotorPosition(), SwerveConstants.WHEEL_DIAMETER / 2),
                 currentAngle);
     }
 
     @Override
     public void stop() {
-        driveControl.withVelocity(0);
-        driveMotor.setControl(driveControl);
+        driveControlRequest.withVelocity(0);
+        driveMotor.setControl(driveControlRequest);
 
-        angleControl.withVelocity(0);
-        angleMotor.setControl(angleControl);
+        angleControlRequest.withVelocity(0);
+        angleMotor.setControl(angleControlRequest);
+    }
+
+    @Override
+    public Command checkModule() {
+        return Commands.run(
+                () -> {
+                    driveControlRequest.withVelocity(0.8 * SwerveConstants.MAX_X_Y_VELOCITY);
+                    driveMotor.setControl(driveControlRequest);
+                    angleControlRequest.withVelocity(0.2 * SwerveConstants.MAX_X_Y_VELOCITY);
+                    angleMotor.setControl(angleControlRequest);
+                });
     }
 }

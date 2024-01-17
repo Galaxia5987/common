@@ -1,5 +1,7 @@
 package frc.robot.swerve;
 
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import org.littletonrobotics.junction.AutoLog;
 
@@ -17,18 +19,16 @@ public class SwerveDriveInputs {
     };
 
     // x, y, omega
-    public double[] currentSpeeds = {0, 0, 0};
-    public double[] desiredSpeeds = {0, 0, 0};
+    public ChassisSpeeds currentSpeeds = new ChassisSpeeds();
+    public ChassisSpeeds desiredSpeeds = new ChassisSpeeds();
 
     public double linearVelocity = 0;
     public double acceleration = 0;
 
     public double[] absolutePositions = new double[4];
 
-    public double pitch;
-    public double rawYaw;
-    public double yaw;
-    public double gyroOffset;
-
-    public double[] botPose = {0, 0, 0}; // x, y, rotation
+    public Rotation2d pitch = new Rotation2d();
+    public Rotation2d rawYaw = new Rotation2d();
+    public Rotation2d yaw = new Rotation2d();
+    public Rotation2d gyroOffset = new Rotation2d();
 }

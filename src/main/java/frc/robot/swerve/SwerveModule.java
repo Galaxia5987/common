@@ -3,6 +3,7 @@ package frc.robot.swerve;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
@@ -19,12 +20,21 @@ public class SwerveModule extends SubsystemBase {
     private final BooleanTrigger encoderTrigger = new BooleanTrigger();
     private final Timer timer = new Timer();
 
+    private double lastDistance = 0;
+    private double[] deltas = new double[0];
+
     public SwerveModule(ModuleIO io, int number) {
         this.io = io;
         this.number = number;
 
         timer.start();
         timer.reset();
+    }
+
+    public void setVelocity(double velocity) {
+        var angleError = loggerInputs.angleSetpoint.minus(loggerInputs.angle);
+        velocity *= angleError.getCos();
+        io.setVelocity(velocity);
     }
 
     /**
@@ -43,7 +53,7 @@ public class SwerveModule extends SubsystemBase {
      */
     public void setModuleState(SwerveModuleState moduleState) {
         moduleState = SwerveModuleState.optimize(moduleState, loggerInputs.angle);
-        io.setVelocity(moduleState.speedMetersPerSecond);
+        setVelocity(moduleState.speedMetersPerSecond);
         io.setAngle(moduleState.angle);
     }
 
@@ -88,11 +98,11 @@ public class SwerveModule extends SubsystemBase {
      *
      * @param offset The offset to update the angle motor's position. [sensor ticks]
      */
-    public void updateOffset(double offset) {
-        io.updateOffset(Rotation2d.fromRotations(offset));
+    public void updateOffset(Rotation2d offset) {
+        io.updateOffset(offset);
     }
 
-    public void stopMotor() {
+    public void stop() {
         io.stop();
     }
 
@@ -101,19 +111,39 @@ public class SwerveModule extends SubsystemBase {
     }
 
     public Command checkModule() {
-        return io.checkModule().withName("CheckModule_" + number);
+        return io.checkModule();
+    }
+
+    public double[] getHighFreqDriveDistanceDeltas() {
+        return deltas;
+    }
+
+    public double[] getHighFreqDriveDistances() {
+        return loggerInputs.highFreqDistances;
+    }
+
+    public double[] getHighFreqAngles() {
+        return loggerInputs.highFreqAngles;
+    }
+
+    public void updateInputs() {
+        io.updateInputs(loggerInputs);
+        Logger.processInputs("module_" + number, loggerInputs);
     }
 
     @Override
     public void periodic() {
-        io.updateInputs(loggerInputs);
-
-        Logger.processInputs("module_" + number, loggerInputs);
-
         encoderTrigger.update(io.encoderConnected());
 
+        deltas = new double[loggerInputs.highFreqDistances.length];
+        for (int i = 0; i < deltas.length; i++) {
+            deltas[i] = loggerInputs.highFreqDistances[i] - lastDistance;
+            lastDistance = loggerInputs.highFreqDistances[i];
+        }
+
         if (timer.hasElapsed(1)) {
-            io.updateOffset(SwerveConstantsNeo.OFFSETS[number - 1]);
+            io.updateOffset(
+                    new Rotation2d(Units.rotationsToRadians(SwerveConstants.OFFSETS[number - 1])));
             timer.reset();
         }
     }

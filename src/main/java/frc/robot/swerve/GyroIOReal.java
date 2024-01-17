@@ -2,34 +2,35 @@ package frc.robot.swerve;
 
 import com.kauailabs.navx.frc.AHRS;
 import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.SPI;
 
 public class GyroIOReal implements GyroIO {
     private final AHRS gyro;
-    private double gyroOffset = 0;
+    private Rotation2d gyroOffset = new Rotation2d();
 
     public GyroIOReal() {
         this.gyro = new AHRS(SPI.Port.kMXP);
     }
 
     @Override
-    public double getYaw() {
-        return getRawYaw() - gyroOffset;
+    public Rotation2d getYaw() {
+        return getRawYaw().minus(gyroOffset);
     }
 
     @Override
-    public double getRawYaw() {
-        return -MathUtil.angleModulus(Math.toRadians(gyro.getAngle()));
+    public Rotation2d getRawYaw() {
+        return new Rotation2d(-MathUtil.angleModulus(Math.toRadians(gyro.getAngle())));
     }
 
     @Override
-    public double getPitch() {
-        return gyro.getPitch() - 2.95;
+    public Rotation2d getPitch() {
+        return new Rotation2d(gyro.getPitch());
     }
 
     @Override
-    public void resetGyro(double angle) {
-        gyroOffset = -angle + getRawYaw();
+    public void resetGyro(Rotation2d angle) {
+        gyroOffset = getRawYaw().minus(angle);
     }
 
     @Override
