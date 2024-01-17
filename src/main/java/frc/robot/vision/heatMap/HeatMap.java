@@ -10,7 +10,7 @@ import java.util.Arrays;
 import static frc.robot.vision.heatMap.HeatMapConstants.*;
 
 public class HeatMap {
-    // 16m x 8m
+    // 8m x 4m
     // Square size: 0.5m * 0.5m
     private VisionModule visionModule;
 
