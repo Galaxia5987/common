@@ -20,10 +20,10 @@ import org.littletonrobotics.junction.Logger;
 
 public class TestCameras extends Command {
     private final SimVisionSystem visionSim = SimVisionSystem.getInstance();
-    private VisionModule[] visionModules;
-    private HeatMap heatMap;
-    private Pose3d robotPose;
 
+    private final double[] heightArr = DoubleStream.iterate(HeatMapConstants.heightMinimumRange, n -> n + HeatMapConstants.heightJumps)
+            .limit((long) Math.ceil((HeatMapConstants.heightMaximum - HeatMapConstants.heightMinimumRange) / HeatMapConstants.heightJumps) + 1)
+            .toArray();
     private final Pair[] gridsToCheck =
             IntStream.rangeClosed(1, 8)
                     .boxed()
