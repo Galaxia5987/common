@@ -35,6 +35,10 @@ public class VisionSimIO implements VisionIO {
         simVisionSystem = SimVisionSystem.getInstance(cameraSim, robotToCam);
     }
 
+    public void setCameraPose(Transform3d robotToCam){
+        this.robotToCam = robotToCam;
+    }
+
     @Override
     public void setPipeLine(int pipeLineIndex) {}
 
