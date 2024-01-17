@@ -2,6 +2,7 @@ package frc.robot.vision;
 
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
 import frc.robot.swerve.SwerveDrive;
@@ -13,6 +14,7 @@ public class SimVisionSystem {
     private static final VisionSystemSim visionSim = new VisionSystemSim("main");
     private AprilTagFieldLayout tagFieldLayout;
     private boolean useSwerve = true;
+    private Pose2d robotPose;
 
     private SimVisionSystem() {
         try {
