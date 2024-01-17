@@ -55,12 +55,13 @@ public class HeatMap {
         return roundedGridPair;
     }
 
-    public Pose3d gridToPose(Pair<Integer, Integer> grid, double pitch, double height) {
+    public Pose3d gridToPose(
+            Pair<Integer, Integer> grid, double pitch, double height, double angle) {
         return new Pose3d(
-                (grid.getFirst() * squareLength) * 0.5,
-                (grid.getSecond() * squareLength) * 0.5,
+                (grid.getFirst() * squareLength),
+                (grid.getSecond() * squareLength),
                 height,
-                new Rotation3d(0, pitch, 0));
+                new Rotation3d(0, pitch, angle));
     }
 
     public void resetHeatMap(){
