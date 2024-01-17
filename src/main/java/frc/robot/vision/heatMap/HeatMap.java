@@ -5,7 +5,7 @@ import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation3d;
 import frc.robot.vision.VisionModule;
 import lib.Utils;
-
+import java.util.Arrays;
 
 import static frc.robot.vision.heatMap.HeatMapConstants.*;
 
