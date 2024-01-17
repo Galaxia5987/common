@@ -85,7 +85,7 @@ public class ModuleIOTalonFX implements ModuleIO {
                         .registerSignal(angleMotor, anglePositionSignal, angleVelocitySignal);
 
         BaseStatusSignal.setUpdateFrequencyForAll(
-                SwerveConstantsTalonFX.ODOMETRY_FREQUENCY,
+                SwerveConstants.ODOMETRY_FREQUENCY,
                 drivePositionSignal,
                 anglePositionSignal,
                 driveVelocitySignal,
@@ -138,7 +138,7 @@ public class ModuleIOTalonFX implements ModuleIO {
         for (int i = 0; i < nD; i++) {
             inputs.highFreqDistances[i] =
                     Units.rpsToMetersPerSecond(
-                            distanceList.get(i), SwerveConstantsTalonFX.WHEEL_DIAMETER / 2);
+                            distanceList.get(i), SwerveConstants.WHEEL_DIAMETER / 2);
         }
         distanceQueue.clear();
 
@@ -150,24 +150,24 @@ public class ModuleIOTalonFX implements ModuleIO {
         }
         angleQueue.clear();
 
-        if (hasPIDChanged(SwerveConstantsTalonFX.PID_VALUES)) updatePID();
+        if (hasPIDChanged(SwerveConstants.PID_VALUES)) updatePID();
     }
 
     @Override
     public void updatePID() {
         driveConfig
                 .Slot0
-                .withKP(SwerveConstantsTalonFX.DRIVE_KP.get())
-                .withKI(SwerveConstantsTalonFX.DRIVE_KI.get())
-                .withKD(SwerveConstantsTalonFX.DRIVE_KD.get())
-                .withKV(SwerveConstantsTalonFX.DRIVE_KV.get())
-                .withKS(SwerveConstantsTalonFX.DRIVE_KS.get());
+                .withKP(SwerveConstants.DRIVE_KP.get())
+                .withKI(SwerveConstants.DRIVE_KI.get())
+                .withKD(SwerveConstants.DRIVE_KD.get())
+                .withKV(SwerveConstants.DRIVE_KV.get())
+                .withKS(SwerveConstants.DRIVE_KS.get());
         angleConfig
                 .Slot0
-                .withKP(SwerveConstantsTalonFX.ANGLE_KP.get())
-                .withKI(SwerveConstantsTalonFX.ANGLE_KI.get())
-                .withKD(SwerveConstantsTalonFX.ANGLE_KD.get())
-                .withKS(SwerveConstantsTalonFX.ANGLE_KS.get());
+                .withKP(SwerveConstants.ANGLE_KP.get())
+                .withKI(SwerveConstants.ANGLE_KI.get())
+                .withKD(SwerveConstants.ANGLE_KD.get())
+                .withKS(SwerveConstants.ANGLE_KS.get());
 
         driveMotor.getConfigurator().apply(driveConfig.Slot0);
         angleMotor.getConfigurator().apply(angleConfig.Slot0);
@@ -185,7 +185,7 @@ public class ModuleIOTalonFX implements ModuleIO {
         Rotation2d error = angle.minus(currentAngle);
         angleControlRequest
                 .withPosition(angleMotor.getPosition().getValue() + error.getRotations())
-                .withFeedForward(SwerveConstantsTalonFX.ANGLE_KS.get())
+                .withFeedForward(SwerveConstants.ANGLE_KS.get())
                 .withEnableFOC(true);
         angleMotor.setControl(angleControlRequest);
     }
@@ -193,7 +193,7 @@ public class ModuleIOTalonFX implements ModuleIO {
     @Override
     public double getVelocity() {
         return Units.rpsToMetersPerSecond(
-                driveMotor.getVelocity().getValue(), SwerveConstantsTalonFX.WHEEL_DIAMETER / 2);
+                driveMotor.getVelocity().getValue(), SwerveConstants.WHEEL_DIAMETER / 2);
     }
 
     @Override
@@ -203,7 +203,7 @@ public class ModuleIOTalonFX implements ModuleIO {
         velocityControlRequest
                 .withVelocity(
                         Units.metersToRotations(
-                                velocity, SwerveConstantsTalonFX.WHEEL_DIAMETER / 2))
+                                velocity, SwerveConstants.WHEEL_DIAMETER / 2))
                 .withEnableFOC(true);
         driveMotor.setControl(velocityControlRequest);
     }
@@ -224,7 +224,7 @@ public class ModuleIOTalonFX implements ModuleIO {
         return new SwerveModulePosition(
                 Units.rpsToMetersPerSecond(
                         driveMotor.getPosition().getValue(),
-                        SwerveConstantsTalonFX.WHEEL_DIAMETER / 2),
+                        SwerveConstants.WHEEL_DIAMETER / 2),
                 getAngle());
     }
 

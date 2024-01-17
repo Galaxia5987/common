@@ -4,18 +4,22 @@ import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.filter.LinearFilter;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.kinematics.*;
+import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
+import edu.wpi.first.math.kinematics.SwerveModulePosition;
+import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import lib.math.differential.Derivative;
+import org.littletonrobotics.junction.AutoLogOutput;
+import org.littletonrobotics.junction.Logger;
+
 import java.util.Arrays;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.stream.Stream;
-import lib.math.differential.Derivative;
-import org.littletonrobotics.junction.AutoLogOutput;
-import org.littletonrobotics.junction.Logger;
 
 public class SwerveDrive extends SubsystemBase {
     private static SwerveDrive INSTANCE = null;
@@ -27,10 +31,10 @@ public class SwerveDrive extends SubsystemBase {
     private final GyroIO gyro;
     private final SwerveDriveKinematics kinematics =
             new SwerveDriveKinematics(
-                    SwerveConstantsTalonFX.WHEEL_POSITIONS[0],
-                    SwerveConstantsTalonFX.WHEEL_POSITIONS[1],
-                    SwerveConstantsTalonFX.WHEEL_POSITIONS[2],
-                    SwerveConstantsTalonFX.WHEEL_POSITIONS[3]);
+                    SwerveConstants.WHEEL_POSITIONS[0],
+                    SwerveConstants.WHEEL_POSITIONS[1],
+                    SwerveConstants.WHEEL_POSITIONS[2],
+                    SwerveConstants.WHEEL_POSITIONS[3]);
 
     private final Derivative acceleration = new Derivative();
     private final LinearFilter accelFilter = LinearFilter.movingAverage(15);
@@ -58,16 +62,16 @@ public class SwerveDrive extends SubsystemBase {
                                     driveIds[i],
                                     angleIds[i],
                                     encoderIds[i],
-                                    SwerveConstantsTalonFX.DRIVE_MOTOR_CONFIGS,
-                                    SwerveConstantsTalonFX.ANGLE_MOTOR_CONFIGS);
+                                    SwerveConstants.DRIVE_MOTOR_CONFIGS,
+                                    SwerveConstants.ANGLE_MOTOR_CONFIGS);
                 } else {
                     io =
                             new ModuleIOTalonFX(
                                     driveIds[i],
                                     angleIds[i],
                                     encoderIds[i],
-                                    SwerveConstantsTalonFX.DRIVE_MOTOR_CONFIGS,
-                                    SwerveConstantsTalonFX.ANGLE_MOTOR_CONFIGS);
+                                    SwerveConstants.DRIVE_MOTOR_CONFIGS,
+                                    SwerveConstants.ANGLE_MOTOR_CONFIGS);
                 }
 
                 modules[i] = new SwerveModule(io, i + 1);
@@ -288,9 +292,9 @@ public class SwerveDrive extends SubsystemBase {
     public void drive(double xOutput, double yOutput, double omegaOutput, boolean fieldOriented) {
         ChassisSpeeds chassisSpeeds =
                 new ChassisSpeeds(
-                        SwerveConstantsTalonFX.MAX_X_Y_VELOCITY * xOutput,
-                        SwerveConstantsTalonFX.MAX_X_Y_VELOCITY * yOutput,
-                        SwerveConstantsTalonFX.MAX_OMEGA_VELOCITY * omegaOutput); // removed angleFF
+                        SwerveConstants.MAX_X_Y_VELOCITY * xOutput,
+                        SwerveConstants.MAX_X_Y_VELOCITY * yOutput,
+                        SwerveConstants.MAX_OMEGA_VELOCITY * omegaOutput); // removed angleFF
 
         drive(chassisSpeeds, fieldOriented);
     }
@@ -346,7 +350,7 @@ public class SwerveDrive extends SubsystemBase {
         gyro.updateInputs(loggerInputs);
 
         SwerveDriveKinematics.desaturateWheelSpeeds(
-                loggerInputs.desiredModuleStates, SwerveConstantsTalonFX.MAX_X_Y_VELOCITY);
+                loggerInputs.desiredModuleStates, SwerveConstants.MAX_X_Y_VELOCITY);
         for (int i = 0; i < modules.length; i++) {
             modules[i].setModuleState(loggerInputs.desiredModuleStates[i]);
         }

@@ -6,8 +6,9 @@ import com.ctre.phoenix6.BaseStatusSignal;
 import com.ctre.phoenix6.CANBus;
 import com.ctre.phoenix6.StatusSignal;
 import com.ctre.phoenix6.hardware.ParentDevice;
-import frc.robot.swerve.SwerveConstantsTalonFX;
+import frc.robot.swerve.SwerveConstants;
 import frc.robot.swerve.SwerveDrive;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Queue;
@@ -82,13 +83,13 @@ public class PhoenixOdometryThread extends Thread {
             try {
                 if (isCANFD) {
                     BaseStatusSignal.waitForAll(
-                            2.0 / SwerveConstantsTalonFX.ODOMETRY_FREQUENCY, allArr);
+                            2.0 / SwerveConstants.ODOMETRY_FREQUENCY, allArr);
                 } else {
                     // "waitForAll" does not support blocking on multiple
                     // signals with a bus that is not CAN FD, regardless
                     // of Pro licensing. No reasoning for this behavior
                     // is provided by the documentation.
-                    sleep((long) (1000.0 / SwerveConstantsTalonFX.ODOMETRY_FREQUENCY));
+                    sleep((long) (1000.0 / SwerveConstants.ODOMETRY_FREQUENCY));
                     if (!signals.isEmpty()) {
                         signals.forEach(StatusSignal::refresh);
                         signalSlopes.forEach(StatusSignal::refresh);
