@@ -21,7 +21,11 @@ public class HeatMap {
     private double[][] fieldArr =
             new double[(int) (xLength / squareLength)][(int) (yLength / squareLength)];
 
-    private HeatMap() {}
+    private HeatMap() {
+        for (double[] doubles : fieldArr) {
+            Arrays.fill(doubles, Integer.MAX_VALUE);
+        }
+    }
 
     public static HeatMap getInstance(VisionModule visionModule) {
         if (INSTANCE == null) {
