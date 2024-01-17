@@ -2,7 +2,10 @@ package frc.robot.vision.heatMap.commands;
 
 import com.opencsv.CSVWriter;
 import edu.wpi.first.math.Pair;
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import frc.robot.vision.SimVisionSystem;
@@ -14,6 +17,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Set;
+import java.util.stream.DoubleStream;
 import java.util.stream.IntStream;
 import lib.Utils;
 import org.littletonrobotics.junction.Logger;
@@ -76,6 +80,7 @@ public class TestCameras extends Command {
                     throw new RuntimeException(e);
                 }
                 System.out.println("CSV file has been created successfully.");
+        HeatMap heatMap = HeatMap.getInstance(visionModules[visionModuleIndex]);
             }
         }
     }
