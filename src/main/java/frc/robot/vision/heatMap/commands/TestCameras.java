@@ -64,6 +64,7 @@ public class TestCameras extends Command {
                         heatMap.update(robotPose);
                     }
                 }
+        double optimalPitch = Utils.calcPitchByHeight(heightArr[heightIndex]);
 
                 // save heatMap to .csv file
                 String csvFilePath = "HeatMap_" + height + "_" + optimalPitch;
