@@ -1,5 +1,6 @@
 package frc.robot.vision;
 
+import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Transform3d;
 import org.littletonrobotics.junction.AutoLog;
 
@@ -25,8 +26,8 @@ public interface VisionIO {
         double area = 0;
         double targetSkew = 0;
         long targetID = 0;
-        double[] cameraToTarget = new double[] {0, 0, 0, 0, 0, 0};
-        double[] poseFieldOriented = new double[6];
+        Pose3d cameraToTarget = new Pose3d();
+        Pose3d poseFieldOriented = new Pose3d();
         double bestTargetAmbiguity = 0;
         public double[] ambiguities = new double[8];
         public double averageAmbiguity = 0;

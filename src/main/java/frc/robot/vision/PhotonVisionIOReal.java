@@ -1,7 +1,7 @@
 package frc.robot.vision;
 
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
-import edu.wpi.first.apriltag.AprilTagFields;
+import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Transform3d;
 import org.photonvision.PhotonCamera;
 import org.photonvision.PhotonPoseEstimator;
@@ -13,7 +13,8 @@ public class PhotonVisionIOReal implements VisionIO {
     private final Transform3d robotToCamera;
     private Result result;
 
-    public PhotonVisionIOReal(PhotonCamera camera, Transform3d robotToCamera, AprilTagFieldLayout field) {
+    public PhotonVisionIOReal(
+            PhotonCamera camera, Transform3d robotToCamera, AprilTagFieldLayout field) {
         this.camera = camera;
         this.robotToCamera = robotToCamera;
         camera.setPipelineIndex(0);
@@ -52,28 +53,12 @@ public class PhotonVisionIOReal implements VisionIO {
 
                 var cameraToTarget = latestResult.getBestTarget().getBestCameraToTarget();
                 inputs.cameraToTarget =
-                        new double[] {
-                            cameraToTarget.getX(),
-                            cameraToTarget.getY(),
-                            cameraToTarget.getZ(),
-                            cameraToTarget.getRotation().getX(),
-                            cameraToTarget.getRotation().getY(),
-                            cameraToTarget.getRotation().getZ()
-                        };
+                        new Pose3d(cameraToTarget.getTranslation(), cameraToTarget.getRotation());
             }
 
             var estimatedPose = estimator.update(latestResult);
             if (estimatedPose.isPresent()) {
-                var pose = estimatedPose.get().estimatedPose;
-                inputs.poseFieldOriented =
-                        new double[] {
-                            pose.getX(),
-                            pose.getY(),
-                            pose.getZ(),
-                            pose.getRotation().getX(),
-                            pose.getRotation().getY(),
-                            pose.getRotation().getZ()
-                        };
+                inputs.poseFieldOriented = estimatedPose.get().estimatedPose;
 
                 result =
                         new Result(

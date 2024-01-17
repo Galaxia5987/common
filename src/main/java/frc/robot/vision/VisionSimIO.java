@@ -2,6 +2,7 @@ package frc.robot.vision;
 
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.apriltag.AprilTagFields;
+import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Transform3d;
 import frc.robot.swerve.SwerveDrive;
 import java.util.List;
@@ -90,15 +91,10 @@ public class VisionSimIO implements VisionIO {
                 inputs.bestTargetAmbiguity = bestTarget.getPoseAmbiguity();
 
                 var cameraToTarget = bestTarget.getBestCameraToTarget();
-                inputs.cameraToTarget =
-                        new double[] {
-                            cameraToTarget.getX(),
-                            cameraToTarget.getY(),
-                            cameraToTarget.getZ(),
-                            cameraToTarget.getRotation().getX(),
-                            cameraToTarget.getRotation().getY(),
-                            cameraToTarget.getRotation().getZ()
-                        };
+                inputs.cameraToTarget = new Pose3d(
+                        cameraToTarget.getTranslation(),
+                        cameraToTarget.getRotation()
+                );
             }
         }
     }
