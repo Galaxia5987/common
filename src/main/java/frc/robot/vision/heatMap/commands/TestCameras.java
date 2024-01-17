@@ -35,6 +35,7 @@ public class TestCameras extends Command {
             .mapToDouble(Math::toRadians)
             .toArray();
 
+    private int visionModuleIndex = 0;
 
     public TestCameras(Vision vision) {
         this.visionModules = vision.getVisionModules();
