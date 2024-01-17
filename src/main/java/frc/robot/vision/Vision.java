@@ -2,6 +2,7 @@ package frc.robot.vision;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import lib.Utils;
 import org.littletonrobotics.junction.Logger;
@@ -18,11 +19,16 @@ public class Vision extends SubsystemBase {
         results = new Result[modules.length];
     }
 
-    public static Vision getInstance(VisionModule[] modules) {
-        if (INSTANCE == null) {
-            INSTANCE = new Vision(modules);
-        }
+    public static Vision getInstance() {
         return INSTANCE;
+    }
+
+    public static void initialize(VisionIO... ios) {
+        INSTANCE = new Vision(
+                Arrays.stream(ios).map(
+                        VisionModule::new
+                ).toList().toArray(new VisionModule[0])
+        );
     }
 
     public Result[] getResults() {
