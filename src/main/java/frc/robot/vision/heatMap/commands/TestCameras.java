@@ -97,7 +97,6 @@ public class TestCameras extends Command {
                         angleArr[angleArrIndex]);
         visionSim.setRobotPose(robotPose.toPose2d());
         heatMap.update(robotPose);
-        angleArrIndex++;
         Logger.recordOutput("TestCamerasBotPose", robotPose.toPose2d());
 
         if (angleArr.length == angleArrIndex + 1) {
@@ -137,20 +136,6 @@ public class TestCameras extends Command {
                 visionModuleIndex++;
             }
         }
-    }
-
-    @Override
-    public void end(boolean interrupted) {
-        super.end(interrupted);
-    }
-
-    @Override
-    public boolean isFinished() {
-        return super.isFinished();
-    }
-
-    @Override
-    public Set<Subsystem> getRequirements() {
-        return super.getRequirements();
+        angleArrIndex++;
     }
 }
