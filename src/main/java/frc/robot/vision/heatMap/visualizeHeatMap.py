@@ -13,6 +13,9 @@ def plot_heatmap(csv_file, multiplier=1000000, showValues=False):
     
     vmin = df.min().min()
     vmax = second_max_value if not np.isnan(second_max_value) else df.max().max()
+
+    plt.figure(figsize=(len(df.columns), len(df)))
+    ax = sns.heatmap(df.T, cmap="RdBu", annot=showValues, fmt=".2f", linewidths=.5, vmin=vmin, vmax=vmax, square=True)
     plt.show()
 
 if __name__ == "__main__":
