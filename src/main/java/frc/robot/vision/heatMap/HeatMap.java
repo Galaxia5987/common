@@ -88,5 +88,6 @@ public class HeatMap {
                         totalAverageAmbiguity,
                         currentAverageAmbiguity,
                         entryCounter[currentGrid.getFirst()][currentGrid.getSecond()]);
+        entryCounter[currentGrid.getFirst()][currentGrid.getSecond()] += 1;
     }
 }
