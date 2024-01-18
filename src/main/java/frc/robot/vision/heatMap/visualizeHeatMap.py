@@ -9,6 +9,12 @@ def plot_heatmap(csv_file, multiplier=1000000, showValues=False):
     plt.figure(figsize=(10, 8))
     sns.heatmap(df, cmap="YlGnBu", annot=True, fmt=".2f", linewidths=.5)
     plt.title('Vision HeatMap')
+    unique_values = np.unique(df.values.flatten())
+    sorted_values = np.sort(unique_values)[::-1]
+    second_max_value = sorted_values[1] if len(sorted_values) > 1 else np.nan
+    
+    vmin = df.min().min()
+    vmax = second_max_value if not np.isnan(second_max_value) else df.max().max()
     plt.show()
 
 if __name__ == "__main__":
