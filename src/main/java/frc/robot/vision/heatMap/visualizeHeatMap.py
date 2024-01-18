@@ -30,5 +30,6 @@ def plot_heatmap(csv_file, multiplier=1000000, showValues=False):
     plt.show()
 
 if __name__ == "__main__":
-    csv_file_path = "path" #replace with path
+    csv_file_path = "C:\\Users\\rakra\\Common\\HeatMap_0.25_0.7316420224360229__0.csv"
+    
     plot_heatmap(csv_file_path)
