@@ -16,6 +16,17 @@ def plot_heatmap(csv_file, multiplier=1000000, showValues=False):
 
     plt.figure(figsize=(len(df.columns), len(df)))
     ax = sns.heatmap(df.T, cmap="RdBu", annot=showValues, fmt=".2f", linewidths=.5, vmin=vmin, vmax=vmax, square=True)
+    ax.invert_xaxis()
+    ax.set_xlabel("")
+
+    # dynamic x-axis and y-axis tick labels based on DataFrame length
+    ax.set_yticks(np.arange(0.5, len(df.columns), 1))
+    ax.set_yticklabels(range(len(df.columns), 0, -1))
+    
+    ax.set_xticks(np.arange(0.5, len(df), 1))
+    ax.set_xticklabels(range(len(df), 0, -1))
+
+    plt.title(f'Vision Heatmap')
     plt.show()
 
 if __name__ == "__main__":
