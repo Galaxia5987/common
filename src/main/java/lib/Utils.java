@@ -102,11 +102,26 @@ public class Utils {
         return 1.0 / ambiguities.stream().map((num) -> 1.0 / num).reduce(0.0, Double::sum);
     }
 
+    /**
+     * Average ambiguity for a specific grid
+     * considers the last data and how many times the grid has been entered
+     *
+     * @param totalAverageAmbiguity the average ambiguity of the grid
+     * @param currentAverageAmbiguity the current ambiguity
+     * @param n number of times robot has passed in the grid
+     * @return the total average ambiguity to be entered in the totalAverageAmbiguity param in the next cycle
+     */
     public static double continuousAverageAmbiguity(
             double totalAverageAmbiguity, double currentAverageAmbiguity, int n) {
         return (n + 1.0) / ((n / totalAverageAmbiguity) + (1.0 / currentAverageAmbiguity));
     }
 
+    /**
+     * Calculates using linear interpolation what is the optimal pitch for the camera height
+     *
+     * @param height height of the camera
+     * @return optimal pitch for the camera
+     */
     public static double calcPitchByHeight(double height) { // height in meters
         double[] heights = {0.20, 0.50, 0.80};
         double[] pitches = {Math.toRadians(41.92), Math.toRadians(37.462), Math.toRadians(31.568)};
