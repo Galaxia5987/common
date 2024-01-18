@@ -1,8 +1,9 @@
 import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
+import numpy as np
 
-def plot_heatmap(csv_file):
+def plot_heatmap(csv_file, multiplier=1000000, showValues=False):
     df = pd.read_csv(csv_file, index_col=0)
 
     plt.figure(figsize=(10, 8))
