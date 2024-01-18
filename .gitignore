@@ -168,3 +168,5 @@ main/java/frc/robot/common/
 
 BuildConstants.java
 *.xml
+
+networktables*
