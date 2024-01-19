@@ -218,11 +218,7 @@ public class SwerveDrive extends SubsystemBase {
     }
 
     public boolean encodersConnected() {
-        boolean connected = true;
-        for (int i = 0; i < 4; i++) {
-            connected &= modules[i].encoderConnected();
-        }
-        return connected;
+        return Arrays.stream(modules).allMatch(SwerveModule::encoderConnected);
     }
 
     public Command checkSwerve() {
