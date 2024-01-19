@@ -36,8 +36,4 @@ public interface ModuleIO {
     Command checkModule();
 
     default void updateOffset(Rotation2d offset) {}
-
-    default boolean encoderConnected() {
-        return true;
-    }
 }

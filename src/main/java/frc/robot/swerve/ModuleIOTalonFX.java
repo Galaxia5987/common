@@ -216,9 +216,4 @@ public class ModuleIOTalonFX implements ModuleIO {
     public void updateOffset(Rotation2d offset) {
         angleMotor.setPosition(encoder.getAbsolutePosition() - offset.getRotations());
     }
-
-    @Override
-    public boolean encoderConnected() {
-        return encoder.isConnected();
-    }
 }

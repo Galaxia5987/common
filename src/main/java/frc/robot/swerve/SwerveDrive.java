@@ -169,10 +169,6 @@ public class SwerveDrive extends SubsystemBase {
         resetPose(new Pose2d());
     }
 
-    public boolean encodersConnected() {
-        return Arrays.stream(modules).allMatch(SwerveModule::encoderConnected);
-    }
-
     public Command checkSwerve() {
         var command =
                 Stream.of(modules)

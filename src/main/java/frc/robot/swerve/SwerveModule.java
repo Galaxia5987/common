@@ -7,7 +7,6 @@ import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import lib.math.differential.BooleanTrigger;
 import org.littletonrobotics.junction.Logger;
 
 public class SwerveModule extends SubsystemBase {
@@ -17,7 +16,6 @@ public class SwerveModule extends SubsystemBase {
     private final ModuleIO io;
 
     private final int number;
-    private final BooleanTrigger encoderTrigger = new BooleanTrigger();
     private final Timer timer = new Timer();
 
     private double lastDistance = 0;
@@ -106,10 +104,6 @@ public class SwerveModule extends SubsystemBase {
         io.stop();
     }
 
-    public boolean encoderConnected() {
-        return io.encoderConnected();
-    }
-
     public Command checkModule() {
         return io.checkModule();
     }
@@ -133,8 +127,6 @@ public class SwerveModule extends SubsystemBase {
 
     @Override
     public void periodic() {
-        encoderTrigger.update(io.encoderConnected());
-
         deltas = new double[loggerInputs.highFreqDistances.length];
         for (int i = 0; i < deltas.length; i++) {
             deltas[i] = loggerInputs.highFreqDistances[i] - lastDistance;

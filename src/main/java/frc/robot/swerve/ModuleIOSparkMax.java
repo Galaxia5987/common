@@ -173,11 +173,6 @@ public class ModuleIOSparkMax implements ModuleIO {
         angleEncoder.setPosition(getEncoderAngle() - offset.getRotations());
     }
 
-    @Override
-    public boolean encoderConnected() {
-        return encoder.isConnected();
-    }
-
     private double getEncoderAngle() {
         return 1.0 - encoder.getAbsolutePosition();
     }
