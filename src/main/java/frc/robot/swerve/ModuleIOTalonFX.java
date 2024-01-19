@@ -16,7 +16,7 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import java.util.List;
 import java.util.Queue;
 import lib.PhoenixOdometryThread;
-import lib.math.AngleUtil;
+import lib.Utils;
 import lib.units.Units;
 
 public class ModuleIOTalonFX implements ModuleIO {
@@ -153,12 +153,12 @@ public class ModuleIOTalonFX implements ModuleIO {
 
     @Override
     public Rotation2d getAngle() {
-        return AngleUtil.normalize(Rotation2d.fromRotations(angleMotor.getPosition().getValue()));
+        return Utils.normalize(Rotation2d.fromRotations(angleMotor.getPosition().getValue()));
     }
 
     @Override
     public void setAngle(Rotation2d angle) {
-        angle = AngleUtil.normalize(angle);
+        angle = Utils.normalize(angle);
         angleSetpoint = angle;
         Rotation2d error = angle.minus(currentAngle);
         angleControlRequest

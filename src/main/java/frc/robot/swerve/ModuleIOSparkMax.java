@@ -12,7 +12,7 @@ import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
-import lib.math.AngleUtil;
+import lib.Utils;
 import lib.units.Units;
 
 public class ModuleIOSparkMax implements ModuleIO {
@@ -90,8 +90,7 @@ public class ModuleIOSparkMax implements ModuleIO {
         inputs.angleMotorVelocity = Units.rpmToRps(angleEncoder.getVelocity());
 
         inputs.angle =
-                Rotation2d.fromRadians(
-                        AngleUtil.normalize(angleEncoder.getPosition() * 2 * Math.PI));
+                Rotation2d.fromRadians(Utils.normalize(angleEncoder.getPosition() * 2 * Math.PI));
         currentAngle = inputs.angle;
 
         inputs.angleSetpoint = angleSetpoint;
@@ -123,7 +122,7 @@ public class ModuleIOSparkMax implements ModuleIO {
 
     @Override
     public void setAngle(Rotation2d angle) {
-        angleSetpoint = AngleUtil.normalize(angle);
+        angleSetpoint = Utils.normalize(angle);
         Rotation2d error = angle.minus(currentAngle);
         anglePIDController.setReference(
                 angleMotorPosition + error.getRotations(), CANSparkMax.ControlType.kPosition);

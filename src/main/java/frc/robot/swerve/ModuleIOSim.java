@@ -9,7 +9,7 @@ import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
-import lib.math.AngleUtil;
+import lib.Utils;
 import lib.motors.TalonFXSim;
 import lib.units.Units;
 
@@ -70,7 +70,7 @@ public class ModuleIOSim implements ModuleIO {
         inputs.angleMotorAppliedVoltage = angleMotor.getAppliedVoltage();
         inputs.angleMotorVelocity = angleMotor.getRotorVelocity();
         inputs.angleSetpoint = angleSetpoint;
-        inputs.angle = AngleUtil.normalize(currentAngle);
+        inputs.angle = Utils.normalize(currentAngle);
 
         inputs.moduleDistance =
                 Units.rpsToMetersPerSecond(

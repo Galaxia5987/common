@@ -36,4 +36,15 @@ public class Utils {
     public static double averageAmbiguity(List<Double> ambiguities) {
         return 1.0 / ambiguities.stream().map((num) -> 1.0 / num).reduce(0.0, Double::sum);
     }
+
+    public static double normalize(double angle) {
+        while (angle < 0) {
+            angle += 2 * Math.PI;
+        }
+        return angle % (2 * Math.PI);
+    }
+
+    public static Rotation2d normalize(Rotation2d angle) {
+        return Rotation2d.fromRadians(normalize(angle.getRadians()));
+    }
 }
