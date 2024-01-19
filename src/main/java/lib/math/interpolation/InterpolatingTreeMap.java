@@ -1,4 +1,4 @@
-package lib.math;
+package lib.math.interpolation;
 
 import java.util.Map;
 import java.util.TreeMap;

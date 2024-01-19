@@ -1,4 +1,4 @@
-package lib.math;
+package lib.math.interpolation;
 
 /**
  * A Double that can be interpolated using the InterpolatingTreeMap.
