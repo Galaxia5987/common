@@ -22,7 +22,7 @@ import org.littletonrobotics.junction.Logger;
 
 public class SwerveDrive extends SubsystemBase {
     private static SwerveDrive INSTANCE = null;
-    private final SwerveModule[] modules = new SwerveModule[4]; // FL, FR, RL, RR
+    private final SwerveModule[] modules; // FL, FR, RL, RR
 
     @AutoLogOutput
     private final SwerveModulePosition[] modulePositions = new SwerveModulePosition[4];
@@ -44,47 +44,13 @@ public class SwerveDrive extends SubsystemBase {
 
     private final SwerveDriveInputsAutoLogged loggerInputs = new SwerveDriveInputsAutoLogged();
 
-    private SwerveDrive(
-            boolean isReal,
-            boolean isNeo,
-            boolean[] drivesInverted,
-            boolean[] anglesInverted,
-            int[] driveIds,
-            int[] angleIds,
-            int[] encoderIds) {
-        if (isReal) {
-            for (int i = 0; i < modules.length; i++) {
-                ModuleIO io;
-                if (!isNeo) {
-                    io =
-                            new ModuleIOTalonFX(
-                                    driveIds[i],
-                                    angleIds[i],
-                                    encoderIds[i],
-                                    SwerveConstants.DRIVE_MOTOR_CONFIGS,
-                                    SwerveConstants.ANGLE_MOTOR_CONFIGS);
-                } else {
-                    io =
-                            new ModuleIOTalonFX(
-                                    driveIds[i],
-                                    angleIds[i],
-                                    encoderIds[i],
-                                    SwerveConstants.DRIVE_MOTOR_CONFIGS,
-                                    SwerveConstants.ANGLE_MOTOR_CONFIGS);
-                }
-
-                modules[i] = new SwerveModule(io, i + 1);
-            }
-
-            gyro = new GyroIOReal();
-        } else {
-            for (int i = 0; i < modules.length; i++) {
-                ModuleIO io = new ModuleIOSim();
-                modules[i] = new SwerveModule(io, i + 1);
-            }
-
-            gyro = new GyroIOSim();
+    private SwerveDrive(GyroIO gyroIO, ModuleIO... moduleIOs) {
+        this.gyro = gyroIO;
+        modules = new SwerveModule[moduleIOs.length];
+        for (int i = 0; i < moduleIOs.length; i++) {
+            modules[i] = new SwerveModule(moduleIOs[i], i + 1);
         }
+
         updateModulePositions();
 
         poseEstimator =
@@ -95,25 +61,8 @@ public class SwerveDrive extends SubsystemBase {
         return INSTANCE;
     }
 
-    public static void setInstance(
-            boolean isReal,
-            boolean isNeo,
-            boolean[] drivesInverted,
-            boolean[] anglesInverted,
-            int[] driveIds,
-            int[] angleIds,
-            int[] encoderIds) {
-        if (INSTANCE == null) {
-            INSTANCE =
-                    new SwerveDrive(
-                            isReal,
-                            isNeo,
-                            drivesInverted,
-                            anglesInverted,
-                            driveIds,
-                            angleIds,
-                            encoderIds);
-        }
+    public static void initialize(GyroIO gyroIO, ModuleIO... moduleIOs) {
+            INSTANCE = new SwerveDrive(gyroIO, moduleIOs);
     }
 
     /**
