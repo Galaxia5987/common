@@ -62,7 +62,7 @@ public class PhotonVisionIOReal implements VisionIO {
 
                 result =
                         new Result(
-                                latestResult.getTimestampSeconds(),
+                                estimatedPose.get().timestampSeconds,
                                 estimatedPose.get().estimatedPose);
             } else {
                 result = null;
