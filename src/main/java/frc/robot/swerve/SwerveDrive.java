@@ -1,5 +1,6 @@
 package frc.robot.swerve;
 
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.filter.LinearFilter;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -15,6 +16,8 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import java.util.Arrays;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
+import java.util.function.BooleanSupplier;
+import java.util.function.DoubleSupplier;
 import java.util.stream.Stream;
 import lib.math.differential.Derivative;
 import org.littletonrobotics.junction.AutoLogOutput;
@@ -241,6 +244,21 @@ public class SwerveDrive extends SubsystemBase {
                         SwerveConstants.MAX_OMEGA_VELOCITY * omegaOutput); // removed angleFF
 
         drive(chassisSpeeds, fieldOriented);
+    }
+
+    public Command driveCommand(
+            DoubleSupplier forward,
+            DoubleSupplier strafe,
+            DoubleSupplier rotation,
+            double deadband,
+            BooleanSupplier fieldOriented) {
+        return run(
+                () ->
+                        drive(
+                                MathUtil.applyDeadband(forward.getAsDouble(), deadband),
+                                MathUtil.applyDeadband(strafe.getAsDouble(), deadband),
+                                MathUtil.applyDeadband(rotation.getAsDouble(), deadband),
+                                fieldOriented.getAsBoolean()));
     }
 
     public void periodic() {
