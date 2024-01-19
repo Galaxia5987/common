@@ -1,9 +1,9 @@
 package frc.robot.swerve;
 
+import com.revrobotics.CANSparkBase;
 import com.revrobotics.CANSparkMax;
-import com.revrobotics.CANSparkMaxLowLevel;
 import com.revrobotics.RelativeEncoder;
-import com.revrobotics.SparkMaxPIDController;
+import com.revrobotics.SparkPIDController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
@@ -18,10 +18,10 @@ import lib.units.Units;
 public class ModuleIOSparkMax implements ModuleIO {
 
     private final CANSparkMax driveMotor;
-    private final SparkMaxPIDController drivePIDController;
+    private final SparkPIDController drivePIDController;
     private final RelativeEncoder driveEncoder;
     private final CANSparkMax angleMotor;
-    private final SparkMaxPIDController anglePIDController;
+    private final SparkPIDController anglePIDController;
     private final RelativeEncoder angleEncoder;
 
     private final DutyCycleEncoder encoder;
@@ -42,8 +42,8 @@ public class ModuleIOSparkMax implements ModuleIO {
             boolean angleInverted,
             double[] motionMagicConfigs) {
 
-        this.driveMotor = new CANSparkMax(driveMotorID, CANSparkMaxLowLevel.MotorType.kBrushless);
-        this.angleMotor = new CANSparkMax(angleMotorID, CANSparkMaxLowLevel.MotorType.kBrushless);
+        this.driveMotor = new CANSparkMax(driveMotorID, CANSparkBase.MotorType.kBrushless);
+        this.angleMotor = new CANSparkMax(angleMotorID, CANSparkBase.MotorType.kBrushless);
 
         this.encoder = new DutyCycleEncoder(encoderID);
 
