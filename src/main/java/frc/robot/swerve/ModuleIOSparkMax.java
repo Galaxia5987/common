@@ -39,8 +39,7 @@ public class ModuleIOSparkMax implements ModuleIO {
             int angleMotorID,
             int encoderID,
             boolean driveInverted,
-            boolean angleInverted,
-            double[] motionMagicConfigs) {
+            boolean angleInverted) {
 
         this.driveMotor = new CANSparkMax(driveMotorID, CANSparkBase.MotorType.kBrushless);
         this.angleMotor = new CANSparkMax(angleMotorID, CANSparkBase.MotorType.kBrushless);
