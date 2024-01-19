@@ -10,8 +10,6 @@ public class SwerveModuleInputs {
     public double driveMotorVelocitySetpoint = 0;
     public double driveMotorSupplyCurrent = 0;
     public double driveMotorStatorCurrent = 0;
-    public double driveMotorSupplyCurrentOverTime = 0;
-    public double driveMotorStatorCurrentOverTime = 0;
     public double driveMotorPosition = 0;
     public double driveMotorAppliedVoltage = 0;
 
@@ -21,8 +19,6 @@ public class SwerveModuleInputs {
     public double angleMotorVelocity = 0;
     public double angleMotorSupplyCurrent = 0;
     public double angleMotorStatorCurrent = 0;
-    public double angleMotorSupplyCurrentOverTime = 0;
-    public double angleMotorStatorCurrentOverTime = 0;
     public double angleMotorPosition = 0;
     public double angleMotorAppliedVoltage = 0;
 

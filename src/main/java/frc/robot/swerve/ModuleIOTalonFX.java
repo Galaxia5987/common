@@ -17,7 +17,6 @@ import java.util.List;
 import java.util.Queue;
 import lib.PhoenixOdometryThread;
 import lib.math.AngleUtil;
-import lib.math.differential.Integral;
 import lib.units.Units;
 
 public class ModuleIOTalonFX implements ModuleIO {
@@ -29,10 +28,6 @@ public class ModuleIOTalonFX implements ModuleIO {
     private final TalonFXConfiguration driveConfig;
     private final TalonFXConfiguration angleConfig;
 
-    private final Integral driveSupplyChargeUsedCoulomb = new Integral();
-    private final Integral driveStatorChargeUsedCoulomb = new Integral();
-    private final Integral angleSupplyChargeUsedCoulomb = new Integral();
-    private final Integral angleStatorChargeUsedCoulomb = new Integral();
     private final PositionVoltage angleControlRequest =
             new PositionVoltage(0).withEnableFOC(true).withSlot(0);
     private final VelocityVoltage velocityControlRequest =
@@ -98,20 +93,12 @@ public class ModuleIOTalonFX implements ModuleIO {
 
         inputs.driveMotorSupplyCurrent = driveMotor.getSupplyCurrent().getValue();
         inputs.driveMotorStatorCurrent = driveMotor.getStatorCurrent().getValue();
-        driveSupplyChargeUsedCoulomb.update(inputs.driveMotorSupplyCurrent);
-        inputs.driveMotorSupplyCurrentOverTime = driveSupplyChargeUsedCoulomb.get();
-        driveStatorChargeUsedCoulomb.update(inputs.driveMotorStatorCurrent);
-        inputs.driveMotorStatorCurrentOverTime = driveStatorChargeUsedCoulomb.get();
         inputs.driveMotorPosition = driveMotor.getRotorPosition().getValue();
         inputs.driveMotorVelocity = getVelocity();
         inputs.driveMotorVelocitySetpoint = driveMotorVelocitySetpoint;
 
         inputs.angleMotorSupplyCurrent = angleMotor.getSupplyCurrent().getValue();
         inputs.angleMotorStatorCurrent = angleMotor.getStatorCurrent().getValue();
-        angleSupplyChargeUsedCoulomb.update(inputs.angleMotorSupplyCurrent);
-        inputs.angleMotorSupplyCurrentOverTime = angleSupplyChargeUsedCoulomb.get();
-        angleStatorChargeUsedCoulomb.update(inputs.angleMotorStatorCurrent);
-        inputs.angleMotorStatorCurrentOverTime = angleStatorChargeUsedCoulomb.get();
         inputs.angleMotorPosition = angleMotor.getRotorPosition().getValue();
         inputs.angleMotorVelocity = angleMotor.getVelocity().getValue();
 

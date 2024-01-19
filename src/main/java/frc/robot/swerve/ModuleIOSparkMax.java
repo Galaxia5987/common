@@ -13,7 +13,6 @@ import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import lib.math.AngleUtil;
-import lib.math.differential.Integral;
 import lib.units.Units;
 
 public class ModuleIOSparkMax implements ModuleIO {
@@ -27,10 +26,6 @@ public class ModuleIOSparkMax implements ModuleIO {
 
     private final DutyCycleEncoder encoder;
 
-    private final Integral driveSupplyChargeUsedCoulomb = new Integral();
-    private final Integral driveStatorChargeUsedCoulomb = new Integral();
-    private final Integral angleSupplyChargeUsedCoulomb = new Integral();
-    private final Integral angleStatorChargeUsedCoulomb = new Integral();
     private Rotation2d angleSetpoint;
     private Rotation2d currentAngle;
     private double angleMotorPosition;
@@ -83,10 +78,6 @@ public class ModuleIOSparkMax implements ModuleIO {
         inputs.absolutePosition = getEncoderAngle();
 
         inputs.driveMotorSupplyCurrent = driveMotor.getOutputCurrent();
-        driveSupplyChargeUsedCoulomb.update(inputs.driveMotorSupplyCurrent);
-        inputs.driveMotorSupplyCurrentOverTime = driveSupplyChargeUsedCoulomb.get();
-        driveStatorChargeUsedCoulomb.update(inputs.driveMotorStatorCurrent);
-        inputs.driveMotorStatorCurrentOverTime = driveStatorChargeUsedCoulomb.get();
         inputs.driveMotorPosition = driveEncoder.getPosition();
         inputs.driveMotorVelocity = getVelocity();
         inputs.driveMotorVelocitySetpoint = driveMotorSetpoint;
@@ -94,10 +85,6 @@ public class ModuleIOSparkMax implements ModuleIO {
                 driveMotor.getAppliedOutput() * RobotController.getBatteryVoltage();
 
         inputs.angleMotorSupplyCurrent = angleMotor.getOutputCurrent();
-        angleSupplyChargeUsedCoulomb.update(inputs.angleMotorSupplyCurrent);
-        inputs.angleMotorSupplyCurrentOverTime = angleSupplyChargeUsedCoulomb.get();
-        angleStatorChargeUsedCoulomb.update(inputs.angleMotorStatorCurrent);
-        inputs.angleMotorStatorCurrentOverTime = angleStatorChargeUsedCoulomb.get();
         inputs.angleMotorPosition = angleEncoder.getPosition();
         angleMotorPosition = inputs.angleMotorPosition;
         inputs.angleMotorVelocity = Units.rpmToRps(angleEncoder.getVelocity());
