@@ -62,7 +62,7 @@ public class SwerveDrive extends SubsystemBase {
     }
 
     public static void initialize(GyroIO gyroIO, ModuleIO... moduleIOs) {
-            INSTANCE = new SwerveDrive(gyroIO, moduleIOs);
+        INSTANCE = new SwerveDrive(gyroIO, moduleIOs);
     }
 
     /**
@@ -277,16 +277,10 @@ public class SwerveDrive extends SubsystemBase {
         loggerInputs.acceleration = accelFilter.calculate(acceleration.get());
 
         loggerInputs.supplyCurrent =
-                modules[0].getSupplyCurrent()
-                        + modules[1].getSupplyCurrent()
-                        + modules[2].getSupplyCurrent()
-                        + modules[3].getStatorCurrent();
+                Arrays.stream(modules).mapToDouble(SwerveModule::getSupplyCurrent).sum();
 
         loggerInputs.statorCurrent =
-                modules[0].getStatorCurrent()
-                        + modules[1].getStatorCurrent()
-                        + modules[2].getStatorCurrent()
-                        + modules[3].getStatorCurrent();
+                Arrays.stream(modules).mapToDouble(SwerveModule::getStatorCurrent).sum();
 
         loggerInputs.rawYaw = gyro.getRawYaw();
         loggerInputs.yaw = gyro.getYaw();
