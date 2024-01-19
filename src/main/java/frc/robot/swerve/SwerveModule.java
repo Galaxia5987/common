@@ -141,10 +141,9 @@ public class SwerveModule extends SubsystemBase {
             lastDistance = loggerInputs.highFreqDistances[i];
         }
 
-        if (timer.hasElapsed(1)) {
+        if (timer.advanceIfElapsed(1)) {
             io.updateOffset(
                     new Rotation2d(Units.rotationsToRadians(SwerveConstants.OFFSETS[number - 1])));
-            timer.reset();
         }
     }
 }
