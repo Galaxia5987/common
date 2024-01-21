@@ -257,15 +257,7 @@ public class SwerveDrive extends SubsystemBase {
                                 fieldOriented.getAsBoolean()));
     }
 
-    public void periodic() {
-        odometryLock.lock();
-        for (SwerveModule module : modules) {
-            module.updateInputs();
-        }
-        odometryLock.unlock();
-
-        updateHighFreqPose();
-
+    public void updateSwerveInputs() {
         for (int i = 0; i < modules.length; i++) {
             loggerInputs.absolutePositions[i] = modules[i].getPosition();
             loggerInputs.currentModuleStates[i] = modules[i].getModuleState();
@@ -280,8 +272,6 @@ public class SwerveDrive extends SubsystemBase {
                             loggerInputs.currentModuleStates[3]);
         }
 
-        updateModulePositions();
-
         loggerInputs.linearVelocity =
                 Math.hypot(
                         loggerInputs.currentSpeeds.vxMetersPerSecond,
@@ -295,11 +285,29 @@ public class SwerveDrive extends SubsystemBase {
 
         loggerInputs.statorCurrent =
                 Arrays.stream(modules).mapToDouble(SwerveModule::getStatorCurrent).sum();
+    }
 
+    public void updateGyroInputs() {
         loggerInputs.rawYaw = gyro.getRawYaw();
         loggerInputs.yaw = gyro.getYaw();
         loggerInputs.pitch = gyro.getPitch();
         gyro.updateInputs(loggerInputs);
+    }
+
+    public void periodic() {
+        odometryLock.lock();
+        for (SwerveModule module : modules) {
+            module.updateInputs();
+        }
+        odometryLock.unlock();
+
+        updateHighFreqPose();
+
+        updateSwerveInputs();
+
+        updateModulePositions();
+
+        updateGyroInputs();
 
         SwerveDriveKinematics.desaturateWheelSpeeds(
                 loggerInputs.desiredModuleStates, SwerveConstants.MAX_X_Y_VELOCITY);
