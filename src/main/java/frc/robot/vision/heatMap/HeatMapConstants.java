@@ -32,15 +32,15 @@ public class HeatMapConstants {
      * Length of the grid square of the field
      * Units are in meters
      */
-    public static final double squareLength = 0.5; // m
+    public static final double squareLength = Math.sqrt(0.2932142857142857); // m
     /**
      * Length of the y the robot checks in the field
      * Units are in meters
      */
-    public static final double yLength = 8; // m
+    public static final double yLength = 8.21; // m
     /**
      * Length of the x the robot checks in the field
      * Units are in meters
      */
-    public static final double xLength = 4; // m
+    public static final double xLength = 16.54; // m
 }

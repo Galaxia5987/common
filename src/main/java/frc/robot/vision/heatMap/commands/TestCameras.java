@@ -54,8 +54,6 @@ public class TestCameras extends Command {
      * 2d Array of Pair Integers to check during camera simulation
      * Based on Heatmap Constants
      */
-    //TODO: change grid size and field size to match navgrid.json
-    // find a way to read navgrid.json into gridsToCheck array
     private Pair[] gridsToCheck =
             IntStream.rangeClosed(
                             1, (int) (HeatMapConstants.xLength / HeatMapConstants.squareLength))
