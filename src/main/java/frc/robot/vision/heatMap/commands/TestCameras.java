@@ -1,5 +1,6 @@
 package frc.robot.vision.heatMap.commands;
 
+import com.google.gson.stream.JsonReader;
 import com.opencsv.CSVWriter;
 import edu.wpi.first.math.Pair;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -13,9 +14,12 @@ import frc.robot.vision.Vision;
 import frc.robot.vision.VisionModule;
 import frc.robot.vision.heatMap.HeatMap;
 import frc.robot.vision.heatMap.HeatMapConstants;
+
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.Scanner;
 import java.util.Set;
 import java.util.stream.DoubleStream;
 import java.util.stream.IntStream;
@@ -49,7 +53,7 @@ public class TestCameras extends Command {
      */
     //TODO: change grid size and field size to match navgrid.json
     // find a way to read navgrid.json into gridsToCheck array
-    private final Pair[] gridsToCheck =
+    private Pair[] gridsToCheck =
             IntStream.rangeClosed(
                             1, (int) (HeatMapConstants.xLength / HeatMapConstants.squareLength))
                     .boxed()
@@ -107,6 +111,22 @@ public class TestCameras extends Command {
                         * (2 * Math.PI / Math.toRadians(HeatMapConstants.robotAngleDelta))
                         * visionModules.length;
         Logger.recordOutput("TotalEstimatedTime", totalEstimatedTime);
+
+        try {
+            boolean[][] navGrid = new boolean[56][28];
+            JsonReader reader = new JsonReader(new FileReader("heatMap/navgrid.json"));
+            for (int i = 0; i < navGrid.length; i++) {
+                for (int j = 0; j < navGrid[i].length; j++) {
+                    navGrid[i][j] = reader.nextBoolean();
+                }
+            }
+
+            gridsToCheck = Arrays.stream(gridsToCheck).filter((p) ->
+                    navGrid[(int) p.getFirst()][(int) p.getSecond()])
+                    .toArray(Pair[]::new);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     /**
