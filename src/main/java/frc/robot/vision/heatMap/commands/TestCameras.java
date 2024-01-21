@@ -34,6 +34,9 @@ public class TestCameras extends Command {
      * Based on the Heatmap Constants
      * Units are in meters
      */
+    //TODO: make VisionSimIo and SimVisionSystem tagLayout change dynamically when using this command
+    // We need to change it so only the blue wing aprilTags will appear
+    // this helps the heatmap accuracy
     private final double[] heightArr =
             DoubleStream.iterate(
                             HeatMapConstants.heightMinimumRange,
