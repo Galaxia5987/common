@@ -228,9 +228,9 @@ public class SwerveDrive extends SubsystemBase {
     /**
      * Sets the desired percentage of x, y and omega speeds for the frc.robot.swerve
      *
-     * @param xOutput percentage of the x speed
-     * @param yOutput percentage of the y speed
-     * @param omegaOutput percentage of the omega speed
+     * @param xOutput percentage of the max possible x speed
+     * @param yOutput percentage of the max possible the y speed
+     * @param omegaOutput percentage of the max possible rotation speed
      */
     public void drive(double xOutput, double yOutput, double omegaOutput, boolean fieldOriented) {
         ChassisSpeeds chassisSpeeds =
