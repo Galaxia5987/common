@@ -24,6 +24,7 @@ import org.littletonrobotics.junction.AutoLogOutput;
 import org.littletonrobotics.junction.Logger;
 
 public class SwerveDrive extends SubsystemBase {
+    public static final Lock odometryLock = new ReentrantLock();
     private static SwerveDrive INSTANCE = null;
     private final SwerveModule[] modules; // FL, FR, RL, RR
 
@@ -37,15 +38,11 @@ public class SwerveDrive extends SubsystemBase {
                     SwerveConstants.WHEEL_POSITIONS[1],
                     SwerveConstants.WHEEL_POSITIONS[2],
                     SwerveConstants.WHEEL_POSITIONS[3]);
-
     private final Derivative acceleration = new Derivative();
     private final LinearFilter accelFilter = LinearFilter.movingAverage(15);
-
-    public static final Lock odometryLock = new ReentrantLock();
-    @AutoLogOutput private Pose2d botPose = new Pose2d();
     private final SwerveDrivePoseEstimator poseEstimator;
-
     private final SwerveDriveInputsAutoLogged loggerInputs = new SwerveDriveInputsAutoLogged();
+    @AutoLogOutput private Pose2d botPose = new Pose2d();
 
     private SwerveDrive(GyroIO gyroIO, ModuleIO... moduleIOs) {
         this.gyro = gyroIO;
@@ -263,14 +260,12 @@ public class SwerveDrive extends SubsystemBase {
             loggerInputs.currentModuleStates[i] = modules[i].getModuleState();
         }
 
-        for (int i = 0; i < 3; i++) {
-            loggerInputs.currentSpeeds =
-                    kinematics.toChassisSpeeds(
-                            loggerInputs.currentModuleStates[0],
-                            loggerInputs.currentModuleStates[1],
-                            loggerInputs.currentModuleStates[2],
-                            loggerInputs.currentModuleStates[3]);
-        }
+        loggerInputs.currentSpeeds =
+                kinematics.toChassisSpeeds(
+                        loggerInputs.currentModuleStates[0],
+                        loggerInputs.currentModuleStates[1],
+                        loggerInputs.currentModuleStates[2],
+                        loggerInputs.currentModuleStates[3]);
 
         loggerInputs.linearVelocity =
                 Math.hypot(
