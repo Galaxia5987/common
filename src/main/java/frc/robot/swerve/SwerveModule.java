@@ -120,6 +120,10 @@ public class SwerveModule extends SubsystemBase {
         return loggerInputs.highFreqAngles;
     }
 
+    public double[] getHighFreqTimestamps() {
+        return loggerInputs.highFreqTimestamps;
+    }
+
     public void updateInputs() {
         io.updateInputs(loggerInputs);
         Logger.processInputs("module_" + number, loggerInputs);

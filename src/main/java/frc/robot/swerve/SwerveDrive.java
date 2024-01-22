@@ -133,22 +133,26 @@ public class SwerveDrive extends SubsystemBase {
     }
 
     public void updateHighFreqPose() {
-        int deltaCount = Integer.MAX_VALUE;
+        int sampleCount = Integer.MAX_VALUE;
         for (int i = 0; i < 4; i++) {
-            deltaCount = Math.min(deltaCount, modules[i].getHighFreqAngles().length);
-            deltaCount = Math.min(deltaCount, modules[i].getHighFreqDriveDistances().length);
+            sampleCount = Math.min(sampleCount, modules[i].getHighFreqAngles().length);
+            sampleCount = Math.min(sampleCount, modules[i].getHighFreqDriveDistances().length);
+            sampleCount = Math.min(sampleCount, modules[i].getHighFreqTimestamps().length);
         }
-        for (int deltaIndex = 0; deltaIndex < deltaCount; deltaIndex++) {
+        for (int sampleIndex = 0; sampleIndex < sampleCount; sampleIndex++) {
             // Read wheel positions
             SwerveModulePosition[] highFreqModulePositions = new SwerveModulePosition[4];
             for (int moduleIndex = 0; moduleIndex < 4; moduleIndex++) {
                 highFreqModulePositions[moduleIndex] =
                         new SwerveModulePosition(
-                                modules[moduleIndex].getHighFreqDriveDistances()[deltaIndex],
+                                modules[moduleIndex].getHighFreqDriveDistances()[sampleIndex],
                                 Rotation2d.fromRadians(
-                                        modules[moduleIndex].getHighFreqAngles()[deltaIndex]));
+                                        modules[moduleIndex].getHighFreqAngles()[sampleIndex]));
             }
-            poseEstimator.update(getRawYaw(), highFreqModulePositions);
+            poseEstimator.updateWithTime(
+                    modules[0].getHighFreqTimestamps()[sampleIndex],
+                    getRawYaw(),
+                    highFreqModulePositions);
             botPose = poseEstimator.getEstimatedPosition();
         }
     }

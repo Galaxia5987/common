@@ -13,7 +13,6 @@ import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
-import java.util.List;
 import java.util.Queue;
 import lib.PhoenixOdometryThread;
 import lib.Utils;
@@ -34,6 +33,7 @@ public class ModuleIOTalonFX implements ModuleIO {
             new VelocityVoltage(0).withEnableFOC(true);
     private final Queue<Double> distanceQueue;
     private final Queue<Double> angleQueue;
+    private final Queue<Double> timestampQueue;
     private Rotation2d angleSetpoint = new Rotation2d();
     private Rotation2d currentAngle = new Rotation2d();
     private double driveMotorVelocitySetpoint = 0;
@@ -79,6 +79,8 @@ public class ModuleIOTalonFX implements ModuleIO {
                 PhoenixOdometryThread.getInstance()
                         .registerSignal(angleMotor, anglePositionSignal, angleVelocitySignal);
 
+        timestampQueue = PhoenixOdometryThread.getInstance().makeTimestampQueue();
+
         BaseStatusSignal.setUpdateFrequencyForAll(
                 SwerveConstants.ODOMETRY_FREQUENCY,
                 drivePositionSignal,
@@ -110,23 +112,13 @@ public class ModuleIOTalonFX implements ModuleIO {
         inputs.moduleDistance = getModulePosition().distanceMeters;
         inputs.moduleState = getModuleState();
 
-        List<Double> distanceList = distanceQueue.stream().toList();
-        int nD = distanceList.size();
-        inputs.highFreqDistances = new double[nD];
-        for (int i = 0; i < nD; i++) {
-            inputs.highFreqDistances[i] =
-                    Units.rpsToMetersPerSecond(
-                            distanceList.get(i), SwerveConstants.WHEEL_DIAMETER / 2);
-        }
-        distanceQueue.clear();
+        inputs.highFreqDistances = distanceQueue.stream().mapToDouble((Double d) -> d).toArray();
+        inputs.highFreqAngles = angleQueue.stream().mapToDouble((Double d) -> d).toArray();
+        inputs.highFreqTimestamps = timestampQueue.stream().mapToDouble((Double d) -> d).toArray();
 
-        List<Double> angleList = angleQueue.stream().toList();
-        int nA = angleList.size();
-        inputs.highFreqAngles = new double[nA];
-        for (int i = 0; i < nA; i++) {
-            inputs.highFreqAngles[i] = Units.rpsToRadsPerSec(angleList.get(i));
-        }
+        distanceQueue.clear();
         angleQueue.clear();
+        timestampQueue.clear();
 
         if (hasPIDChanged(SwerveConstants.PID_VALUES)) updatePID();
     }

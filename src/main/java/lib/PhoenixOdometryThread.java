@@ -19,12 +19,13 @@ import com.ctre.phoenix6.StatusSignal;
 import com.ctre.phoenix6.hardware.ParentDevice;
 import frc.robot.swerve.SwerveConstants;
 import frc.robot.swerve.SwerveDrive;
+import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Queue;
-import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
+import org.littletonrobotics.junction.Logger;
 
 /**
  * Provides an interface for asynchronously reading high-frequency measurements to a set of queues.
@@ -35,14 +36,20 @@ import java.util.concurrent.locks.ReentrantLock;
  * time synchronization.
  */
 public class PhoenixOdometryThread extends Thread {
+    private static PhoenixOdometryThread instance = null;
     private final Lock signalsLock =
             new ReentrantLock(); // Prevents conflicts when registering signals
     private final List<StatusSignal<Double>> signals = new ArrayList<>();
     private final List<StatusSignal<Double>> signalSlopes = new ArrayList<>();
     private final List<Queue<Double>> queues = new ArrayList<>();
+    private final List<Queue<Double>> timestampQueues = new ArrayList<>();
     private boolean isCANFD = false;
 
-    private static PhoenixOdometryThread instance = null;
+    private PhoenixOdometryThread() {
+        setName("PhoenixOdometryThread");
+        setDaemon(true);
+        start();
+    }
 
     public static PhoenixOdometryThread getInstance() {
         if (instance == null) {
@@ -51,15 +58,20 @@ public class PhoenixOdometryThread extends Thread {
         return instance;
     }
 
-    private PhoenixOdometryThread() {
-        setName("PhoenixOdometryThread");
-        setDaemon(true);
-        start();
+    public Queue<Double> makeTimestampQueue() {
+        Queue<Double> queue = new ArrayDeque<>(100);
+        SwerveDrive.odometryLock.lock();
+        try {
+            timestampQueues.add(queue);
+        } finally {
+            SwerveDrive.odometryLock.unlock();
+        }
+        return queue;
     }
 
     public Queue<Double> registerSignal(
             ParentDevice device, StatusSignal<Double> signal, StatusSignal<Double> signalSlope) {
-        Queue<Double> queue = new ArrayBlockingQueue<>(100);
+        Queue<Double> queue = new ArrayDeque<>(100);
         signalsLock.lock();
         SwerveDrive.odometryLock.lock();
         try {
@@ -113,11 +125,22 @@ public class PhoenixOdometryThread extends Thread {
             // Save new data to queues
             SwerveDrive.odometryLock.lock();
             try {
+                double timestamp = Logger.getRealTimestamp() / 1e6;
+                double totalLatency = 0.0;
+                for (BaseStatusSignal signal : signals) {
+                    totalLatency += signal.getTimestamp().getLatency();
+                }
+                if (!signals.isEmpty()) {
+                    timestamp -= totalLatency / signals.size();
+                }
                 for (int i = 0; i < signals.size(); i++) {
                     double value =
                             BaseStatusSignal.getLatencyCompensatedValue(
                                     signals.get(i), signalSlopes.get(i));
                     queues.get(i).offer(value);
+                }
+                for (Queue<Double> timestampQueue : timestampQueues) {
+                    timestampQueue.offer(timestamp);
                 }
             } finally {
                 SwerveDrive.odometryLock.unlock();
