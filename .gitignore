@@ -170,3 +170,4 @@ BuildConstants.java
 *.xml
 
 networktables*
+/ctre_sim
