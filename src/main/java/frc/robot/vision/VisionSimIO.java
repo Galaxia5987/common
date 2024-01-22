@@ -1,7 +1,6 @@
 package frc.robot.vision;
 
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
-import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Transform3d;
 import frc.robot.swerve.SwerveDrive;
@@ -23,17 +22,12 @@ public class VisionSimIO implements VisionIO {
     private Result result;
     private AprilTagFieldLayout tagFieldLayout;
 
-    public VisionSimIO(PhotonCamera photonCamera, Transform3d robotToCam) {
+    public VisionSimIO(
+            PhotonCamera photonCamera, Transform3d robotToCam, AprilTagFieldLayout tagFieldLayout) {
         this.robotToCam = robotToCam;
         this.photonCamera = photonCamera;
+        this.tagFieldLayout = tagFieldLayout;
         cameraSim = new PhotonCameraSim(photonCamera, VisionConstants.simCameraProperties);
-        try {
-            tagFieldLayout =
-                    AprilTagFieldLayout.loadFromResource(
-                            AprilTagFields.k2024Crescendo.m_resourceFile);
-        } catch (Exception e) {
-            return;
-        }
         simVisionSystem = SimVisionSystem.getInstance(cameraSim, robotToCam);
     }
 
