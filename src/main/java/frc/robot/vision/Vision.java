@@ -41,8 +41,8 @@ public class Vision extends SubsystemBase {
 
     @Override
     public void periodic() {
-        List<Double> totalAverageAmbiguties = new ArrayList<>();
-        double totalAverageAMBIGUITY;
+        List<Double> totalAverageAmbiguities = new ArrayList<>();
+        double totalAverageAmbiguity;
         for (int i = 0; i < modules.length; i++) {
             VisionModule module = modules[i];
             for (VisionIO io : module.ios) {
@@ -50,9 +50,9 @@ public class Vision extends SubsystemBase {
                 Logger.processInputs(io.getName(), module.inputs);
                 results[i] = io.getLatestResult();
             }
-            totalAverageAmbiguties.add(module.inputs.averageAmbiguity);
+            totalAverageAmbiguities.add(module.inputs.averageAmbiguity);
         }
-        totalAverageAMBIGUITY = Utils.averageAmbiguity(totalAverageAmbiguties);
-        Logger.recordOutput("totalAverageAmbiguties", totalAverageAMBIGUITY);
+        totalAverageAmbiguity = Utils.averageAmbiguity(totalAverageAmbiguities);
+        Logger.recordOutput("totalAverageAmbiguity", totalAverageAmbiguity);
     }
 }
