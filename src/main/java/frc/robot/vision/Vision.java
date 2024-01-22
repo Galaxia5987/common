@@ -5,17 +5,18 @@ import java.util.ArrayList;
 import java.util.List;
 import lib.Utils;
 import org.littletonrobotics.junction.Logger;
+import org.photonvision.EstimatedRobotPose;
 
 public class Vision extends SubsystemBase {
 
     private static Vision INSTANCE = null;
 
     private final VisionModule[] modules;
-    private final Result[] results;
+    private final EstimatedRobotPose[] results;
 
     private Vision(VisionModule... modules) {
         this.modules = modules;
-        results = new Result[modules.length];
+        results = new EstimatedRobotPose[modules.length];
     }
 
     public static Vision getInstance() {
@@ -26,7 +27,7 @@ public class Vision extends SubsystemBase {
         INSTANCE = new Vision(modules);
     }
 
-    public Result[] getResults() {
+    public EstimatedRobotPose[] getResults() {
         return results;
     }
 

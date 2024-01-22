@@ -7,6 +7,7 @@ import frc.robot.swerve.SwerveDrive;
 import java.util.List;
 import java.util.stream.Collectors;
 import lib.Utils;
+import org.photonvision.EstimatedRobotPose;
 import org.photonvision.PhotonCamera;
 import org.photonvision.estimation.TargetModel;
 import org.photonvision.simulation.PhotonCameraSim;
@@ -19,7 +20,7 @@ public class VisionSimIO implements VisionIO {
     private final PhotonCameraSim cameraSim;
     private final Transform3d robotToCam;
     private SimVisionSystem simVisionSystem;
-    private Result result;
+    private EstimatedRobotPose result;
     private AprilTagFieldLayout tagFieldLayout;
 
     public VisionSimIO(
@@ -35,7 +36,7 @@ public class VisionSimIO implements VisionIO {
     public void setPipeLine(int pipeLineIndex) {}
 
     @Override
-    public Result getLatestResult() {
+    public EstimatedRobotPose getLatestResult() {
         return result;
     }
 

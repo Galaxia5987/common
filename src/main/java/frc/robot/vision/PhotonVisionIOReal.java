@@ -3,6 +3,7 @@ package frc.robot.vision;
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Transform3d;
+import org.photonvision.EstimatedRobotPose;
 import org.photonvision.PhotonCamera;
 import org.photonvision.PhotonPoseEstimator;
 
@@ -11,7 +12,7 @@ public class PhotonVisionIOReal implements VisionIO {
     private final PhotonCamera camera;
     private final PhotonPoseEstimator estimator;
     private final Transform3d robotToCamera;
-    private Result result;
+    private EstimatedRobotPose result;
 
     public PhotonVisionIOReal(
             PhotonCamera camera, Transform3d robotToCamera, AprilTagFieldLayout field) {
@@ -60,10 +61,7 @@ public class PhotonVisionIOReal implements VisionIO {
             if (estimatedPose.isPresent()) {
                 inputs.poseFieldOriented = estimatedPose.get().estimatedPose;
 
-                result =
-                        new Result(
-                                estimatedPose.get().timestampSeconds,
-                                estimatedPose.get().estimatedPose);
+                result = estimatedPose.get();
             } else {
                 result = null;
             }
@@ -73,7 +71,7 @@ public class PhotonVisionIOReal implements VisionIO {
     }
 
     @Override
-    public Result getLatestResult() {
+    public EstimatedRobotPose getLatestResult() {
         return result;
     }
 
