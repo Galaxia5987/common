@@ -2,7 +2,6 @@ package frc.robot.vision;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import lib.Utils;
 import org.littletonrobotics.junction.Logger;
@@ -23,13 +22,8 @@ public class Vision extends SubsystemBase {
         return INSTANCE;
     }
 
-    public static void initialize(VisionIO... ios) {
-        INSTANCE =
-                new Vision(
-                        Arrays.stream(ios)
-                                .map(VisionModule::new)
-                                .toList()
-                                .toArray(new VisionModule[0]));
+    public static void initialize(VisionModule... modules) {
+        INSTANCE = new Vision(modules);
     }
 
     public Result[] getResults() {
@@ -50,9 +44,11 @@ public class Vision extends SubsystemBase {
         double totalAverageAMBIGUITY;
         for (int i = 0; i < modules.length; i++) {
             VisionModule module = modules[i];
-            module.io.updateInputs(module.inputs);
-            Logger.processInputs(module.io.getName(), module.inputs);
-            results[i] = module.io.getLatestResult();
+            for (VisionIO io : module.ios) {
+                io.updateInputs(module.inputs);
+                Logger.processInputs(io.getName(), module.inputs);
+                results[i] = io.getLatestResult();
+            }
             totalAverageAmbiguties.add(module.inputs.averageAmbiguity);
         }
         totalAverageAMBIGUITY = Utils.averageAmbiguity(totalAverageAmbiguties);
