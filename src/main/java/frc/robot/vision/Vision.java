@@ -2,6 +2,7 @@ package frc.robot.vision;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import lib.Utils;
 import org.littletonrobotics.junction.Logger;
@@ -32,10 +33,8 @@ public class Vision extends SubsystemBase {
     }
 
     public double getAverageAmbiguity() {
-        ArrayList<Double> ambiguityList = new ArrayList<>();
-        for (VisionModule module : modules) {
-            ambiguityList.add(module.inputs.bestTargetAmbiguity);
-        }
+        List<Double> ambiguityList =
+                Arrays.stream(modules).map((module) -> module.inputs.averageAmbiguity).toList();
         return Utils.averageAmbiguity(ambiguityList);
     }
 
