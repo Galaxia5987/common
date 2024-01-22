@@ -14,6 +14,11 @@ public class SparkMaxSim extends SimMotor {
     }
 
     public SparkMaxSim(
+            DCMotor motor, double gearing, double jKgMetersSquared, double conversionFactor) {
+        super(motor, jKgMetersSquared, gearing, conversionFactor);
+    }
+
+    public SparkMaxSim(
             LinearSystem<N2, N1, N2> model,
             int numMotors,
             double gearing,

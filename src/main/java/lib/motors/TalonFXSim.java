@@ -21,6 +21,11 @@ public class TalonFXSim extends SimMotor {
     }
 
     public TalonFXSim(
+            DCMotor motor, double gearing, double jKgMetersSquared, double conversionFactor) {
+        super(motor, jKgMetersSquared, gearing, conversionFactor);
+    }
+
+    public TalonFXSim(
             int numMotors, double gearing, double jKgMetersSquared, double conversionFactor) {
         super(DCMotor.getFalcon500(numMotors), jKgMetersSquared, gearing, conversionFactor);
     }
