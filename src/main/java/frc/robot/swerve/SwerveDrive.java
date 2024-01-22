@@ -238,7 +238,7 @@ public class SwerveDrive extends SubsystemBase {
                 new ChassisSpeeds(
                         SwerveConstants.MAX_X_Y_VELOCITY * xOutput,
                         SwerveConstants.MAX_X_Y_VELOCITY * yOutput,
-                        SwerveConstants.MAX_OMEGA_VELOCITY * omegaOutput); // removed angleFF
+                        SwerveConstants.MAX_OMEGA_VELOCITY * omegaOutput);
 
         drive(chassisSpeeds, fieldOriented);
     }
