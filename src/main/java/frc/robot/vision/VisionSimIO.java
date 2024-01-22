@@ -11,6 +11,7 @@ import org.photonvision.EstimatedRobotPose;
 import org.photonvision.PhotonCamera;
 import org.photonvision.estimation.TargetModel;
 import org.photonvision.simulation.PhotonCameraSim;
+import org.photonvision.simulation.SimCameraProperties;
 import org.photonvision.simulation.VisionTargetSim;
 import org.photonvision.targeting.PhotonPipelineResult;
 import org.photonvision.targeting.PhotonTrackedTarget;
@@ -24,11 +25,14 @@ public class VisionSimIO implements VisionIO {
     private AprilTagFieldLayout tagFieldLayout;
 
     public VisionSimIO(
-            PhotonCamera photonCamera, Transform3d robotToCam, AprilTagFieldLayout tagFieldLayout) {
+            PhotonCamera photonCamera,
+            Transform3d robotToCam,
+            AprilTagFieldLayout tagFieldLayout,
+            SimCameraProperties properties) {
         this.robotToCam = robotToCam;
         this.photonCamera = photonCamera;
         this.tagFieldLayout = tagFieldLayout;
-        cameraSim = new PhotonCameraSim(photonCamera, VisionConstants.simCameraProperties);
+        cameraSim = new PhotonCameraSim(photonCamera, properties);
         simVisionSystem = SimVisionSystem.getInstance(cameraSim, robotToCam);
     }
 
