@@ -18,12 +18,24 @@ public class SimMotor {
     protected double lastTimestampSeconds = 0;
     protected double voltageRequest = 0;
 
-    public SimMotor(LinearSystem<N2, N1, N2> model, DCMotor motor, double gearing) {
+    protected final double conversionFactor;
+
+    public SimMotor(
+            LinearSystem<N2, N1, N2> model,
+            DCMotor motor,
+            double gearing,
+            double conversionFactor) {
         this.motorSim = new DCMotorSim(model, motor, gearing);
+        this.conversionFactor = conversionFactor / gearing;
     }
 
-    public SimMotor(DCMotor motor, double jKgMetersSquared, double gearing) {
-        this(LinearSystemId.createDCMotorSystem(motor, jKgMetersSquared, gearing), motor, gearing);
+    public SimMotor(
+            DCMotor motor, double jKgMetersSquared, double gearing, double conversionFactor) {
+        this(
+                LinearSystemId.createDCMotorSystem(motor, jKgMetersSquared, gearing),
+                motor,
+                gearing,
+                conversionFactor);
     }
 
     public void setController(PIDController controller) {

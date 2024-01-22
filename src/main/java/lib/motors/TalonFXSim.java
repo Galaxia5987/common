@@ -12,12 +12,17 @@ public class TalonFXSim extends SimMotor {
 
     private final Derivative acceleration = new Derivative();
 
-    public TalonFXSim(LinearSystem<N2, N1, N2> model, int numMotors, double gearing) {
-        super(model, DCMotor.getFalcon500(numMotors), gearing);
+    public TalonFXSim(
+            LinearSystem<N2, N1, N2> model,
+            int numMotors,
+            double gearing,
+            double conversionFactor) {
+        super(model, DCMotor.getFalcon500(numMotors), gearing, conversionFactor);
     }
 
-    public TalonFXSim(int numMotors, double gearing, double jKgMetersSquared) {
-        super(DCMotor.getFalcon500(numMotors), jKgMetersSquared, gearing);
+    public TalonFXSim(
+            int numMotors, double gearing, double jKgMetersSquared, double conversionFactor) {
+        super(DCMotor.getFalcon500(numMotors), jKgMetersSquared, gearing, conversionFactor);
     }
 
     public void setControl(DutyCycleOut request) {
@@ -69,12 +74,12 @@ public class TalonFXSim extends SimMotor {
         this.setControl(new VoltageOut(voltageRequest + request.FeedForward));
     }
 
-    public double getRotorVelocity() {
-        return Units.rpmToRps(motorSim.getAngularVelocityRPM());
+    public double getVelocity() {
+        return Units.rpmToRps(motorSim.getAngularVelocityRPM()) * conversionFactor;
     }
 
-    public double getRotorPosition() {
-        return motorSim.getAngularPositionRotations();
+    public double getPosition() {
+        return motorSim.getAngularPositionRotations() * conversionFactor;
     }
 
     public double getAcceleration() {

@@ -30,13 +30,15 @@ public class ModuleIOSim implements ModuleIO {
                 new TalonFXSim(
                         1,
                         1 / SwerveConstants.DRIVE_REDUCTION,
-                        SwerveConstants.DRIVE_MOTOR_MOMENT_OF_INERTIA);
+                        SwerveConstants.DRIVE_MOTOR_MOMENT_OF_INERTIA,
+                        1);
 
         angleMotor =
                 new TalonFXSim(
                         1,
                         1 / SwerveConstants.ANGLE_REDUCTION,
-                        SwerveConstants.ANGLE_MOTOR_MOMENT_OF_INERTIA);
+                        SwerveConstants.ANGLE_MOTOR_MOMENT_OF_INERTIA,
+                        1);
 
         velocityController =
                 new PIDController(
@@ -63,18 +65,18 @@ public class ModuleIOSim implements ModuleIO {
         inputs.driveMotorAppliedVoltage = driveMotor.getAppliedVoltage();
         inputs.driveMotorVelocity =
                 Units.rpsToMetersPerSecond(
-                        driveMotor.getRotorVelocity(), SwerveConstants.WHEEL_DIAMETER / 2);
+                        driveMotor.getVelocity(), SwerveConstants.WHEEL_DIAMETER / 2);
         currentVelocity = inputs.driveMotorVelocity;
         inputs.driveMotorVelocitySetpoint = velocitySetpoint;
 
         inputs.angleMotorAppliedVoltage = angleMotor.getAppliedVoltage();
-        inputs.angleMotorVelocity = angleMotor.getRotorVelocity();
+        inputs.angleMotorVelocity = angleMotor.getVelocity();
         inputs.angleSetpoint = angleSetpoint;
         inputs.angle = Utils.normalize(currentAngle);
 
         inputs.moduleDistance =
                 Units.rpsToMetersPerSecond(
-                        driveMotor.getRotorPosition(), SwerveConstants.WHEEL_DIAMETER / 2);
+                        driveMotor.getPosition(), SwerveConstants.WHEEL_DIAMETER / 2);
         inputs.moduleState = getModuleState();
 
         if (hasPIDChanged(SwerveConstants.PID_VALUES)) updatePID();
@@ -125,7 +127,7 @@ public class ModuleIOSim implements ModuleIO {
     public SwerveModulePosition getModulePosition() {
         return new SwerveModulePosition(
                 Units.rpsToMetersPerSecond(
-                        driveMotor.getRotorPosition(), SwerveConstants.WHEEL_DIAMETER / 2),
+                        driveMotor.getPosition(), SwerveConstants.WHEEL_DIAMETER / 2),
                 currentAngle);
     }
 
