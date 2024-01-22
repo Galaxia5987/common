@@ -161,8 +161,7 @@ bin/
 .xml
 .bck
 
-# Simulation GUI and other tools window save file
-*-window.json
+simgui*
 
 main/java/frc/robot/common/
 
