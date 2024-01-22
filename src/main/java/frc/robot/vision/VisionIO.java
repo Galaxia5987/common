@@ -19,7 +19,6 @@ public interface VisionIO {
 
     @AutoLog
     class VisionInputs {
-        public double[] totalAvaregeAmbiguties = new double[8];
         long latency = 0;
         boolean hasTargets = false;
         double yaw = 0;
