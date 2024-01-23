@@ -31,12 +31,15 @@ public class SparkMaxSim extends SimMotor {
     }
 
     public void setInputVoltage(double voltage) {
-        voltageRequest = voltage;
-        motorSim.setInputVoltage(voltageRequest);
+        voltageRequest = MotorSetpoint.simpleVoltage(voltage);
     }
 
     public void setReference(double value, CANSparkMax.ControlType ctrl) {
         setReference(value, ctrl, 0);
+    }
+
+    private void setInputVoltage(MotorSetpoint voltage) {
+        voltageRequest = voltage;
     }
 
     public void setReference(double value, CANSparkMax.ControlType ctrl, double arbFeedforward) {
@@ -45,18 +48,18 @@ public class SparkMaxSim extends SimMotor {
                 set(value);
                 break;
             case kPosition:
-                setInputVoltage(controller.calculate(getPosition(), value) + arbFeedforward);
+                setInputVoltage(() -> controller.calculate(getPosition(), value) + arbFeedforward);
                 break;
             case kSmartMotion:
                 setInputVoltage(
-                        profiledController.calculate(getPosition(), value) + arbFeedforward);
+                        () -> profiledController.calculate(getPosition(), value) + arbFeedforward);
                 break;
             case kVelocity:
-                setInputVoltage(controller.calculate(getVelocity(), value) + arbFeedforward);
+                setInputVoltage(() -> controller.calculate(getVelocity(), value) + arbFeedforward);
                 break;
             case kSmartVelocity:
                 setInputVoltage(
-                        profiledController.calculate(getVelocity(), value) + arbFeedforward);
+                        () -> profiledController.calculate(getVelocity(), value) + arbFeedforward);
                 break;
             case kVoltage:
                 setInputVoltage(value);
@@ -68,11 +71,11 @@ public class SparkMaxSim extends SimMotor {
     }
 
     public double getBusVoltage() {
-        return voltageRequest;
+        return voltageRequest.getAsDouble();
     }
 
     public double getAppliedOutput() {
-        return voltageRequest / 12.0;
+        return voltageRequest.getAsDouble() / 12.0;
     }
 
     public double getVelocity() {

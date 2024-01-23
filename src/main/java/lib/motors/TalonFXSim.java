@@ -30,53 +30,49 @@ public class TalonFXSim extends SimMotor {
         super(DCMotor.getFalcon500(numMotors), jKgMetersSquared, gearing, conversionFactor);
     }
 
+    @Override
+    public void update(double timestampSeconds) {
+        super.update(timestampSeconds);
+
+        acceleration.update(getVelocity(), timestampSeconds);
+    }
+
     public void setControl(DutyCycleOut request) {
-        this.setControl(new VoltageOut(request.Output * 12));
+        setControl(new VoltageOut(request.Output * 12));
     }
 
     public void setControl(VoltageOut request) {
-        voltageRequest = request.Output;
-        motorSim.setInputVoltage(voltageRequest);
+        voltageRequest = MotorSetpoint.simpleVoltage(request.Output);
     }
 
     public void setControl(PositionDutyCycle request) {
-        voltageRequest =
-                controller.calculate(motorSim.getAngularPositionRotations(), request.Position);
-        this.setControl(new VoltageOut(voltageRequest + 12 * request.FeedForward));
+        setControl(new PositionVoltage(request.Position).withFeedForward(request.FeedForward * 12));
     }
 
     public void setControl(PositionVoltage request) {
         voltageRequest =
-                controller.calculate(motorSim.getAngularPositionRotations(), request.Position);
-        this.setControl(new VoltageOut(voltageRequest + request.FeedForward));
+                () -> controller.calculate(getPosition(), request.Position) + request.FeedForward;
     }
 
     public void setControl(VelocityDutyCycle request) {
-        voltageRequest =
-                controller.calculate(
-                        Units.rpmToRps(motorSim.getAngularVelocityRPM()), request.Velocity);
-        this.setControl(new VoltageOut(voltageRequest + 12 * request.FeedForward));
+        setControl(new VelocityVoltage(request.Velocity).withFeedForward(request.FeedForward * 12));
     }
 
     public void setControl(VelocityVoltage request) {
         voltageRequest =
-                controller.calculate(
-                        Units.rpmToRps(motorSim.getAngularVelocityRPM()), request.Velocity);
-        this.setControl(new VoltageOut(voltageRequest + request.FeedForward));
+                () -> controller.calculate(getVelocity(), request.Velocity) + request.FeedForward;
     }
 
     public void setControl(MotionMagicDutyCycle request) {
-        voltageRequest =
-                profiledController.calculate(
-                        motorSim.getAngularPositionRotations(), request.Position);
-        this.setControl(new VoltageOut(voltageRequest + 12 * request.FeedForward));
+        setControl(
+                new MotionMagicVoltage(request.Position).withFeedForward(request.FeedForward * 12));
     }
 
     public void setControl(MotionMagicVoltage request) {
         voltageRequest =
-                profiledController.calculate(
-                        motorSim.getAngularPositionRotations(), request.Position);
-        this.setControl(new VoltageOut(voltageRequest + request.FeedForward));
+                () ->
+                        profiledController.calculate(getPosition(), request.Position)
+                                + request.FeedForward;
     }
 
     public double getVelocity() {
@@ -96,6 +92,6 @@ public class TalonFXSim extends SimMotor {
     }
 
     public double getAppliedVoltage() {
-        return voltageRequest;
+        return voltageRequest.getAsDouble();
     }
 }

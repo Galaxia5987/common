@@ -8,6 +8,7 @@ import edu.wpi.first.math.system.LinearSystem;
 import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.math.system.plant.LinearSystemId;
 import edu.wpi.first.wpilibj.simulation.DCMotorSim;
+import java.util.function.DoubleSupplier;
 
 public class SimMotor {
 
@@ -16,7 +17,7 @@ public class SimMotor {
     protected ProfiledPIDController profiledController = null;
 
     protected double lastTimestampSeconds = 0;
-    protected double voltageRequest = 0;
+    protected MotorSetpoint voltageRequest = MotorSetpoint.simpleVoltage(0);
 
     protected final double conversionFactor;
 
@@ -47,8 +48,15 @@ public class SimMotor {
     }
 
     public void update(double timestampSeconds) {
+        motorSim.setInputVoltage(voltageRequest.getAsDouble());
         motorSim.update(timestampSeconds - lastTimestampSeconds);
-
         lastTimestampSeconds = timestampSeconds;
+    }
+
+    protected interface MotorSetpoint extends DoubleSupplier {
+
+        static MotorSetpoint simpleVoltage(double voltage) {
+            return () -> voltage;
+        }
     }
 }
