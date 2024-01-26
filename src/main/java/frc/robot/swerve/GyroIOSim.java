@@ -19,5 +19,7 @@ public class GyroIOSim implements GyroIO {
     @Override
     public void updateInputs(SwerveDriveInputs inputs) {
         yaw.update(inputs.currentSpeeds.omegaRadiansPerSecond);
+        inputs.yaw = Rotation2d.fromRadians(yaw.get());
+        inputs.rawYaw = inputs.yaw;
     }
 }

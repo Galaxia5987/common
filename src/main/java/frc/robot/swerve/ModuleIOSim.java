@@ -9,7 +9,6 @@ import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
-import lib.Utils;
 import lib.motors.TalonFXSim;
 import lib.units.Units;
 
@@ -72,15 +71,16 @@ public class ModuleIOSim implements ModuleIO {
         inputs.angleMotorAppliedVoltage = angleMotor.getAppliedVoltage();
         inputs.angleMotorVelocity = angleMotor.getVelocity();
         inputs.angleSetpoint = angleSetpoint;
-        inputs.angle = Utils.normalize(currentAngle);
+        inputs.angle = Rotation2d.fromRotations(angleMotor.getPosition());
+        currentAngle = inputs.angle;
 
         inputs.moduleDistance =
                 Units.rpsToMetersPerSecond(
                         driveMotor.getPosition(), SwerveConstants.WHEEL_DIAMETER / 2);
         inputs.moduleState = getModuleState();
 
-        inputs.highFreqDistances = new double[] {driveMotor.getPosition()};
-        inputs.highFreqAngles = new double[] {inputs.angle.getRotations()};
+        inputs.highFreqDistances = new double[] {inputs.moduleDistance};
+        inputs.highFreqAngles = new double[] {inputs.angle.getRadians()};
         inputs.highFreqTimestamps = new double[] {Timer.getFPGATimestamp()};
 
         if (hasPIDChanged(SwerveConstants.PID_VALUES)) updatePID();
