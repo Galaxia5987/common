@@ -7,6 +7,7 @@ import frc.robot.swerve.SwerveDrive;
 import java.util.List;
 import java.util.stream.Collectors;
 import lib.Utils;
+import org.littletonrobotics.junction.Logger;
 import org.photonvision.EstimatedRobotPose;
 import org.photonvision.PhotonCamera;
 import org.photonvision.estimation.TargetModel;
@@ -82,6 +83,8 @@ public class VisionSimIO implements VisionIO {
                 inputs.ambiguities[i] = ambiguities.get(i);
             }
             PhotonTrackedTarget bestTarget = latestResult.getBestTarget();
+            Logger.recordOutput(cameraSim.getCamera().getName(),
+                    latestResult.targets.stream().mapToInt(PhotonTrackedTarget::getFiducialId).toArray());
             if (bestTarget != null) {
                 inputs.area = bestTarget.getArea();
                 inputs.pitch = bestTarget.getPitch();
