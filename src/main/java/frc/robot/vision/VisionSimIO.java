@@ -33,6 +33,7 @@ public class VisionSimIO implements VisionIO {
         this.photonCamera = photonCamera;
         this.tagFieldLayout = tagFieldLayout;
         cameraSim = new PhotonCameraSim(photonCamera, properties);
+        cameraSim.setMaxSightRange(5);
         simVisionSystem = SimVisionSystem.getInstance(cameraSim, robotToCam);
     }
 
