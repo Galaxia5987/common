@@ -87,14 +87,14 @@ public class SwerveConstants {
 
     public static void initConstants(boolean isWCP, boolean isReal) {
         if (!isReal) {
-            DRIVE_KP.initDefault(6.5);
+            DRIVE_KP.initDefault(12.0);
             DRIVE_KI.initDefault(0.0);
             DRIVE_KD.initDefault(0.0);
             DRIVE_KV.initDefault(0.0);
             DRIVE_KS.initDefault(0.0);
             DRIVE_KA.initDefault(0.0);
 
-            ANGLE_KP.initDefault(30.0);
+            ANGLE_KP.initDefault(100.0);
             ANGLE_KI.initDefault(0.0);
             ANGLE_KD.initDefault(0.0);
             ANGLE_KS.initDefault(0.0);
