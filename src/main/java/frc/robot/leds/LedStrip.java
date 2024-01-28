@@ -4,10 +4,11 @@ import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.wpilibj.AddressableLED;
 import edu.wpi.first.wpilibj.AddressableLEDBuffer;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 import java.awt.*;
 
-public class LedStrip {
+public class LedStrip extends SubsystemBase {
     private final AddressableLED ledStrip;
     private AddressableLEDBuffer ledBuffer;
 
@@ -158,7 +159,8 @@ public class LedStrip {
         }
     }
 
-    public void updateStrip() {
+    @Override
+    public void periodic() {
         if (mode == Mode.SOLID) {
             setSolidColor(currentColor);
         }
