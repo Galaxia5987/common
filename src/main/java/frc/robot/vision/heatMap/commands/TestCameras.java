@@ -123,7 +123,7 @@ public class TestCameras extends Command {
             }
 
             gridsToCheck = Arrays.stream(gridsToCheck).filter((p) ->
-                    navGrid[(int) p.getFirst()][(int) p.getSecond()])
+                    !navGrid[(int) p.getSecond()][(int) p.getFirst()])
                     .toArray(Pair[]::new);
         } catch (Exception e) {
             e.printStackTrace();
