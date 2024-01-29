@@ -36,11 +36,6 @@ public class LedStrip extends SubsystemBase {
         timer.reset();
     }
 
-    /**
-     * Sets the length of the led strip.
-     *
-     * @param length Number of leds in the strip.
-     */
     public void setLength(int length) {
         ledBuffer = new AddressableLEDBuffer(length);
         ledStrip.setLength(length);
@@ -68,7 +63,6 @@ public class LedStrip extends SubsystemBase {
 
     /**
      * Sets the led blink time.
-     *
      * @param blinkTime Blink time in seconds
      */
     private void setBlinkTime(double blinkTime) {
@@ -77,18 +71,12 @@ public class LedStrip extends SubsystemBase {
 
     /**
      * Sets the duration of the fade effect.
-     *
      * @param duration Fade duration in seconds.
      */
     private void setFadeDuration(double duration) {
         fadeDuration = duration;
     }
 
-    /**
-     * Sets the led strip to a solid color
-     *
-     * @param color Color to set the strip to.
-     */
     private void setSolidColor(Color color) {
         var appliedColor = new edu.wpi.first.wpilibj.util.Color(color.getRed(), color.getGreen(), color.getBlue());
         for (int i = 0; i < ledBuffer.getLength(); i++) {
@@ -99,10 +87,9 @@ public class LedStrip extends SubsystemBase {
 
     /**
      * Interpolates between two colors.
-     *
      * @param initial Initial color.
      * @param goal    Final Color.
-     * @return
+     * @return Solution of the interpolation in the current time.
      */
     private Translation3d colorInterpolation(Color initial, Color goal) {
         var initialHSB = Color.RGBtoHSB(initial.getRed(), initial.getGreen(), initial.getBlue(), new float[3]);
@@ -118,10 +105,6 @@ public class LedStrip extends SubsystemBase {
         return solution;
     }
 
-
-    /**
-     * Sets the led strip to a rainbow pattern.
-     */
     private void setRainbow() {
         for (int i = 0; i < ledBuffer.getLength(); i++) {
             ledBuffer.setHSV(i, rainbowHue, 255, 180);
