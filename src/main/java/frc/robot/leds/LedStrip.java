@@ -116,28 +116,23 @@ public class LedStrip extends SubsystemBase {
 
     @Override
     public void periodic() {
-        if (mode == LedMode.SOLID) {
-            setSolidColor(currentColor);
-        }
-        if (mode == LedMode.BLINK) {
-            if (currentColor == primary) currentColor = secondary;
-            else currentColor = primary;
+        switch (mode){
+            case SOLID:
+                setSolidColor(currentColor);
+
+            case BLINK:
+                if (currentColor == primary) currentColor = secondary;
+                else currentColor = primary;
 
             if (timer.hasElapsed(blinkTime)) {
                 setSolidColor(currentColor);
-            }
-            timer.reset();
-        }
-        if (mode == LedMode.FADE) {
-            solution = colorInterpolation(primary, secondary);
-            setSolidColor(new Color(
-                    (int) solution.getX(),
-                    (int) solution.getY(),
-                    (int) solution.getZ()
-            ));
-        }
-        if (mode == LedMode.RAINBOW) {
-            setRainbow();
+                timer.reset();
+
+            case FADE:
+                setSolidColor(fadeColor);
+
+            case RAINBOW:
+                setRainbow();
         }
     }
 }
