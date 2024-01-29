@@ -62,34 +62,8 @@ public class LedStrip extends SubsystemBase {
         secondary = color;
     }
 
-    /**
-     * Switch mode to solid color.
-     */
-    public void solid() {
-        mode = Mode.SOLID;
-    }
-
-    /**
-     * Switch mode to blink.
-     * (Should use setBlinkTime before this)
-     */
-    public void blink() {
-        mode = Mode.BLINK;
-    }
-
-    /**
-     * Switch mode to fade.
-     * (Should use setFadeDuration before this)
-     */
-    public void fade() {
-        mode = Mode.FADE;
-    }
-
-    /**
-     * Switch mode to rainbow.
-     */
-    public void rainbow() {
-        mode = Mode.RAINBOW;
+    private void setMode(LedMode mode) {
+        this.mode = mode;
     }
 
     /**
