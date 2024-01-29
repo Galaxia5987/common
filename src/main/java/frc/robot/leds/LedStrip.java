@@ -46,12 +46,15 @@ public class LedStrip extends SubsystemBase {
         ledStrip.setLength(length);
     }
 
-    /**
-     * Sets the primary color of the strip.
-     *
-     * @param color Primary color.
-     */
-    public void setPrimary(Color color) {
+    public void setState(LedState state){
+        setBlinkTime(state.getBlinkTime());
+        setFadeDuration(state.getFadeDuration());
+        setMode(state.getMode());
+        setPrimary(state.getPrimary());
+        setSecondary(state.getSecondary());
+    }
+
+    private void setPrimary(Color color) {
         primary = color;
     }
 
