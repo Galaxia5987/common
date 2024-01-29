@@ -51,10 +51,21 @@ public class LedStrip extends SubsystemBase {
         setSecondary(state.getSecondary());
     }
 
+    /**
+     * Sets the primary color of the LEDs.
+     * It will be used when in the solid mode and as the
+     * initial color in the blink and fade modes
+     * @param color
+     */
     private void setPrimary(Color color) {
         primary = color;
     }
 
+    /**
+     * Sets the secondary color of the LEDs.
+     * It will be used as the second color in the blink and fade modes
+     * @param color
+     */
     private void setSecondary(Color color) {
         secondary = color;
     }
@@ -88,10 +99,10 @@ public class LedStrip extends SubsystemBase {
     }
 
     /**
-     * Interpolates between two colors.
+     * Updates fadeColor to the correct color for a fade effect
+     * at the current time by interpolating the two given colors.
      * @param initial Initial color.
      * @param goal    Final Color.
-     * @return Solution of the interpolation in the current time.
      */
     private void colorInterpolation(Color initial, Color goal) {
         var initialHSB = Color.RGBtoHSB(initial.getRed(), initial.getGreen(), initial.getBlue(), new float[3]);
