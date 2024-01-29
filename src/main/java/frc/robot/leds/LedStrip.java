@@ -19,9 +19,9 @@ public class LedStrip extends SubsystemBase {
     private Color primary = new Color(0);
     private Color secondary = new Color(0);
     private Color currentColor = primary;
+    private Color fadeColor = primary;
 
     private final Timer timer = new Timer();
-    private Translation3d solution = new Translation3d();
     private LedMode mode = LedMode.SOLID;
 
     public LedStrip(int port, int length) {
@@ -93,7 +93,7 @@ public class LedStrip extends SubsystemBase {
      * @param goal    Final Color.
      * @return Solution of the interpolation in the current time.
      */
-    private Translation3d colorInterpolation(Color initial, Color goal) {
+    private void colorInterpolation(Color initial, Color goal) {
         var initialHSB = Color.RGBtoHSB(initial.getRed(), initial.getGreen(), initial.getBlue(), new float[3]);
         var goalHSB = Color.RGBtoHSB(goal.getRed(), goal.getGreen(), goal.getBlue(), new float[3]);
 
@@ -103,8 +103,12 @@ public class LedStrip extends SubsystemBase {
         double d = initialPoint.getDistance(goalPoint) / fadeDuration;
         double t = d / (initialPoint.minus(goalPoint)).getNorm();
 
-        solution = initialPoint.interpolate(goalPoint, t);
-        return solution;
+        Translation3d solution = initialPoint.interpolate(goalPoint, t);
+        fadeColor = new Color(
+                (int)solution.getX(),
+                (int)solution.getY(),
+                (int)solution.getZ()
+        );
     }
 
     private void setRainbow() {
