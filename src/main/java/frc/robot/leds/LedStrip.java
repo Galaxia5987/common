@@ -21,8 +21,8 @@ public class LedStrip extends SubsystemBase {
     private Color currentColor = primary;
 
     private final Timer timer = new Timer();
-    public Translation3d solution = new Translation3d();
-    private Mode mode = Mode.SOLID;
+    private Translation3d solution = new Translation3d();
+    private LedMode mode = LedMode.SOLID;
 
     public LedStrip(int port, int length) {
         ledStrip = new AddressableLED(port);
@@ -161,10 +161,10 @@ public class LedStrip extends SubsystemBase {
 
     @Override
     public void periodic() {
-        if (mode == Mode.SOLID) {
+        if (mode == LedMode.SOLID) {
             setSolidColor(currentColor);
         }
-        if (mode == Mode.BLINK) {
+        if (mode == LedMode.BLINK) {
             if (currentColor == primary) currentColor = secondary;
             else currentColor = primary;
 
@@ -173,7 +173,7 @@ public class LedStrip extends SubsystemBase {
             }
             timer.reset();
         }
-        if (mode == Mode.FADE) {
+        if (mode == LedMode.FADE) {
             solution = colorInterpolation(primary, secondary);
             setSolidColor(new Color(
                     (int) solution.getX(),
@@ -181,12 +181,8 @@ public class LedStrip extends SubsystemBase {
                     (int) solution.getZ()
             ));
         }
-        if (mode == Mode.RAINBOW) {
+        if (mode == LedMode.RAINBOW) {
             setRainbow();
         }
-    }
-
-    enum Mode {
-        SOLID, BLINK, FADE, RAINBOW
     }
 }
