@@ -124,7 +124,7 @@ public class LedStrip extends SubsystemBase {
                 if (currentColor == primary) currentColor = secondary;
                 else currentColor = primary;
 
-            if (timer.hasElapsed(blinkTime)) {
+                timer.advanceIfElapsed(blinkTime);
                 setSolidColor(currentColor);
                 timer.reset();
 
