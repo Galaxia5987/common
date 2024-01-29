@@ -58,12 +58,7 @@ public class LedStrip extends SubsystemBase {
         primary = color;
     }
 
-    /**
-     * Sets the secondary color of the strip.
-     *
-     * @param color Secondary color.
-     */
-    public void setSecondary(Color color) {
+    private void setSecondary(Color color) {
         secondary = color;
     }
 
@@ -102,7 +97,7 @@ public class LedStrip extends SubsystemBase {
      *
      * @param blinkTime Blink time in seconds
      */
-    public void setBlinkTime(double blinkTime) {
+    private void setBlinkTime(double blinkTime) {
         this.blinkTime = blinkTime;
     }
 
@@ -111,7 +106,7 @@ public class LedStrip extends SubsystemBase {
      *
      * @param duration Fade duration in seconds.
      */
-    public void setFadeDuration(double duration) {
+    private void setFadeDuration(double duration) {
         fadeDuration = duration;
     }
 
