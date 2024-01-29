@@ -11,10 +11,10 @@ import java.awt.*;
 public class LedStrip extends SubsystemBase {
     private final AddressableLED ledStrip;
     private AddressableLEDBuffer ledBuffer;
+    private int stripLength = 0;
 
     private double blinkTime = 1;
     private double fadeDuration = 1;
-    private int rainbowHue = 0;
 
     private Color primary = new Color(0);
     private Color secondary = new Color(0);
@@ -27,6 +27,7 @@ public class LedStrip extends SubsystemBase {
     public LedStrip(int port, int length) {
         ledStrip = new AddressableLED(port);
         ledBuffer = new AddressableLEDBuffer(length);
+        stripLength = length;
 
         ledStrip.setLength(length);
         ledStrip.setData(ledBuffer);
@@ -39,6 +40,7 @@ public class LedStrip extends SubsystemBase {
     public void setLength(int length) {
         ledBuffer = new AddressableLEDBuffer(length);
         ledStrip.setLength(length);
+        stripLength = length;
     }
 
     public void setState(LedState state){
@@ -79,7 +81,7 @@ public class LedStrip extends SubsystemBase {
 
     private void setSolidColor(Color color) {
         var appliedColor = new edu.wpi.first.wpilibj.util.Color(color.getRed(), color.getGreen(), color.getBlue());
-        for (int i = 0; i < ledBuffer.getLength(); i++) {
+        for (int i = 0; i < stripLength; i++) {
             ledBuffer.setLED(i, appliedColor);
         }
         ledStrip.setData(ledBuffer);
@@ -106,9 +108,10 @@ public class LedStrip extends SubsystemBase {
     }
 
     private void setRainbow() {
-        for (int i = 0; i < ledBuffer.getLength(); i++) {
+        int rainbowHue = 0;
+        for (int i = 0; i < stripLength; i++) {
             ledBuffer.setHSV(i, rainbowHue, 255, 180);
-            rainbowHue += (180 / ledBuffer.getLength());
+            rainbowHue += (180 / stripLength);
             ledStrip.setData(ledBuffer);
             rainbowHue %= 180;
         }
