@@ -83,8 +83,11 @@ public class VisionSimIO implements VisionIO {
                 inputs.ambiguities[i] = ambiguities.get(i);
             }
             PhotonTrackedTarget bestTarget = latestResult.getBestTarget();
-            Logger.recordOutput(cameraSim.getCamera().getName(),
-                    latestResult.targets.stream().mapToInt(PhotonTrackedTarget::getFiducialId).toArray());
+            Logger.recordOutput(
+                    cameraSim.getCamera().getName(),
+                    latestResult.targets.stream()
+                            .mapToInt(PhotonTrackedTarget::getFiducialId)
+                            .toArray());
             if (bestTarget != null) {
                 inputs.area = bestTarget.getArea();
                 inputs.pitch = bestTarget.getPitch();

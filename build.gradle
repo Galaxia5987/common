@@ -128,8 +128,6 @@ jar {
     from sourceSets.main.allSource
     manifest edu.wpi.first.gradlerio.GradleRIOPlugin.javaManifest(ROBOT_MAIN_CLASS)
     duplicatesStrategy = DuplicatesStrategy.INCLUDE
-    // Exclude source files from the JAR
-    exclude('**/*.java')
     // Exclude tests folder from the JAR
     exclude('**/tests/**')
 }
