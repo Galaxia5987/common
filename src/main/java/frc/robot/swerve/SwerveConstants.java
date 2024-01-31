@@ -87,20 +87,20 @@ public class SwerveConstants {
 
     public static void initConstants(boolean isWCP, boolean isReal) {
         if (!isReal) {
-            DRIVE_KP.initDefault(12.0);
+            DRIVE_KP.initDefault(2.0);
             DRIVE_KI.initDefault(0.0);
             DRIVE_KD.initDefault(0.0);
             DRIVE_KV.initDefault(0.0);
             DRIVE_KS.initDefault(0.0);
             DRIVE_KA.initDefault(0.0);
 
-            ANGLE_KP.initDefault(100.0);
+            ANGLE_KP.initDefault(12.0);
             ANGLE_KI.initDefault(0.0);
             ANGLE_KD.initDefault(0.0);
             ANGLE_KS.initDefault(0.0);
 
-            ROBOT_WIDTH = 0.512;
-            ROBOT_LENGTH = 0.67;
+            ROBOT_WIDTH = 0.584;
+            ROBOT_LENGTH = 0.584;
             WHEEL_DIAMETER = 0.099;
             DRIVE_REDUCTION = (1 / 2.0) * (24.0 / 22.0) * (15.0 / 45.0);
             ANGLE_REDUCTION = (14.0 / 72.0) * 0.5;
@@ -126,8 +126,8 @@ public class SwerveConstants {
                 ANGLE_KD.initDefault(0.0);
                 ANGLE_KS.initDefault(0.28);
 
-                ROBOT_WIDTH = 0.512;
-                ROBOT_LENGTH = 0.67;
+                ROBOT_WIDTH = 0.584;
+                ROBOT_LENGTH = 0.584;
                 WHEEL_DIAMETER = 0.099;
                 DRIVE_REDUCTION = (1 / 2.0) * (24.0 / 22.0) * (15.0 / 45.0);
                 ANGLE_REDUCTION = (14.0 / 72.0) * 0.5;
