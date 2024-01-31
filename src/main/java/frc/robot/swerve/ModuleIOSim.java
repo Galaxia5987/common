@@ -30,14 +30,14 @@ public class ModuleIOSim implements ModuleIO {
                         1,
                         1 / SwerveConstants.DRIVE_REDUCTION,
                         SwerveConstants.DRIVE_MOTOR_MOMENT_OF_INERTIA,
-                        1);
+                        1 / SwerveConstants.DRIVE_REDUCTION);
 
         angleMotor =
                 new TalonFXSim(
                         1,
                         1 / SwerveConstants.ANGLE_REDUCTION,
                         SwerveConstants.ANGLE_MOTOR_MOMENT_OF_INERTIA,
-                        1);
+                        1 / SwerveConstants.ANGLE_REDUCTION);
 
         velocityController =
                 new PIDController(
