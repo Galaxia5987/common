@@ -2,6 +2,7 @@ package lib;
 
 import edu.wpi.first.math.geometry.*;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import java.util.Comparator;
 import java.util.List;
 
 public class Utils {
@@ -46,5 +47,15 @@ public class Utils {
 
     public static Rotation2d normalize(Rotation2d angle) {
         return Rotation2d.fromRadians(normalize(angle.getRadians()));
+    }
+
+    private static double getDistanceFromPoint(Pose2d point, Pose2d robotPose) {
+        return robotPose.getTranslation().getDistance(point.getTranslation());
+    }
+
+    private static Pose2d calcOptimalPose(List<Pose2d> points, Pose2d robotPose) {
+        return points.stream()
+                .min(Comparator.comparingDouble(point -> getDistanceFromPoint(point, robotPose)))
+                .orElse(null);
     }
 }
