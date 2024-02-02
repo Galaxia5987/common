@@ -34,7 +34,7 @@ public class Vision extends SubsystemBase {
 
     public double getAverageAmbiguity() {
         List<Double> ambiguityList =
-                Arrays.stream(modules).map((module) -> module.inputs.averageAmbiguity).toList();
+                Arrays.stream(modules).map(VisionModule::getAverageAmbiguity).toList();
         return Utils.averageAmbiguity(ambiguityList);
     }
 
@@ -44,12 +44,12 @@ public class Vision extends SubsystemBase {
         double totalAverageAmbiguity;
         for (int i = 0; i < modules.length; i++) {
             VisionModule module = modules[i];
-            for (VisionIO io : module.ios) {
-                io.updateInputs(module.inputs);
-                Logger.processInputs(io.getName(), module.inputs);
-                results[i] = io.getLatestResult();
+            for (int j = 0; j < modules[i].ios.length; j++) {
+                module.ios[j].updateInputs(module.inputs[j]);
+                Logger.processInputs(module.ios[j].getName(), module.inputs[j]);
+                results[i] = module.ios[j].getLatestResult();
             }
-            totalAverageAmbiguities.add(module.inputs.averageAmbiguity);
+            totalAverageAmbiguities.add(module.getAverageAmbiguity());
         }
         totalAverageAmbiguity = Utils.averageAmbiguity(totalAverageAmbiguities);
         Logger.recordOutput("totalAverageAmbiguity", totalAverageAmbiguity);
