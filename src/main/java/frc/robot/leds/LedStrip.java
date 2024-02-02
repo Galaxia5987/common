@@ -4,20 +4,21 @@ import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.wpilibj.AddressableLED;
 import edu.wpi.first.wpilibj.AddressableLEDBuffer;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-
-import java.awt.*;
 
 public class LedStrip extends SubsystemBase {
     private final AddressableLED ledStrip;
     private AddressableLEDBuffer ledBuffer;
     private int stripLength = 0;
+    private int offset = 0;
+    private int percentage = 100;
 
     private double blinkTime = 1;
     private double fadeDuration = 1;
 
-    private Color primary = new Color(0);
-    private Color secondary = new Color(0);
+    private Color primary = new Color();
+    private Color secondary = new Color();
     private Color currentColor = primary;
     private Color fadeColor = primary;
 
@@ -75,6 +76,20 @@ public class LedStrip extends SubsystemBase {
     }
 
     /**
+     * Sets the offset of the LEDs.
+     * @param offset The amount of LEDs that won't light.
+     *               Counts from the start of the strip.
+     */
+    public void setOffset(int offset){
+        setSolidColor(Color.kBlack, 0, offset+1);
+        this.offset = offset;
+    }
+
+    public void setPercentage(int percentage) {
+        this.percentage = percentage;
+    }
+
+    /**
      * Sets the led blink time.
      * @param blinkTime Blink time in seconds
      */
@@ -91,8 +106,16 @@ public class LedStrip extends SubsystemBase {
     }
 
     private void setSolidColor(Color color) {
-        var appliedColor = new edu.wpi.first.wpilibj.util.Color(color.getRed(), color.getGreen(), color.getBlue());
-        for (int i = 0; i < stripLength; i++) {
+        var appliedColor = new Color(color.red, color.green, color.blue);
+        for (int i = offset; i < stripLength; i++) {
+            ledBuffer.setLED(i, appliedColor);
+        }
+        ledStrip.setData(ledBuffer);
+    }
+
+    private void setSolidColor(Color color, int start, int end) {
+        var appliedColor = new Color(color.red, color.green, color.blue);
+        for (int i = start; i < end; i++) {
             ledBuffer.setLED(i, appliedColor);
         }
         ledStrip.setData(ledBuffer);
@@ -104,12 +127,9 @@ public class LedStrip extends SubsystemBase {
      * @param initial Initial color.
      * @param goal    Final Color.
      */
-    private void colorInterpolation(Color initial, Color goal) {
-        var initialHSB = Color.RGBtoHSB(initial.getRed(), initial.getGreen(), initial.getBlue(), new float[3]);
-        var goalHSB = Color.RGBtoHSB(goal.getRed(), goal.getGreen(), goal.getBlue(), new float[3]);
-
-        Translation3d initialPoint = new Translation3d(initialHSB[0], initialHSB[1], initialHSB[2]);
-        Translation3d goalPoint = new Translation3d(goalHSB[0], goalHSB[1], goalHSB[2]);
+    private void updateFade(Color initial, Color goal) {
+        Translation3d initialPoint = new Translation3d(initial.red, initial.green, initial.blue);
+        Translation3d goalPoint = new Translation3d(goal.red, goal.green, goal.blue);
 
         double d = initialPoint.getDistance(goalPoint) / fadeDuration;
         double t = d / (initialPoint.minus(goalPoint)).getNorm();
@@ -124,7 +144,7 @@ public class LedStrip extends SubsystemBase {
 
     private void setRainbow() {
         int rainbowHue = 0;
-        for (int i = 0; i < stripLength; i++) {
+        for (int i = offset; i < stripLength; i++) {
             ledBuffer.setHSV(i, rainbowHue, 255, 180);
             rainbowHue += (180 / stripLength);
             ledStrip.setData(ledBuffer);
@@ -136,17 +156,22 @@ public class LedStrip extends SubsystemBase {
     public void periodic() {
         switch (mode){
             case SOLID:
-                setSolidColor(currentColor);
+                setSolidColor(primary);
+
+            case PERCENTAGE:
+                setSolidColor(primary, 0, stripLength*percentage/100);
 
             case BLINK:
                 if (currentColor == primary) currentColor = secondary;
                 else currentColor = primary;
 
-                timer.advanceIfElapsed(blinkTime);
-                setSolidColor(currentColor);
+                if (timer.advanceIfElapsed(blinkTime)) {
+                    setSolidColor(currentColor);
+                }
                 timer.reset();
 
             case FADE:
+                updateFade(primary, secondary);
                 setSolidColor(fadeColor);
 
             case RAINBOW:

@@ -1,6 +1,6 @@
 package frc.robot.leds;
 
-import java.awt.*;
+import edu.wpi.first.wpilibj.util.Color;
 
 public class LedState {
     private LedMode mode;
