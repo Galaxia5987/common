@@ -34,17 +34,8 @@ public class LedStrip extends SubsystemBase {
     }
 
     private void setSolidColor(Color color) {
-        var appliedColor = new Color(color.red, color.green, color.blue);
         for (int i = state.getStartingLed()-1; i < state.getEndingLed(); i++) {
-            ledBuffer.setLED(i, appliedColor);
-        }
-        ledStrip.setData(ledBuffer);
-    }
-
-    private void setSolidColor(Color color, int start, int end) {
-        var appliedColor = new Color(color.red, color.green, color.blue);
-        for (int i = start; i < end; i++) {
-            ledBuffer.setLED(i, appliedColor);
+            ledBuffer.setLED(i, color);
         }
         ledStrip.setData(ledBuffer);
     }
