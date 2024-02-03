@@ -33,11 +33,15 @@ public class LedStrip extends SubsystemBase {
         this.state = state;
     }
 
-    private void setSolidColor(Color color) {
-        for (int i = state.getStartingLed()-1; i < state.getEndingLed(); i++) {
+    private void setSolidColor(Color color, int start, int end){
+        for (int i = start; i < end; i++) {
             ledBuffer.setLED(i, color);
         }
         ledStrip.setData(ledBuffer);
+    }
+
+    private void setSolidColor(Color color) {
+        setSolidColor(color, state.getStartingLed()-1, state.getEndingLed());
     }
 
     /**
