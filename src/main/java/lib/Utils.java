@@ -49,13 +49,15 @@ public class Utils {
         return Rotation2d.fromRadians(normalize(angle.getRadians()));
     }
 
-    public static double getDistanceFromPoint(Pose2d point, Pose2d robotPose) {
-        return robotPose.getTranslation().getDistance(point.getTranslation());
+    public static double getDistanceFromPoint(Translation2d point, Pose2d robotPose) {
+        return robotPose.getTranslation().getDistance(point);
     }
 
     public static Pose2d calcOptimalPose(List<Pose2d> points, Pose2d robotPose) {
         return points.stream()
-                .min(Comparator.comparingDouble(point -> getDistanceFromPoint(point, robotPose)))
+                .min(
+                        Comparator.comparingDouble(
+                                point -> getDistanceFromPoint(point.getTranslation(), robotPose)))
                 .orElse(null);
     }
 }
