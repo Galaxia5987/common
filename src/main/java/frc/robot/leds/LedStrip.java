@@ -5,7 +5,11 @@ import edu.wpi.first.wpilibj.AddressableLED;
 import edu.wpi.first.wpilibj.AddressableLEDBuffer;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.util.Color;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+
+import java.util.function.DoubleSupplier;
+import java.util.function.IntSupplier;
 
 public class LedStrip extends SubsystemBase {
     private final AddressableLED ledStrip;
@@ -75,33 +79,53 @@ public class LedStrip extends SubsystemBase {
         }
     }
 
-    @Override
-    public void periodic() {
-        switch (state.getMode()){
-            case SOLID:
-                setSolidColor(state.getPrimary());
+    public Command solid(){
+        return this.run(()-> setSolidColor(state.getPrimary()));
+    }
 
-            case PERCENTAGE:
-                setSolidColor(
-                        state.getPrimary(),
-                        0,
-                        state.getStripLength()*state.getPercentage()/100);
+    public Command percentage(IntSupplier percentage){
+        return this.run(()->{
+            state.setPercentage(percentage.getAsInt());
+            setSolidColor(
+                    state.getPrimary(),
+                    0,
+                    state.getStripLength()*state.getPercentage()/100);
+                });
+    }
 
-            case BLINK:
-                if (currentColor == state.getPrimary()) currentColor = state.getSecondary();
-                else currentColor = state.getPrimary();
+    public Command percentage(){
+        return percentage(()->state.getPercentage());
+    }
 
-                if (timer.advanceIfElapsed(state.getBlinkTime())) {
-                    setSolidColor(currentColor);
-                }
-                timer.reset();
+    public Command blink(DoubleSupplier blinkTime){
+        return this.run(()->{
+            state.setBlinkTime(blinkTime.getAsDouble());
+            if (currentColor == state.getPrimary()) currentColor = state.getSecondary();
+            else currentColor = state.getPrimary();
 
-            case FADE:
-                updateFade(state.getPrimary(), state.getSecondary());
-                setSolidColor(fadeColor);
+            if (timer.advanceIfElapsed(state.getBlinkTime())&&state.getBlinkTime()>0) {
+                setSolidColor(currentColor);
+            }
+        });
+    }
 
-            case RAINBOW:
-                setRainbow();
-        }
+    public Command blink(){
+        return blink(()-> state.getBlinkTime());
+    }
+
+    public Command fade(DoubleSupplier fadeDuration){
+        return this.run(()->{
+           state.setFadeDuration(fadeDuration.getAsDouble());
+            updateFade(state.getPrimary(), state.getSecondary());
+            setSolidColor(fadeColor);
+        });
+    }
+
+    public Command fade(){
+        return fade(()->state.getFadeDuration());
+    }
+
+    public Command rainbow(){
+        return this.run(this::setRainbow);
     }
 }

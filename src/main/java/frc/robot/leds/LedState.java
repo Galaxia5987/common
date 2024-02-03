@@ -2,8 +2,6 @@ package frc.robot.leds;
 
 import edu.wpi.first.wpilibj.util.Color;
 
-import java.util.function.IntSupplier;
-
 public class LedState {
     private LedMode mode;
     private Color primary;
@@ -116,8 +114,8 @@ public class LedState {
      * Sets the percentage of the active strip length to use.
      * @param percentage Percent of active strip length. [%]
      */
-    public void setPercentage(IntSupplier percentage) {
-        this.percentage = percentage.getAsInt();
+    public void setPercentage(int percentage) {
+        this.percentage = percentage;
     }
 
     public int getStartingLed() {
