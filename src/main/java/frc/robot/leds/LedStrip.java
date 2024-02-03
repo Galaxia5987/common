@@ -33,11 +33,11 @@ public class LedStrip extends SubsystemBase {
         timer.reset();
     }
 
-    public void setState(LedState state){
+    public void setState(LedState state) {
         this.state = state;
     }
 
-    private void setSolidColor(Color color, int start, int end){
+    private void setSolidColor(Color color, int start, int end) {
         for (int i = start; i < end; i++) {
             ledBuffer.setLED(i, color);
         }
@@ -45,14 +45,15 @@ public class LedStrip extends SubsystemBase {
     }
 
     private void setSolidColor(Color color) {
-        setSolidColor(color, state.getStartingLed()-1, state.getEndingLed());
+        setSolidColor(color, state.getStartingLed() - 1, state.getEndingLed());
     }
 
     /**
-     * Updates fadeColor to the correct color for a fade effect
-     * at the current time by interpolating the two given colors.
+     * Updates fadeColor to the correct color for a fade effect at the current time by interpolating
+     * the two given colors.
+     *
      * @param initial Initial color.
-     * @param goal    Final Color.
+     * @param goal Final Color.
      */
     private void updateFade(Color initial, Color goal) {
         Translation3d initialPoint = new Translation3d(initial.red, initial.green, initial.blue);
@@ -62,16 +63,12 @@ public class LedStrip extends SubsystemBase {
         double t = d / (initialPoint.minus(goalPoint)).getNorm();
 
         Translation3d solution = initialPoint.interpolate(goalPoint, t);
-        fadeColor = new Color(
-                (int)solution.getX(),
-                (int)solution.getY(),
-                (int)solution.getZ()
-        );
+        fadeColor = new Color((int) solution.getX(), (int) solution.getY(), (int) solution.getZ());
     }
 
     private void setRainbow() {
         int rainbowHue = 0;
-        for (int i = state.getStartingLed()-1; i < state.getEndingLed(); i++) {
+        for (int i = state.getStartingLed() - 1; i < state.getEndingLed(); i++) {
             ledBuffer.setHSV(i, rainbowHue, 255, 180);
             rainbowHue += (180 / state.getStripLength());
             ledStrip.setData(ledBuffer);
@@ -79,53 +76,56 @@ public class LedStrip extends SubsystemBase {
         }
     }
 
-    public Command solid(){
-        return this.run(()-> setSolidColor(state.getPrimary()));
+    public Command solid() {
+        return this.run(() -> setSolidColor(state.getPrimary()));
     }
 
-    public Command percentage(IntSupplier percentage){
-        return this.run(()->{
-            state.setPercentage(percentage.getAsInt());
-            setSolidColor(
-                    state.getPrimary(),
-                    0,
-                    state.getStripLength()*state.getPercentage()/100);
+    public Command percentage(IntSupplier percentage) {
+        return this.run(
+                () -> {
+                    state.setPercentage(percentage.getAsInt());
+                    setSolidColor(
+                            state.getPrimary(),
+                            0,
+                            state.getStripLength() * state.getPercentage() / 100);
                 });
     }
 
-    public Command percentage(){
-        return percentage(()->state.getPercentage());
+    public Command percentage() {
+        return percentage(() -> state.getPercentage());
     }
 
-    public Command blink(DoubleSupplier blinkTime){
-        return this.run(()->{
-            state.setBlinkTime(blinkTime.getAsDouble());
-            if (currentColor == state.getPrimary()) currentColor = state.getSecondary();
-            else currentColor = state.getPrimary();
+    public Command blink(DoubleSupplier blinkTime) {
+        return this.run(
+                () -> {
+                    state.setBlinkTime(blinkTime.getAsDouble());
+                    if (currentColor == state.getPrimary()) currentColor = state.getSecondary();
+                    else currentColor = state.getPrimary();
 
-            if (timer.advanceIfElapsed(state.getBlinkTime())&&state.getBlinkTime()>0) {
-                setSolidColor(currentColor);
-            }
-        });
+                    if (timer.advanceIfElapsed(state.getBlinkTime()) && state.getBlinkTime() > 0) {
+                        setSolidColor(currentColor);
+                    }
+                });
     }
 
-    public Command blink(){
-        return blink(()-> state.getBlinkTime());
+    public Command blink() {
+        return blink(() -> state.getBlinkTime());
     }
 
-    public Command fade(DoubleSupplier fadeDuration){
-        return this.run(()->{
-           state.setFadeDuration(fadeDuration.getAsDouble());
-            updateFade(state.getPrimary(), state.getSecondary());
-            setSolidColor(fadeColor);
-        });
+    public Command fade(DoubleSupplier fadeDuration) {
+        return this.run(
+                () -> {
+                    state.setFadeDuration(fadeDuration.getAsDouble());
+                    updateFade(state.getPrimary(), state.getSecondary());
+                    setSolidColor(fadeColor);
+                });
     }
 
-    public Command fade(){
-        return fade(()->state.getFadeDuration());
+    public Command fade() {
+        return fade(() -> state.getFadeDuration());
     }
 
-    public Command rainbow(){
+    public Command rainbow() {
         return this.run(this::setRainbow);
     }
 }

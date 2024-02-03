@@ -12,7 +12,8 @@ public class LedState {
     private int startingLed;
     private int endingLed;
 
-    public LedState(LedMode mode, Color primary, Color secondary, double blinkTime, double fadeDuration) {
+    public LedState(
+            LedMode mode, Color primary, Color secondary, double blinkTime, double fadeDuration) {
         this.mode = mode;
         this.primary = primary;
         this.secondary = secondary;
@@ -20,7 +21,7 @@ public class LedState {
         this.fadeDuration = fadeDuration;
     }
 
-    public LedState(){
+    public LedState() {
         this.mode = LedMode.SOLID;
         this.primary = Color.kBlack;
         this.secondary = Color.kBlack;
@@ -34,15 +35,15 @@ public class LedState {
     /**
      * @return Active length of the strip.
      */
-    public int getStripLength(){
-        return endingLed-startingLed+1;
+    public int getStripLength() {
+        return endingLed - startingLed + 1;
     }
 
-    public void setStripLength(int length){
-        setEndingLed(startingLed-1+length);
+    public void setStripLength(int length) {
+        setEndingLed(startingLed - 1 + length);
     }
 
-    public void setStripLength(int startingLed, int endingLed){
+    public void setStripLength(int startingLed, int endingLed) {
         setStartingLed(startingLed);
         setEndingLed(endingLed);
     }
@@ -60,9 +61,9 @@ public class LedState {
     }
 
     /**
-     * Sets the primary color of the LEDs that will be used
-     * in the solid and percentage modes and as the first color
-     * in the blink and fade modes.
+     * Sets the primary color of the LEDs that will be used in the solid and percentage modes and as
+     * the first color in the blink and fade modes.
+     *
      * @param primary Color to set the primary.
      */
     public void setPrimary(Color primary) {
@@ -74,8 +75,9 @@ public class LedState {
     }
 
     /**
-     * Sets the secondary color of the LEDs that will be used
-     * as the second color in the blink and fade modes.
+     * Sets the secondary color of the LEDs that will be used as the second color in the blink and
+     * fade modes.
+     *
      * @param secondary Color to set the secondary.
      */
     public void setSecondary(Color secondary) {
@@ -88,6 +90,7 @@ public class LedState {
 
     /**
      * Sets the blink time of the LEDs.
+     *
      * @param time Time it takes to change the color. [sec]
      */
     public void setBlinkTime(double time) {
@@ -100,6 +103,7 @@ public class LedState {
 
     /**
      * Sets the duration for the fade effect.
+     *
      * @param duration Duration of the fade effect. [sec]
      */
     public void setFadeDuration(double duration) {
@@ -112,6 +116,7 @@ public class LedState {
 
     /**
      * Sets the percentage of the active strip length to use.
+     *
      * @param percentage Percent of active strip length. [%]
      */
     public void setPercentage(int percentage) {
