@@ -3,7 +3,6 @@ package frc.robot.leds;
 import edu.wpi.first.wpilibj.util.Color;
 
 public class LedState {
-    private LedMode mode;
     private Color primary;
     private Color secondary;
     private double blinkTime;
@@ -13,8 +12,7 @@ public class LedState {
     private int endingLed;
 
     public LedState(
-            LedMode mode, Color primary, Color secondary, double blinkTime, double fadeDuration) {
-        this.mode = mode;
+            Color primary, Color secondary, double blinkTime, double fadeDuration) {
         this.primary = primary;
         this.secondary = secondary;
         this.blinkTime = blinkTime;
@@ -22,7 +20,6 @@ public class LedState {
     }
 
     public LedState() {
-        this.mode = LedMode.SOLID;
         this.primary = Color.kBlack;
         this.secondary = Color.kBlack;
         this.blinkTime = 1;
@@ -46,14 +43,6 @@ public class LedState {
     public void setStripLength(int startingLed, int endingLed) {
         setStartingLed(startingLed);
         setEndingLed(endingLed);
-    }
-
-    public LedMode getMode() {
-        return mode;
-    }
-
-    public void setMode(LedMode mode) {
-        this.mode = mode;
     }
 
     public Color getPrimary() {
