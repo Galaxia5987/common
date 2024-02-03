@@ -13,10 +13,11 @@ import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.DutyCycleEncoder;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
-import java.util.Queue;
 import lib.PhoenixOdometryThread;
 import lib.Utils;
 import lib.units.Units;
+
+import java.util.Queue;
 
 public class ModuleIOTalonFX implements ModuleIO {
 
@@ -158,6 +159,7 @@ public class ModuleIOTalonFX implements ModuleIO {
                 .withFeedForward(SwerveConstants.ANGLE_KS.get())
                 .withEnableFOC(true);
         angleMotor.setControl(angleControlRequest);
+//        angleMotor.setControl(new DutyCycleOut(0.2));
     }
 
     @Override
@@ -174,6 +176,7 @@ public class ModuleIOTalonFX implements ModuleIO {
                 .withVelocity(Units.metersToRotations(velocity, SwerveConstants.WHEEL_DIAMETER / 2))
                 .withEnableFOC(true);
         driveMotor.setControl(velocityControlRequest);
+//        driveMotor.setControl(new DutyCycleOut(0.2));
     }
 
     @Override

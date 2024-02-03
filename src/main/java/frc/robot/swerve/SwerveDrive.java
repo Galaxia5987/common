@@ -13,15 +13,16 @@ import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import lib.math.differential.Derivative;
+import org.littletonrobotics.junction.AutoLogOutput;
+import org.littletonrobotics.junction.Logger;
+
 import java.util.Arrays;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.function.BooleanSupplier;
 import java.util.function.DoubleSupplier;
 import java.util.stream.Stream;
-import lib.math.differential.Derivative;
-import org.littletonrobotics.junction.AutoLogOutput;
-import org.littletonrobotics.junction.Logger;
 
 public class SwerveDrive extends SubsystemBase {
     public static final Lock odometryLock = new ReentrantLock();
@@ -300,7 +301,7 @@ public class SwerveDrive extends SubsystemBase {
         }
         odometryLock.unlock();
 
-        updateHighFreqPose();
+//        updateHighFreqPose();
 
         updateSwerveInputs();
 

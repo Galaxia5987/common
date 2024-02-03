@@ -131,11 +131,11 @@ public class SwerveModule extends SubsystemBase {
 
     @Override
     public void periodic() {
-        deltas = new double[loggerInputs.highFreqDistances.length];
-        for (int i = 0; i < deltas.length; i++) {
-            deltas[i] = loggerInputs.highFreqDistances[i] - lastDistance;
-            lastDistance = loggerInputs.highFreqDistances[i];
-        }
+//        deltas = new double[loggerInputs.highFreqDistances.length];
+//        for (int i = 0; i < deltas.length; i++) {
+//            deltas[i] = loggerInputs.highFreqDistances[i] - lastDistance;
+//            lastDistance = loggerInputs.highFreqDistances[i];
+//        }
 
         if (timer.advanceIfElapsed(1)) {
             io.updateOffset(
