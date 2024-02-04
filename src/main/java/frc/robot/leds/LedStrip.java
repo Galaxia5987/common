@@ -8,7 +8,6 @@ import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-import java.util.function.DoubleSupplier;
 import java.util.function.IntSupplier;
 
 public class LedStrip extends SubsystemBase {
@@ -24,7 +23,7 @@ public class LedStrip extends SubsystemBase {
     private Color fadeColor = primary;
 
     private double blinkTime = 1;
-    private double fadeDuration = 1;
+    private double fadeTime = 1;
     private int percentage = 100;
 
     private final Timer timer = new Timer();
@@ -64,7 +63,7 @@ public class LedStrip extends SubsystemBase {
         Translation3d initialPoint = new Translation3d(initial.red, initial.green, initial.blue);
         Translation3d goalPoint = new Translation3d(goal.red, goal.green, goal.blue);
 
-        double d = initialPoint.getDistance(goalPoint) / fadeDuration;
+        double d = initialPoint.getDistance(goalPoint) / fadeTime;
         double t = d / (initialPoint.minus(goalPoint)).getNorm();
 
         Translation3d solution = initialPoint.interpolate(goalPoint, t);
@@ -138,8 +137,8 @@ public class LedStrip extends SubsystemBase {
         this.blinkTime = time;
     }
 
-    public double getFadeDuration() {
-        return fadeDuration;
+    public double getFadeTime() {
+        return fadeTime;
     }
 
     /**
@@ -147,8 +146,8 @@ public class LedStrip extends SubsystemBase {
      *
      * @param duration Duration of the fade effect. [sec]
      */
-    public void setFadeDuration(double duration) {
-        this.fadeDuration = duration;
+    public void setFadeTime(double duration) {
+        this.fadeTime = duration;
     }
 
     public int getPercentage() {
@@ -209,10 +208,10 @@ public class LedStrip extends SubsystemBase {
         return percentage(() -> percentage);
     }
 
-    public Command blink(DoubleSupplier blinkTime) {
+    public Command blink(double blinkTime) {
         return this.run(
                 () -> {
-                    setBlinkTime(blinkTime.getAsDouble());
+                    setBlinkTime(blinkTime);
                     currentColor = currentColor == primary ?
                             secondary : primary;
 
@@ -223,20 +222,20 @@ public class LedStrip extends SubsystemBase {
     }
 
     public Command blink() {
-        return blink(() -> blinkTime);
+        return blink(blinkTime);
     }
 
-    public Command fade(DoubleSupplier fadeDuration) {
+    public Command fade(double fadeTime) {
         return this.run(
                 () -> {
-                    setFadeDuration(fadeDuration.getAsDouble());
+                    setFadeTime(fadeTime);
                     updateFade(primary, secondary);
                     setSolidColor(fadeColor);
                 });
     }
 
     public Command fade() {
-        return fade(() -> fadeDuration);
+        return fade(fadeTime);
     }
 
     public Command rainbow() {
