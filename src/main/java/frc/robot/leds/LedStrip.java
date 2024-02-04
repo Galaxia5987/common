@@ -216,7 +216,7 @@ public class LedStrip extends SubsystemBase {
                     if (currentColor == primary) currentColor = secondary;
                     else currentColor = primary;
 
-                    if (timer.advanceIfElapsed(this.blinkTime) && this.blinkTime > 0) {
+                    if (timer.advanceIfElapsed(this.blinkTime) && this.blinkTime > LedConstants.MINIMAL_BLINK_TIME) {
                         setSolidColor(currentColor);
                     }
                 });
