@@ -180,8 +180,18 @@ public class LedStrip extends SubsystemBase {
         this.endingLed = endingLed;
     }
 
-    public Command solid() {
-        return this.run(() -> setSolidColor(primary));
+    /**
+     * Sets a solid color that won't be saved as the primary color.
+     *
+     * @param optionalColor A color to set the LEDs to.
+     * @return A command that sets the LEDs to a solid color.
+     */
+    public Command solid(Color optionalColor) {
+        return this.run(() -> setSolidColor(optionalColor));
+    }
+
+    public Command solid(){
+        return solid(primary);
     }
 
     public Command percentage(IntSupplier percentage) {
