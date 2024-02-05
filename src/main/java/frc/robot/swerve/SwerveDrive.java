@@ -19,6 +19,7 @@ import java.util.concurrent.locks.ReentrantLock;
 import java.util.function.BooleanSupplier;
 import java.util.function.DoubleSupplier;
 import java.util.stream.Stream;
+import lib.Utils;
 import lib.math.differential.Derivative;
 import org.littletonrobotics.junction.AutoLogOutput;
 import org.littletonrobotics.junction.Logger;
@@ -252,6 +253,11 @@ public class SwerveDrive extends SubsystemBase {
                                 MathUtil.applyDeadband(strafe.getAsDouble(), deadband),
                                 MathUtil.applyDeadband(rotation.getAsDouble(), deadband),
                                 fieldOriented.getAsBoolean()));
+    }
+
+    public Command turnCommand(double rotation, double turnTolerance) {
+        return run(() -> drive(0, 0, rotation, false))
+                .until(() -> Utils.epsilonEquals(rotation, getYaw().getRotations(), turnTolerance));
     }
 
     public void updateSwerveInputs() {
