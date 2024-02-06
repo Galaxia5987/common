@@ -47,6 +47,15 @@ public class SwerveConstants {
                 DRIVE_KP, DRIVE_KI, DRIVE_KD, DRIVE_KV, DRIVE_KS, DRIVE_KA, ANGLE_KP, ANGLE_KI,
                 ANGLE_KD, ANGLE_KS
             };
+    public static final LoggedTunableNumber ROTATION_KP =
+            new LoggedTunableNumber("Swerve Drive/Rotation/rotationKP");
+    public static final LoggedTunableNumber ROTATION_KI =
+            new LoggedTunableNumber("Swerve Drive/Rotation/rotationKI");
+    public static final LoggedTunableNumber ROTATION_KD =
+            new LoggedTunableNumber("Swerve Drive/Rotation/rotationKD");
+    public static final LoggedTunableNumber ROTATION_KDIETER =
+            new LoggedTunableNumber("Swerve Drive/Rotation/rotationKDIETER");
+
     public static final VoltageConfigs VOLTAGE_CONFIGS =
             new VoltageConfigs()
                     .withPeakForwardVoltage(VOLT_COMP_SATURATION)
