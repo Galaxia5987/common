@@ -60,4 +60,10 @@ public class Utils {
                                 point -> getDistanceFromPoint(point.getTranslation(), robotPose)))
                 .orElse(null);
     }
+
+    public Rotation2d calculateOptimalRotation(Translation2d currentTranslation, Translation2d destinationTranslation) {
+        return new Rotation2d(
+                destinationTranslation.getX() - currentTranslation.getX(),
+                destinationTranslation.getY() - currentTranslation.getY());
+    }
 }
