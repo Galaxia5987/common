@@ -108,6 +108,11 @@ public class SwerveConstants {
             ANGLE_KD.initDefault(0.0);
             ANGLE_KS.initDefault(0.0);
 
+            ROTATION_KP.initDefault(0.9);
+            ROTATION_KI.initDefault(0.0);
+            ROTATION_KD.initDefault(0.0);
+            ROTATION_KDIETER.initDefault(0.0);
+
             ROBOT_WIDTH = 0.584;
             ROBOT_LENGTH = 0.584;
             WHEEL_DIAMETER = 0.099;
@@ -135,6 +140,11 @@ public class SwerveConstants {
                 ANGLE_KD.initDefault(0.0);
                 ANGLE_KS.initDefault(0.28);
 
+                ROTATION_KP.initDefault(0.9);
+                ROTATION_KI.initDefault(0.0);
+                ROTATION_KD.initDefault(0.0);
+                ROTATION_KDIETER.initDefault(0.0);
+
                 ROBOT_WIDTH = 0.584;
                 ROBOT_LENGTH = 0.584;
                 WHEEL_DIAMETER = 0.099;
@@ -160,6 +170,11 @@ public class SwerveConstants {
                 ANGLE_KI.initDefault(0.0);
                 ANGLE_KD.initDefault(0.0);
                 ANGLE_KS.initDefault(0.000_65);
+
+                ROTATION_KP.initDefault(0.9);
+                ROTATION_KI.initDefault(0.0);
+                ROTATION_KD.initDefault(0.0);
+                ROTATION_KDIETER.initDefault(0.0);
 
                 ROBOT_WIDTH = 0.512;
                 ROBOT_LENGTH = 0.67;
