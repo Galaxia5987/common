@@ -1,6 +1,7 @@
 package frc.robot.swerve;
 
 import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.filter.LinearFilter;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -19,6 +20,7 @@ import java.util.concurrent.locks.ReentrantLock;
 import java.util.function.BooleanSupplier;
 import java.util.function.DoubleSupplier;
 import java.util.stream.Stream;
+import lib.controllers.DieterController;
 import lib.math.differential.Derivative;
 import org.littletonrobotics.junction.AutoLogOutput;
 import org.littletonrobotics.junction.Logger;
@@ -256,6 +258,23 @@ public class SwerveDrive extends SubsystemBase {
                                 MathUtil.applyDeadband(strafe.getAsDouble(), deadband),
                                 MathUtil.applyDeadband(rotation.getAsDouble(), deadband),
                                 fieldOriented.getAsBoolean()));
+    }
+
+    public Command turnCommand(double rotation, double turnTolerance) {
+        PIDController turnController =
+                new DieterController(
+                        SwerveConstants.ROTATION_KP.get(),
+                        SwerveConstants.ROTATION_KI.get(),
+                        SwerveConstants.ROTATION_KD.get(),
+                        SwerveConstants.ROTATION_KDIETER.get());
+        turnController.setTolerance(turnTolerance);
+        return run(() ->
+                        drive(
+                                0,
+                                0,
+                                turnController.calculate(getYaw().getRotations(), rotation),
+                                false))
+                .until(turnController::atSetpoint);
     }
 
     public void updateSwerveInputs() {

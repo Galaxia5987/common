@@ -47,6 +47,15 @@ public class SwerveConstants {
                 DRIVE_KP, DRIVE_KI, DRIVE_KD, DRIVE_KV, DRIVE_KS, DRIVE_KA, ANGLE_KP, ANGLE_KI,
                 ANGLE_KD, ANGLE_KS
             };
+    public static final LoggedTunableNumber ROTATION_KP =
+            new LoggedTunableNumber("Swerve Drive/Rotation/rotationKP");
+    public static final LoggedTunableNumber ROTATION_KI =
+            new LoggedTunableNumber("Swerve Drive/Rotation/rotationKI");
+    public static final LoggedTunableNumber ROTATION_KD =
+            new LoggedTunableNumber("Swerve Drive/Rotation/rotationKD");
+    public static final LoggedTunableNumber ROTATION_KDIETER =
+            new LoggedTunableNumber("Swerve Drive/Rotation/rotationKDIETER");
+
     public static final VoltageConfigs VOLTAGE_CONFIGS =
             new VoltageConfigs()
                     .withPeakForwardVoltage(VOLT_COMP_SATURATION)
@@ -99,6 +108,11 @@ public class SwerveConstants {
             ANGLE_KD.initDefault(0.0);
             ANGLE_KS.initDefault(0.0);
 
+            ROTATION_KP.initDefault(0.9);
+            ROTATION_KI.initDefault(0.0);
+            ROTATION_KD.initDefault(0.0);
+            ROTATION_KDIETER.initDefault(0.0);
+
             ROBOT_WIDTH = 0.584;
             ROBOT_LENGTH = 0.584;
             WHEEL_DIAMETER = 0.099;
@@ -126,6 +140,11 @@ public class SwerveConstants {
                 ANGLE_KD.initDefault(0.0);
                 ANGLE_KS.initDefault(0.28);
 
+                ROTATION_KP.initDefault(0.9);
+                ROTATION_KI.initDefault(0.0);
+                ROTATION_KD.initDefault(0.0);
+                ROTATION_KDIETER.initDefault(0.0);
+
                 ROBOT_WIDTH = 0.584;
                 ROBOT_LENGTH = 0.584;
                 WHEEL_DIAMETER = 0.099;
@@ -151,6 +170,11 @@ public class SwerveConstants {
                 ANGLE_KI.initDefault(0.0);
                 ANGLE_KD.initDefault(0.0);
                 ANGLE_KS.initDefault(0.000_65);
+
+                ROTATION_KP.initDefault(0.9);
+                ROTATION_KI.initDefault(0.0);
+                ROTATION_KD.initDefault(0.0);
+                ROTATION_KDIETER.initDefault(0.0);
 
                 ROBOT_WIDTH = 0.512;
                 ROBOT_LENGTH = 0.67;
