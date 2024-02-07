@@ -61,7 +61,7 @@ public class Utils {
                 .orElse(null);
     }
 
-    public static Rotation2d calculateOptimalRotation(
+    public Rotation2d calculateOptimalRotation(
             Translation2d currentTranslation, Translation2d destinationTranslation) {
         return new Rotation2d(
                 destinationTranslation.getX() - currentTranslation.getX(),
