@@ -7,8 +7,12 @@
 
 package lib.webconstants;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Consumer;
+import java.util.function.DoubleConsumer;
+import lib.GeneralRobotLoop;
 import org.littletonrobotics.junction.networktables.LoggedDashboardNumber;
 
 /**
@@ -94,5 +98,27 @@ public class LoggedTunableNumber {
         }
 
         return false;
+    }
+
+    public void ifChanged(int hash, DoubleConsumer action) {
+        GeneralRobotLoop.register(
+                () -> {
+                    if (hasChanged(hash)) {
+                        action.accept(get());
+                    }
+                });
+    }
+
+    public static void ifChanged(
+            int hash, Consumer<double[]> action, LoggedTunableNumber... numbers) {
+        GeneralRobotLoop.register(
+                () -> {
+                    if (Arrays.stream(numbers).allMatch((number) -> number.hasChanged(hash))) {
+                        action.accept(
+                                Arrays.stream(numbers)
+                                        .mapToDouble(LoggedTunableNumber::get)
+                                        .toArray());
+                    }
+                });
     }
 }
