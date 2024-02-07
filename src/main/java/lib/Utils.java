@@ -53,7 +53,7 @@ public class Utils {
         return robotPose.getTranslation().getDistance(point);
     }
 
-    public static Pose2d calcOptimalPose(List<Pose2d> points, Pose2d robotPose) {
+    public static Pose2d calcClosestPose(List<Pose2d> points, Pose2d robotPose) {
         return points.stream()
                 .min(
                         Comparator.comparingDouble(
