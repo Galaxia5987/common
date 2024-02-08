@@ -9,34 +9,40 @@ public class InterpolatingDouble
         implements Interpolable<InterpolatingDouble>,
                 InverseInterpolable<InterpolatingDouble>,
                 Comparable<InterpolatingDouble> {
+    public Double value = 0.0;
 
-    public double value;
-
-    public InterpolatingDouble(double val) {
+    public InterpolatingDouble(Double val) {
         value = val;
     }
 
     @Override
     public InterpolatingDouble interpolate(InterpolatingDouble other, double x) {
-        double dy = other.value - this.value;
-        return new InterpolatingDouble(dy * x + value);
+        Double dydx = other.value - value;
+        Double searchY = dydx * x + value;
+        return new InterpolatingDouble(searchY);
     }
 
     @Override
     public double inverseInterpolate(InterpolatingDouble upper, InterpolatingDouble query) {
-        double upperToLower = upper.value - value;
-        if (upperToLower <= 0) {
+        double upper_to_lower = upper.value - value;
+        if (upper_to_lower <= 0) {
             return 0;
         }
-        double queryToLower = query.value - value;
-        if (queryToLower <= 0) {
+        double query_to_lower = query.value - value;
+        if (query_to_lower <= 0) {
             return 0;
         }
-        return queryToLower / upperToLower;
+        return query_to_lower / upper_to_lower;
     }
 
     @Override
     public int compareTo(InterpolatingDouble other) {
-        return Double.compare(value, other.value);
+        if (other.value < value) {
+            return 1;
+        } else if (other.value > value) {
+            return -1;
+        } else {
+            return 0;
+        }
     }
 }
