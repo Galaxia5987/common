@@ -2,6 +2,10 @@ package lib;
 
 import edu.wpi.first.math.geometry.*;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import edu.wpi.first.units.Angle;
+import edu.wpi.first.units.Measure;
+import edu.wpi.first.units.Units;
+
 import java.util.Comparator;
 import java.util.List;
 
@@ -38,15 +42,19 @@ public class Utils {
         return 1.0 / ambiguities.stream().map((num) -> 1.0 / num).reduce(0.0, Double::sum);
     }
 
-    public static double normalize(double angle) {
-        while (angle < 0) {
-            angle += 2 * Math.PI;
+    public static double normalize(double angleRadians) {
+        while (angleRadians < 0) {
+            angleRadians += 2 * Math.PI;
         }
-        return angle % (2 * Math.PI);
+        return angleRadians % (2 * Math.PI);
     }
 
     public static Rotation2d normalize(Rotation2d angle) {
         return Rotation2d.fromRadians(normalize(angle.getRadians()));
+    }
+
+    public static Measure<Angle> normalize(Measure<Angle> angle) {
+        return Units.Radians.of(normalize(angle.in(Units.Radians)));
     }
 
     public static double getDistanceFromPoint(Translation2d point, Pose2d robotPose) {
