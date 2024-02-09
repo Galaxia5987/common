@@ -14,7 +14,10 @@ import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.function.BooleanSupplier;
@@ -32,6 +35,7 @@ public class SwerveDrive extends SubsystemBase {
 
     @AutoLogOutput
     private final SwerveModulePosition[] modulePositions = new SwerveModulePosition[4];
+    private final List<SwerveModulePosition[]> highFreqModulePositions = new ArrayList<>();
 
     private final GyroIO gyro;
     private final SwerveDriveKinematics kinematics =
@@ -122,6 +126,10 @@ public class SwerveDrive extends SubsystemBase {
         return modulePositions;
     }
 
+    public List<SwerveModulePosition[]> getHighFreqModulePositions(){
+        return highFreqModulePositions;
+    }
+
     public SwerveDriveKinematics getKinematics() {
         return kinematics;
     }
@@ -143,18 +151,19 @@ public class SwerveDrive extends SubsystemBase {
         }
         for (int sampleIndex = 0; sampleIndex < sampleCount; sampleIndex++) {
             // Read wheel positions
-            SwerveModulePosition[] highFreqModulePositions = new SwerveModulePosition[4];
+            SwerveModulePosition[] tempHighFreqModulePositions = new SwerveModulePosition[4];
             for (int moduleIndex = 0; moduleIndex < 4; moduleIndex++) {
-                highFreqModulePositions[moduleIndex] =
+                tempHighFreqModulePositions[moduleIndex] =
                         new SwerveModulePosition(
                                 modules[moduleIndex].getHighFreqDriveDistances()[sampleIndex],
                                 Rotation2d.fromRadians(
                                         modules[moduleIndex].getHighFreqAngles()[sampleIndex]));
+                highFreqModulePositions.get(sampleIndex)[moduleIndex] = tempHighFreqModulePositions[moduleIndex];
             }
             poseEstimator.updateWithTime(
                     modules[0].getHighFreqTimestamps()[sampleIndex],
                     getRawYaw(),
-                    highFreqModulePositions);
+                    tempHighFreqModulePositions);
             botPose = poseEstimator.getEstimatedPosition();
         }
     }
