@@ -11,10 +11,12 @@ import org.littletonrobotics.junction.AutoLogOutput;
 public class PoseEstimation {
     private static PoseEstimation INSTANCE = null;
     private final SwerveDrivePoseEstimator estimator;
-    private final Vision vision = Vision.getInstance();
-    private final SwerveDrive swerveDrive = SwerveDrive.getInstance();
+    private final Vision vision;
+    private final SwerveDrive swerveDrive;
 
     public PoseEstimation() {
+        vision = Vision.getInstance();
+        swerveDrive = SwerveDrive.getInstance();
         estimator =
                 new SwerveDrivePoseEstimator(
                         swerveDrive.getKinematics(),
