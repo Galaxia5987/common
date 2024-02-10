@@ -59,7 +59,7 @@ public class SwerveDrive extends SubsystemBase {
 
         updateModulePositions();
 
-        poseEstimator = new PoseEstimation();
+        poseEstimator = new PoseEstimation(this);
     }
 
     public static SwerveDrive getInstance() {
