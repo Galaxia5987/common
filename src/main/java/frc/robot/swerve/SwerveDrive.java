@@ -15,6 +15,7 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
@@ -35,7 +36,7 @@ public class SwerveDrive extends SubsystemBase {
     @AutoLogOutput
     private final SwerveModulePosition[] modulePositions = new SwerveModulePosition[4];
 
-    private final List<SwerveModulePosition[]> highFreqModulePositions = new ArrayList<>();
+    private final List<SwerveModulePosition[]> highFreqModulePositions = new ArrayList<>(Collections.singleton(modulePositions));
 
     private final GyroIO gyro;
     private final SwerveDriveKinematics kinematics =
