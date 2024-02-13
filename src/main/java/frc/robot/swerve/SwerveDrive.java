@@ -147,6 +147,7 @@ public class SwerveDrive extends SubsystemBase {
     }
 
     public void updateHighFreqPose() {
+        highFreqModulePositions.clear();
         int sampleCount = Integer.MAX_VALUE;
         for (int i = 0; i < 4; i++) {
             sampleCount = Math.min(sampleCount, modules[i].getHighFreqAngles().length);
@@ -162,8 +163,7 @@ public class SwerveDrive extends SubsystemBase {
                                 modules[moduleIndex].getHighFreqDriveDistances()[sampleIndex],
                                 Rotation2d.fromRadians(
                                         modules[moduleIndex].getHighFreqAngles()[sampleIndex]));
-                highFreqModulePositions.get(sampleIndex)[moduleIndex] =
-                        tempHighFreqModulePositions[moduleIndex];
+                highFreqModulePositions.add(tempHighFreqModulePositions);
             }
             poseEstimator.updatePose();
             botPose = poseEstimator.getEstimatedPose();
