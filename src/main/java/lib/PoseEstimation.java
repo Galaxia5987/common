@@ -9,25 +9,19 @@ import java.util.function.DoubleSupplier;
 import org.littletonrobotics.junction.AutoLogOutput;
 
 public class PoseEstimation {
-    private static PoseEstimation INSTANCE = null;
     private final SwerveDrivePoseEstimator estimator;
-    private final Vision vision = Vision.getInstance();
-    private final SwerveDrive swerveDrive = SwerveDrive.getInstance();
+    private final SwerveDrive swerveDrive;
+    private final Vision vision;
 
-    public PoseEstimation() {
+    public PoseEstimation(SwerveDrive swerveDrive) {
+        this.swerveDrive = swerveDrive;
+        vision = Vision.getInstance();
         estimator =
                 new SwerveDrivePoseEstimator(
                         swerveDrive.getKinematics(),
                         swerveDrive.getYaw(),
                         swerveDrive.getModulePositions(),
                         swerveDrive.getBotPose());
-    }
-
-    public static PoseEstimation getInstance() {
-        if (INSTANCE == null) {
-            INSTANCE = new PoseEstimation();
-        }
-        return INSTANCE;
     }
 
     public void addVisionMeasurement(

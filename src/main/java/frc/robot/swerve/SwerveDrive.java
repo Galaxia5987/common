@@ -13,15 +13,16 @@ import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import lib.PoseEstimation;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.function.BooleanSupplier;
 import java.util.function.DoubleSupplier;
 import java.util.stream.Stream;
+import lib.PoseEstimation;
 import lib.controllers.DieterController;
 import lib.math.differential.Derivative;
 import org.littletonrobotics.junction.AutoLogOutput;
@@ -35,7 +36,7 @@ public class SwerveDrive extends SubsystemBase {
     @AutoLogOutput
     private final SwerveModulePosition[] modulePositions = new SwerveModulePosition[4];
 
-    private final List<SwerveModulePosition[]> highFreqModulePositions = new ArrayList<>();
+    private final List<SwerveModulePosition[]> highFreqModulePositions = new ArrayList<>(Collections.singleton(modulePositions));
 
     private final GyroIO gyro;
     private final SwerveDriveKinematics kinematics =
@@ -59,7 +60,7 @@ public class SwerveDrive extends SubsystemBase {
 
         updateModulePositions();
 
-        poseEstimator = new PoseEstimation();
+        poseEstimator = new PoseEstimation(this);
     }
 
     public static SwerveDrive getInstance() {
