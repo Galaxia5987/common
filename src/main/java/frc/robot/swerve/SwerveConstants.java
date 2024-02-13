@@ -5,13 +5,6 @@ import edu.wpi.first.math.geometry.Translation2d;
 import lib.webconstants.LoggedTunableNumber;
 
 public class SwerveConstants {
-    public static final double[] OFFSETS = {
-        0.566_523_314_163_082_9,
-        0.262_182_806_554_570_16,
-        0.004_864_650_121_616_253,
-        0.548_742_613_718_565_4
-    };
-
     public static final double NEO_CURRENT_LIMIT = 40;
     public static final double NEO_550_CURRENT_LIMIT = 20;
     public static final CurrentLimitsConfigs TALON_FX_CURRENT_LIMIT_CONFIGS =

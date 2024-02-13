@@ -20,10 +20,12 @@ public class SwerveModule extends SubsystemBase {
 
     private double lastDistance = 0;
     private double[] deltas = new double[0];
+    private final double offset;
 
-    public SwerveModule(ModuleIO io, int number) {
+    public SwerveModule(ModuleIO io, int number, double offset) {
         this.io = io;
         this.number = number;
+        this.offset = offset;
 
         timer.start();
         timer.reset();
@@ -139,7 +141,7 @@ public class SwerveModule extends SubsystemBase {
 
         if (timer.advanceIfElapsed(1)) {
             io.updateOffset(
-                    new Rotation2d(Units.rotationsToRadians(SwerveConstants.OFFSETS[number - 1])));
+                    new Rotation2d(Units.rotationsToRadians(offset)));
         }
     }
 }

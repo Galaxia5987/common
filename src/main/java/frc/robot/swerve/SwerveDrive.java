@@ -50,11 +50,11 @@ public class SwerveDrive extends SubsystemBase {
     private final SwerveDriveInputsAutoLogged loggerInputs = new SwerveDriveInputsAutoLogged();
     @AutoLogOutput private Pose2d botPose = new Pose2d();
 
-    private SwerveDrive(GyroIO gyroIO, ModuleIO... moduleIOs) {
+    private SwerveDrive(GyroIO gyroIO, double[] wheelOffsets, ModuleIO... moduleIOs) {
         this.gyro = gyroIO;
         modules = new SwerveModule[moduleIOs.length];
         for (int i = 0; i < moduleIOs.length; i++) {
-            modules[i] = new SwerveModule(moduleIOs[i], i + 1);
+            modules[i] = new SwerveModule(moduleIOs[i], i + 1, wheelOffsets[i]);
         }
 
         updateModulePositions();
@@ -66,8 +66,8 @@ public class SwerveDrive extends SubsystemBase {
         return INSTANCE;
     }
 
-    public static void initialize(GyroIO gyroIO, ModuleIO... moduleIOs) {
-        INSTANCE = new SwerveDrive(gyroIO, moduleIOs);
+    public static void initialize(GyroIO gyroIO, double[] offsets, ModuleIO... moduleIOs) {
+        INSTANCE = new SwerveDrive(gyroIO, offsets,  moduleIOs);
     }
 
     /**
