@@ -7,31 +7,23 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.util.Color;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-
 import java.util.function.IntSupplier;
 
-public class LedStrip extends SubsystemBase {
+public class LEDs extends SubsystemBase {
     private final AddressableLED ledStrip;
     private AddressableLEDBuffer ledBuffer;
-    private int stripLength = 1;
-    private int startingLed = 1;
-    private int endingLed = 1;
 
     private Color primary = Color.kBlack;
     private Color secondary = Color.kBlack;
     private Color currentColor = primary;
     private Color fadeColor = primary;
 
-    private double blinkTime = 1;
     private double fadeTime = 1;
-    private int percentage = 100;
-
     private final Timer timer = new Timer();
 
-    public LedStrip(int port, int length) {
+    public LEDs(int port, int length, int segments) {
         ledStrip = new AddressableLED(port);
         ledBuffer = new AddressableLEDBuffer(length);
-        setEndingLed(length);
 
         ledStrip.setLength(length);
         ledStrip.setData(ledBuffer);
@@ -48,52 +40,31 @@ public class LedStrip extends SubsystemBase {
         ledStrip.setData(ledBuffer);
     }
 
-    private void setSolidColor(Color color) {
-        setSolidColor(color, startingLed - 1, endingLed);
-    }
-
     /**
      * Updates fadeColor to the correct color for a fade effect at the current time by interpolating
      * the two given colors.
      *
      * @param initial Initial color.
-     * @param goal    Final Color.
+     * @param goal Final Color.
      */
     private void updateFade(Color initial, Color goal) {
         Translation3d initialPoint = new Translation3d(initial.red, initial.green, initial.blue);
         Translation3d goalPoint = new Translation3d(goal.red, goal.green, goal.blue);
 
-        double d = initialPoint.getDistance(goalPoint) / fadeTime;
-        double t = d / (initialPoint.minus(goalPoint)).getNorm();
+        double t = timer.get() / fadeTime;
 
         Translation3d solution = initialPoint.interpolate(goalPoint, t);
         fadeColor = new Color((int) solution.getX(), (int) solution.getY(), (int) solution.getZ());
     }
 
-    private void setRainbow() {
+    private void setRainbow(int start, int end) {
         int rainbowHue = 0;
-        for (int i = startingLed - 1; i < endingLed; i++) {
+        for (int i = start - 1; i < end; i++) {
             ledBuffer.setHSV(i, rainbowHue, 255, 180);
-            rainbowHue += (180 / stripLength);
+            rainbowHue += (180 / (end - start + 1));
             ledStrip.setData(ledBuffer);
             rainbowHue %= 180;
         }
-    }
-
-    /**
-     * @return Active length of the strip.
-     */
-    public int getStripLength() {
-        return endingLed - startingLed + 1;
-    }
-
-    public void setStripLength(int length) {
-        setEndingLed(startingLed - 1 + length);
-    }
-
-    public void setStripLength(int startingLed, int endingLed) {
-        setStartingLed(startingLed);
-        setEndingLed(endingLed);
     }
 
     public Color getPrimary() {
@@ -124,19 +95,6 @@ public class LedStrip extends SubsystemBase {
         this.secondary = secondary;
     }
 
-    public double getBlinkTime() {
-        return blinkTime;
-    }
-
-    /**
-     * Sets the blink time of the LEDs.
-     *
-     * @param time Time it takes to change the color. [sec]
-     */
-    public void setBlinkTime(double time) {
-        this.blinkTime = time;
-    }
-
     public double getFadeTime() {
         return fadeTime;
     }
@@ -150,95 +108,86 @@ public class LedStrip extends SubsystemBase {
         this.fadeTime = duration;
     }
 
-    public int getPercentage() {
-        return percentage;
-    }
-
-    /**
-     * Sets the percentage of the active strip length to use.
-     *
-     * @param percentage Percent of active strip length. [%]
-     */
-    public void setPercentage(int percentage) {
-        this.percentage = percentage;
-    }
-
-    public int getStartingLed() {
-        return startingLed;
-    }
-
-    public void setStartingLed(int startingLed) {
-        this.startingLed = startingLed;
-    }
-
-    public int getEndingLed() {
-        return endingLed;
-    }
-
-    public void setEndingLed(int endingLed) {
-        this.endingLed = endingLed;
-    }
-
     /**
      * Sets a solid color that won't be saved as the primary color.
      *
      * @param optionalColor A color to set the LEDs to.
+     * @param start The starting led number of the segment.
+     * @param end The ending led number of the segment.
      * @return A command that sets the LEDs to a solid color.
      */
-    public Command solid(Color optionalColor) {
-        return this.run(() -> setSolidColor(optionalColor));
+    public Command solid(Color optionalColor, int start, int end) {
+        return this.run(() -> setSolidColor(optionalColor, start, end));
     }
 
-    public Command solid(){
-        return solid(primary);
+    public Command solid(int start, int end) {
+        return solid(primary, start, end);
     }
 
-    public Command percentage(IntSupplier percentage) {
+    /**
+     * Sets a segment to a percentage of the segment length.
+     *
+     * @param percentage The percentage of the segment length to light up.
+     * @param start The starting led number of the segment.
+     * @param end The ending led number of the segment.
+     * @return A command that sets a segment to a percentage of the segment length.
+     */
+    public Command percentage(IntSupplier percentage, int start, int end) {
         return this.run(
                 () -> {
-                    setPercentage(percentage.getAsInt());
-                    setSolidColor(
-                            primary,
-                            0,
-                            stripLength * this.percentage / 100);
+                    setSolidColor(primary, start, (end - start + 1) * percentage.getAsInt() / 100);
                 });
     }
 
-    public Command percentage() {
-        return percentage(() -> percentage);
-    }
-
-    public Command blink(double blinkTime) {
+    /**
+     * Sets a segment to blink between the primary and secondary colors.
+     *
+     * @param blinkTime The time it takes to change the color. [sec]
+     * @param start The starting led number of the segment.
+     * @param end The ending led number of the segment.
+     * @return A command that sets a segment to blink between the primary and secondary colors.
+     */
+    public Command blink(double blinkTime, int start, int end) {
         return this.run(
                 () -> {
-                    setBlinkTime(blinkTime);
-                    currentColor = currentColor == primary ?
-                            secondary : primary;
+                    currentColor = currentColor == primary ? secondary : primary;
 
-                    if (timer.advanceIfElapsed(this.blinkTime) && this.blinkTime > LedConstants.MINIMAL_BLINK_TIME) {
-                        setSolidColor(currentColor);
+                    if (timer.advanceIfElapsed(blinkTime)
+                            && blinkTime > LedConstants.MINIMAL_BLINK_TIME) {
+                        setSolidColor(currentColor, start, end);
                     }
                 });
     }
 
-    public Command blink() {
-        return blink(blinkTime);
-    }
-
-    public Command fade(double fadeTime) {
+    /**
+     * Sets a segment to fade between the primary and secondary colors.
+     *
+     * @param fadeTime The duration of the fade effect. [sec]
+     * @param start The starting led number of the segment.
+     * @param end The ending led number of the segment.
+     * @return A command that sets a segment to fade between the primary and secondary colors.
+     */
+    public Command fade(double fadeTime, int start, int end) {
         return this.run(
                 () -> {
                     setFadeTime(fadeTime);
                     updateFade(primary, secondary);
-                    setSolidColor(fadeColor);
+                    setSolidColor(fadeColor, start, end);
                 });
     }
 
-    public Command fade() {
-        return fade(fadeTime);
+    public Command fade(int start, int end) {
+        return fade(fadeTime, start, end);
     }
 
-    public Command rainbow() {
-        return this.run(this::setRainbow);
+    /**
+     * Sets a segment of the strip to a rainbow pattern.
+     *
+     * @param start The starting led number of the segment.
+     * @param end The ending led number of the segment.
+     * @return A command that sets a segment to a rainbow pattern.
+     */
+    public Command rainbow(int start, int end) {
+        return this.run(() -> setRainbow(start, end));
     }
 }
